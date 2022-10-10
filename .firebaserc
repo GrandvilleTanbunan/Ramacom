@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ramacom-6b0d1": {
+      "hosting": {
+        "app": [
+          "ramacom-6b0d1"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ramacom-6b0d1"
+  }
+}
