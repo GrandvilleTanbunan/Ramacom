@@ -1,0 +1,119 @@
+ion-header{
+    position: absolute;
+}
+
+ion-toolbar{
+    --ion-background-color: transparent;
+    --opacity: 0;
+}
+
+// ion-content{
+//     // --ion-background-color: #E1EAF9;
+// }
+
+ion-card{
+    --ion-background-color: transparent;
+    box-shadow: none !important;
+}
+
+.card {
+    background-color: transparent;
+    // height: 30%;
+    margin: 0%;
+  }
+
+.signin-btns{
+    margin-top: 25px;
+    text-align: center;
+    color: #F0F4FA;
+}
+
+// .sign-btn-wrap{
+//     text-align: center;
+//     padding-top: 20px;
+//     .sign-btn{
+//         --ion-primary-color:#009cff;
+//         color: #F4F6FA;
+//     }
+// }
+
+.sign-btn{
+    --ion-primary-color:#009cff;
+    color: #F4F6FA;
+}
+
+.loginbtn{
+    --ion-color-primary: #009cff; 
+}
+
+.wrapform{
+    margin-top: 30px;
+}
+
+.card-header{
+    text-align: center;
+    font-size: 40px;
+    // font-family: 'Open Sans';
+}
+
+.grid1 {
+    height: 100%;
+    padding: 0px;
+}
+
+.contaier-login {
+    width: 90%;
+    padding: 10px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+}
+
+
+// .row1 {
+//     height: 50%;
+//     background: -moz-linear-gradient(45deg, rgba(61, 66, 150, 1) 0%, rgba(84, 74, 171, 0.8) 100%);
+//     background: -webkit-linear-gradient(45deg, rgba(61, 66, 150, 1) 0%, rgba(84, 74, 171, 0.8) 100%);
+//     background: linear-gradient(45deg, rgba(61, 66, 150, 1) 0%, rgba(84, 74, 171, 0.8) 100%);
+// }
+
+.row1 {
+    height: 50%;
+    background: -moz-linear-gradient(45deg, rgba(0, 156, 255, 1) 0%, rgba(126, 203, 252, 0.8) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(0, 156, 255, 1) 0%, rgba(126, 203, 252, 0.8) 100%);
+    background: linear-gradient(45deg, rgba(0, 156, 255, 1) 0%, rgba(126, 203, 252, 0.8) 100%);
+}
+
+.row2 {
+    height: 50%;
+}
+
+.rowperson {
+    height: 50%;
+    background: transparent;
+}
+
+ion-icon {
+    margin-right: 15px;
+}
+
+ion-button {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+ion-slide {
+    width: 100%;
+    height: 100%;
+    position: absolute !important;
+    top: 0px !important;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+ }

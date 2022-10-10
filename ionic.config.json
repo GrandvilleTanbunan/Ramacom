@@ -1,0 +1,7 @@
+{
+  "name": "Ramacom1",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

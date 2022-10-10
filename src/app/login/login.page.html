@@ -1,0 +1,56 @@
+<ion-content>
+    <ion-grid class="grid1">
+        <ion-row class="row1">
+            <ion-col>
+              <ion-row class="rowperson">
+                <ion-col class="img-container">
+                  <img width="105" height="150" src="assets/images/PERSON.png">
+                </ion-col>
+              </ion-row>
+            </ion-col>
+        </ion-row>
+    
+        <ion-row class="row2">
+            <ion-col>
+    
+            </ion-col>
+        </ion-row>
+    
+    </ion-grid>
+    
+    <ion-slide>
+        <div class="contaier-login">
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <h1>Login</h1>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                      <ion-list>
+                          <ion-item>
+                              <ion-icon name="person" class="icon-login"></ion-icon>
+                              <ion-input name="user" type="text" required placeholder="Username" [(ngModel)]="name"></ion-input>
+                          </ion-item>
+                          <br />
+                          <ion-item>
+                              <ion-icon name="lock-closed-outline" class="icon-login"></ion-icon>
+                              <ion-input name="password" type="password" required placeholder="Password" [(ngModel)]="pw"></ion-input>
+                          </ion-item>
+  
+                      </ion-list>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col>
+                    <ion-button  fill="solid" color="secondary" expand="block" size="large" (click)=login()>
+                      Masuk
+                    </ion-button>
+                  </ion-col>
+              </ion-row>
+            </ion-grid>
+        </div>
+    </ion-slide>
+
+</ion-content>
