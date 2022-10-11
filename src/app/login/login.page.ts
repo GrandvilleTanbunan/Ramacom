@@ -1,4 +1,6 @@
+import { User, AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -9,12 +11,31 @@ export class LoginPage implements OnInit {
 
   name: string;
   pw: string;
-  constructor() { }
+  user ={
+    name:'',
+    pw:''
+  }
+  constructor(private authService: AuthService, private navCtrl: NavController, private alertCtrl: AlertController) { }
 
   ngOnInit() {
   }
 
-  login(){
+  async loginUser(){
+    this.authService.login(this.name, this.pw).then(async success =>{
+      if(success){
+        this.navCtrl.navigateRoot('stock-admin');
+      }
+      else{
+        let alert = await this.alertCtrl.create({
+          header: 'Login gagal',
+          message: 'Silahkan cek username/password',
+          buttons:['OK']
+        });
+        await alert.present();
+
+      }
+
+    });
 
   }
 
