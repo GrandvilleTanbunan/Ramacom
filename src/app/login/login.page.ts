@@ -1,3 +1,4 @@
+import { DataService } from './../services/data.service';
 import { User, AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
@@ -11,11 +12,14 @@ export class LoginPage implements OnInit {
 
   name: string;
   pw: string;
-  user ={
-    name:'',
-    pw:''
-  }
-  constructor(private authService: AuthService, private navCtrl: NavController, private alertCtrl: AlertController) { }
+  // user ={
+  //   name:'',
+  //   pw:''
+  user = [];
+
+  constructor(private authService: AuthService, private navCtrl: NavController, private alertCtrl: AlertController, private dataService: DataService) {
+
+   }
 
   ngOnInit() {
   }
@@ -32,7 +36,6 @@ export class LoginPage implements OnInit {
           buttons:['OK']
         });
         await alert.present();
-
       }
 
     });
