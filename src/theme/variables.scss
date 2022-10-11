@@ -2,7 +2,27 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+
+
+@font-face {
+  font-family: LatoBlack;
+  src: url('../assets/fonts/Lato-Black.ttf');
+  }
+@font-face {
+  font-family: LatoRegular;
+  src: url('../assets/fonts/Lato-Regular.ttf');
+  }
+@font-face {
+  font-family: LatoBold;
+  src: url('../assets/fonts/Lato-Bold.ttf');
+  }
+
 :root {
+
+  --ion-font-family: LatoBlack;
+  --ion-font-family: LatoRegular;
+  --ion-font-family: LatoBold;
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
