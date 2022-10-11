@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
+
 export interface User {
   name: string;
   role: number;
@@ -8,6 +10,9 @@ export interface User {
 })
 export class AuthService {
   currentUser: User;
+  private _statusChange$ = new Subject<string>();
+  public loginStatus$ = this._statusChange$.asObservable();
+
   constructor() {
 
    }
@@ -22,6 +27,7 @@ export class AuthService {
             role:0
           }
           resolve(true);
+          this._statusChange$.next(this.currentUser.name);
         }
         else
         {
@@ -46,6 +52,6 @@ export class AuthService {
 
    isAdmin()
    {
-    return this.currentUser.role == 0;
+    return this.currentUser.role === 0;
    }
 }
