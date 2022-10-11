@@ -29,9 +29,8 @@ export class AppComponent {
       else
       {
         this.appPages = [
-          { title: 'Stock', url: '/stock-admin', icon: '/assets/images/stock.png' },
-          { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/selling.png' }
-          // { title: 'Pembelian', url: '/pembelian-admin', icon:'/assets/images/buy.png' },
+          { title: 'Stock', url: '/stock-cabang', icon: '/assets/images/stock.png' },
+          { title: 'Penjualan', url: '/penjualan-cabang', icon: '/assets/images/selling.png' }
         ];
         this.setting = [
           { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' },
