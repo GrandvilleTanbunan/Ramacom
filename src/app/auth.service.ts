@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';   
+import { Subject, Observable, BehaviorSubject } from 'rxjs';   
 import { DataService } from './services/data.service';
 export interface User {
   name: string;
@@ -11,26 +11,30 @@ export interface User {
 export class AuthService {
   currentUser: User;
 
+  user: Observable<any>;
+  authState = new BehaviorSubject(null);
+
   private _statusChange$ = new Subject<string>();
   public loginStatus$ = this._statusChange$.asObservable();
-  public user = [];
+  public tmpuser = [];
 
   public terdaftar = false;
   public cekpassword = false;
 
   constructor(private dataService: DataService) {
     this.dataService.getUser().subscribe(res => {
-      this.user = res;
-      console.log(this.user);
+      this.tmpuser = res;
+      console.log(this.tmpuser);
     })
+    
   }
 
   login(name: string, pw: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      for (let i = 0; i < this.user.length; i++) {
-        if (name == this.user[i].username) {
+      for (let i = 0; i < this.tmpuser.length; i++) {
+        if (name == this.tmpuser[i].username) {
           this.terdaftar = true;
-          if (pw == this.user[i].password) {
+          if (pw == this.tmpuser[i].password) {
             this.cekpassword = true;
           }
           else {
@@ -56,6 +60,7 @@ export class AuthService {
       }
     });
   }
+
 
    isLoggedIn()
    {
