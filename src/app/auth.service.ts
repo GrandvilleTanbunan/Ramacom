@@ -22,8 +22,8 @@ export class AuthService {
     this.dataService.getUser().subscribe(res => {
       this.user = res;
       console.log(this.user);
-   })
-   }
+    })
+  }
 
   login(name: string, pw: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
