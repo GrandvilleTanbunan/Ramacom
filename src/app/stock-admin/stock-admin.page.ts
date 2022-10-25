@@ -9,6 +9,14 @@ import { App } from '@capacitor/app';
   styleUrls: ['./stock-admin.page.scss'],
 })
 export class StockAdminPage implements OnInit {
+  brand: Array<string>;
+  kategori: Array<string>;
+  selectedbrand: string;
+
+  customPopoverOptions = {
+    header: 'Pilih Kategori',
+  };
+
 
   constructor(public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
@@ -18,6 +26,12 @@ export class StockAdminPage implements OnInit {
         
       }
     });
+
+
+    this.brand = ["Oppo", "Vivo", "Samsung", "Advan", "Asus", "Infinix", "Mito", "Xiaomi"];
+    this.kategori = ["Handphone", "Aksesoris"];
+
+    
    }
    async presentConfirm() {
     let alert = await this.alertCtrl.create({
@@ -42,8 +56,14 @@ export class StockAdminPage implements OnInit {
     await alert.present();
   }
 
+  public optionsFn(): void { //here item is an object 
+    console.log(this.selectedbrand);
+
+  }
+
 
   ngOnInit() {
+
   }
 
 }
