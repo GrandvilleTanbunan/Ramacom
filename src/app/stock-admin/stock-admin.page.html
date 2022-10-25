@@ -20,9 +20,15 @@
   <ion-item>
     <ion-label>Pilih Brand</ion-label>
     <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedbrand" (ionChange)="optionsFn();">
-      <ion-select-option *ngFor="let item of brand">{{item}}</ion-select-option>
-      <!-- <ion-select-option value="blonde">Blonde</ion-select-option>
-      <ion-select-option value="red">Red</ion-select-option> -->
+      <ion-select-option *ngFor="let item of tmpbrand">{{item.namabrand}}</ion-select-option>
     </ion-select>
   </ion-item>
+<!-- 
+  <ion-item *ngIf="selectedbrand" >
+    <ion-label>Pilih Tipe</ion-label>
+    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype" (ionChange)="optionsFn();">
+      <ion-select-option *ngFor="let item of tmpbrand">{{item.namabrand}}</ion-select-option>
+    </ion-select>
+  </ion-item> -->
+
 </ion-content>

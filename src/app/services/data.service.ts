@@ -23,6 +23,20 @@ export class DataService {
     return collectionData(UsersRef,{idField: 'UserID'});
   }
 
+  getBrand()
+  {
+    const UsersRef = collection(this.firestore, 'Brand');
+    return collectionData(UsersRef,{idField: 'BrandID'});
+  }
+
+  getType(BrandID)
+  {
+    console.log(BrandID);
+    const UsersRef = collection(this.firestore, 'Brand');
+    return collectionData(UsersRef,{idField: 'BrandID'});
+
+  }
+
   // getUserbyID(id): Observable<Users>
   // {
   //   const UserDocRef = doc(this.firestore, `Users/${id}`);
