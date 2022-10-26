@@ -25,15 +25,15 @@ export class DataService {
 
   getBrand()
   {
-    const UsersRef = collection(this.firestore, 'Brand');
-    return collectionData(UsersRef,{idField: 'BrandID'});
+    const BrandRef = collection(this.firestore, 'Brand');
+    return collectionData(BrandRef,{idField: 'BrandID'});
   }
 
   getType(BrandID)
   {
     console.log(BrandID);
-    const UsersRef = collection(this.firestore, 'Brand');
-    return collectionData(UsersRef,{idField: 'BrandID'});
+    const TypeRef = collection(this.firestore, `Brand/${BrandID}/Type`);
+    return collectionData(TypeRef,{idField: 'TypeID'});
 
   }
 

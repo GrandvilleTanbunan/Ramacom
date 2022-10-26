@@ -20,7 +20,7 @@
   <ion-item>
     <ion-label>Pilih Brand</ion-label>
     <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedbrand" (ionChange)="optionsFn();">
-      <ion-select-option *ngFor="let item of tmpbrand">{{item.namabrand}}</ion-select-option>
+      <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID" >{{item.namabrand}}</ion-select-option>
     </ion-select>
   </ion-item>
 <!-- 
