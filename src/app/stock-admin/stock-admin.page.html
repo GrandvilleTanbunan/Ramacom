@@ -19,16 +19,37 @@
 
   <ion-item>
     <ion-label>Pilih Brand</ion-label>
-    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedbrand" (ionChange)="optionsFn();">
+    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedbrand" (ionChange)="optionsBrand();">
       <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID" >{{item.namabrand}}</ion-select-option>
     </ion-select>
   </ion-item>
-<!-- 
+
   <ion-item *ngIf="selectedbrand" >
     <ion-label>Pilih Tipe</ion-label>
-    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype" (ionChange)="optionsFn();">
-      <ion-select-option *ngFor="let item of tmpbrand">{{item.namabrand}}</ion-select-option>
+    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype" (ionChange)="OptionType();">
+      <ion-select-option *ngFor="let item of tmptype">{{item.type}}</ion-select-option>
     </ion-select>
-  </ion-item> -->
+  </ion-item>
+  
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="secondary">
+      <ion-icon md="add" ios="chevron-up-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="light" title="Pindahkan Stock">
+        <ion-icon name="repeat"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light" title="Update Stock">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light" title="Tambah Tipe">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light" title="Tambah Brand" (click)="addBrand()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 
+ 
 </ion-content>

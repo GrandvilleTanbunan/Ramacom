@@ -17,6 +17,16 @@
   src: url('../assets/fonts/Lato-Bold.ttf');
   }
 
+  .my-custom-alert .alert-wrapper {
+    min-width: 400px !important;
+    font-size: large;
+  }
+
+  .my-custom-alert-buttons .alert-wrapper
+  {
+    font-size: 200pt;
+  }
+
 :root {
 
   --ion-font-family: LatoBlack;

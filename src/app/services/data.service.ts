@@ -43,11 +43,16 @@ export class DataService {
   //   return docData(UserDocRef, {idField: 'UserID'}) as Observable<Users>;
   // }
 
-  // addUser(Users: Users) 
-  // {
-  //   const UsersRef = collection(this.firestore, 'Users');
-  //   return collectionData(UsersRef, Users);
-  // }
+  addBrand(namabrand) 
+  {
+    console.log(namabrand);
+    const BrandRef = collection(this.firestore, 'Brand');
+    return addDoc(BrandRef, namabrand);
+
+    // return collectionData(UsersRef, Users);
+
+    
+  }
 
   // deleteUser(Users: Users)
   // {

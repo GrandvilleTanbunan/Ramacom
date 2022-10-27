@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, IonRouterOutlet, AlertController } from '@ionic/angular';
+import { Platform, IonRouterOutlet, AlertController, ToastController } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { DataService } from './../services/data.service';
+import { collection } from '@firebase/firestore';
+import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/firestore';
+
+
 
 
 
@@ -16,6 +20,7 @@ export class StockAdminPage implements OnInit {
   kategori: Array<string>;
   selectedbrand: string;
   selectedtype: string;
+  lengkapikolom: string;
   public tmptype = [];
 
   customPopoverOptions = {
@@ -23,7 +28,7 @@ export class StockAdminPage implements OnInit {
   };
 
 
-  constructor(private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  constructor(private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (!this.routerOutlet.canGoBack()) {
         this.presentConfirm();
@@ -48,16 +53,64 @@ export class StockAdminPage implements OnInit {
   }
 
   
-  public optionsFn(): void {
-    console.log(this.selectedbrand);
-
+  public optionsBrand(): void {
     this.dataService.getType(this.selectedbrand).subscribe(res => {
       this.tmptype = res;
       console.log(this.tmptype);
 
     });
+
+    this.selectedtype = "";
   }
 
+  public OptionType(): void {
+    // this.dataService.getType(this.selectedbrand).subscribe(res => {
+    //   this.tmptype = res;
+    //   console.log(this.tmptype);
+
+    // });
+
+    console.log(this.selectedtype);
+
+  }
+
+  async addBrand() {
+
+    const prompt= await this.alertCtrl.create({
+      header: 'Tambah Brand',
+      cssClass: 'my-custom-alert',
+      // message: 'enter text',
+      inputs: [
+        {
+          name: 'namabrand',
+          placeholder: 'Nama Brand'
+        }
+      ],
+      buttons: [{
+          text: 'Batal',
+          role: 'cancel',
+          cssClass:'my-custom-alert-buttons'
+        }, {
+          text: 'Tambah',
+          cssClass:'my-custom-alert-buttons',
+          handler: (res) => {
+            if(res.namabrand==""){
+              prompt.message = "Nama brand tidak boleh kosong!";
+              
+              return false;
+            }
+            else{
+              console.log(res);
+              this.dataService.addBrand(res);
+
+            }
+          }
+        }
+      ]
+    });
+    await prompt.present();
+
+  }
 
    async presentConfirm() {
     let alert = await this.alertCtrl.create({
