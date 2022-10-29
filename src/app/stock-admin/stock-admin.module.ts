@@ -1,3 +1,4 @@
+import { AddTypeModalComponent } from './../add-type-modal/add-type-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,7 @@ import { StockAdminPage } from './stock-admin.page';
     IonicModule,
     StockAdminPageRoutingModule
   ],
-  declarations: [StockAdminPage]
+  declarations: [StockAdminPage, AddTypeModalComponent],
+  entryComponents:[AddTypeModalComponent]
 })
 export class StockAdminPageModule {}

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>
+      Tambah Tipe
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Pilih Brand</ion-label>
+    <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand">
+      <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID">{{item.namabrand}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Tipe</ion-label>
+    <ion-input class="ion-text-right" placeholder="Input Tipe"></ion-input>
+  </ion-item>
+  <!-- <div style="text-align: center;">
+    <ion-button expand="block" color="danger">
+      Batal
+    </ion-button>
+    <ion-button expand="block" color="secondary">
+      Simpan
+    </ion-button>
+  </div> -->
+
+ 
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <ion-button expand="full" color="danger" (click)="dismissModal()">
+          BATAL
+        </ion-button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-button expand="full" color="secondary">
+          SIMPAN
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

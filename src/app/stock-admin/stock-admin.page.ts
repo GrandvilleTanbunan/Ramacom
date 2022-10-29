@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, IonRouterOutlet, AlertController, ToastController } from '@ionic/angular';
+import { Platform, IonRouterOutlet, AlertController, ToastController, ModalController  } from '@ionic/angular';
+// import { ModalExampleComponent } from './modal-example.component';
+import { AddTypeModalComponent } from '../add-type-modal/add-type-modal.component';
 import { App } from '@capacitor/app';
 import { DataService } from './../services/data.service';
 import { collection } from '@firebase/firestore';
@@ -19,6 +21,7 @@ export class StockAdminPage implements OnInit {
   public tmpbrand = [];
   kategori: Array<string>;
   selectedbrand: string;
+  selectedbrand_TYPE: string;
   selectedtype: string;
   lengkapikolom: string;
   public tmptype = [];
@@ -28,7 +31,7 @@ export class StockAdminPage implements OnInit {
   };
 
 
-  constructor(private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  constructor(private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (!this.routerOutlet.canGoBack()) {
         this.presentConfirm();
@@ -64,53 +67,76 @@ export class StockAdminPage implements OnInit {
   }
 
   public OptionType(): void {
-    // this.dataService.getType(this.selectedbrand).subscribe(res => {
-    //   this.tmptype = res;
-    //   console.log(this.tmptype);
-
-    // });
-
     console.log(this.selectedtype);
 
   }
 
-  async addBrand() {
-
-    const prompt= await this.alertCtrl.create({
-      header: 'Tambah Brand',
-      cssClass: 'my-custom-alert',
-      // message: 'enter text',
-      inputs: [
-        {
-          name: 'namabrand',
-          placeholder: 'Nama Brand'
-        }
-      ],
-      buttons: [{
-          text: 'Batal',
-          role: 'cancel',
-          cssClass:'my-custom-alert-buttons'
-        }, {
-          text: 'Tambah',
-          cssClass:'my-custom-alert-buttons',
-          handler: (res) => {
-            if(res.namabrand==""){
-              prompt.message = "Nama brand tidak boleh kosong!";
-              
-              return false;
-            }
-            else{
-              console.log(res);
-              this.dataService.addBrand(res);
-
-            }
-          }
-        }
-      ]
-    });
-    await prompt.present();
+  SaveType()
+  {
+    console.log(this.selectedbrand_TYPE);
 
   }
+
+ 
+
+  // async addBrand() {
+
+  //   const prompt= await this.alertCtrl.create({
+  //     header: 'Tambah Brand',
+  //     cssClass: 'my-custom-alert',
+  //     // message: 'enter text',
+  //     inputs: [
+  //       {
+  //         name: 'namabrand',
+  //         placeholder: 'Nama Brand'
+  //       }
+  //     ],
+  //     buttons: [{
+  //         text: 'Batal',
+  //         role: 'cancel',
+  //         cssClass:'my-custom-alert-buttons'
+  //       }, {
+  //         text: 'Tambah',
+  //         cssClass:'my-custom-alert-buttons',
+  //         handler: (res) => {
+  //           if(res.namabrand==""){
+  //             prompt.message = "Nama brand tidak boleh kosong!";
+              
+  //             return false;
+  //           }
+  //           else{
+  //             console.log(res);
+  //             this.dataService.addBrand(res);
+
+  //           }
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   await prompt.present();
+
+  // }
+
+  // async addType() {
+
+  //   this.openModal();
+    
+
+  // }
+
+  // async openModal() {
+  //   const modal = await this.modalCtrl.create({
+  //     component: AddTypeModalComponent,
+  //   });
+  //   modal.present();
+
+  //   const { data, role } = await modal.onWillDismiss();
+
+  //   // if (role === 'confirm') {
+  //   //   this.message = `Hello, ${data}!`;
+  //   // }
+  // }
+
 
    async presentConfirm() {
     let alert = await this.alertCtrl.create({
