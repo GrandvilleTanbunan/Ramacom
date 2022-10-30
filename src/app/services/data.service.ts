@@ -55,6 +55,16 @@ export class DataService {
     
   }
 
+  addType(BrandID, namatipeku)
+  {
+    let tmpnamatipe = {
+      type : namatipeku
+    }
+
+    const TypeRef = collection(this.firestore, `Brand/${BrandID}/Type`);
+    return addDoc(TypeRef, tmpnamatipe);
+  }
+
   // deleteUser(Users: Users)
   // {
 

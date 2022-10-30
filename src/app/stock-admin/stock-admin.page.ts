@@ -28,10 +28,12 @@ export class StockAdminPage implements OnInit {
   selectedbrand_TYPE: string;
   selectedtype: string;
 
-  masukannamabrand =false;
+  masukannamabrand = false;
+  masukannamatype = false;
 
   // namabrandbaru: string;
-  tmpnamabrandbaru: string;
+  tmpnamabrandbaru = "";
+  tmpTypeBaru = "";
   // public namabrandbaru: 
   //   {
   //     namabrand: string;
@@ -82,23 +84,93 @@ export class StockAdminPage implements OnInit {
 
   }
 
-  SaveBrand()
+  async SaveBrand()
   {
     if (this.tmpnamabrandbaru == "") {
       console.log(this.tmpnamabrandbaru);
       this.masukannamabrand = true;
     }
     else {
-      this.dataService.addBrand(this.tmpnamabrandbaru);
+      let alert = await this.alertCtrl.create({
 
+        message: 'Anda yakin ingin menambahkan brand ini?',
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.addBrand(this.tmpnamabrandbaru);
+              this.tmpnamabrandbaru = "";
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Brand berhasil ditambahkan!',
+                buttons: ['OK'],
+              });
+              await alert.present();
+              this.masukannamabrand = false;
+
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
+    
+  }
+
+  
+
+  async SaveType()
+  {
+    console.log(this.selectedbrand_TYPE);
+    if (this.tmpTypeBaru == "") {
+      console.log(this.tmpTypeBaru);
+      this.masukannamatype = true;
+    }
+    else {
+      let alert = await this.alertCtrl.create({
+
+        message: 'Anda yakin ingin menambahkan tipe ini?',
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru);
+              this.tmpTypeBaru = "";
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Tipe berhasil ditambahkan!',
+                buttons: ['OK'],
+              });
+              await alert.present();
+              this.masukannamatype = false;
+
+            }
+          }
+        ]
+      });
+      await alert.present();
     }
 
   }
 
-  SaveType()
+  Dismissmodal()
   {
-    console.log(this.selectedbrand_TYPE);
-
+    this.modalCtrl.dismiss();
+    this.masukannamabrand = false;
+    this.masukannamatype = false;
+    this.selectedbrand_TYPE = "";
   }
 
  
