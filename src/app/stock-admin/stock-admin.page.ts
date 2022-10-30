@@ -25,11 +25,18 @@ export class StockAdminPage implements OnInit {
   kategori: Array<string>;
 
   selectedbrand: string;
-  selectedbrand_TYPE: string;
+  selectedbrand_TYPE = "";
   selectedtype: string;
+  selectedbrand_HAPUS: string;
+  selectedbrand_HAPUSTYPE = "";
+  selectedtype_HAPUS = "";
 
   masukannamabrand = false;
   masukannamatype = false;
+  pilihbrand = false;
+  pilihbrandtambahtipe = false;
+  pilihtipe_hapustipe = false;
+  pilihbrand_hapustipe = false;
 
   // namabrandbaru: string;
   tmpnamabrandbaru = "";
@@ -79,8 +86,23 @@ export class StockAdminPage implements OnInit {
     this.selectedtype = "";
   }
 
+  public optionsBrandHAPUS(): void {
+    this.dataService.getType(this.selectedbrand_HAPUSTYPE).subscribe(res => {
+      this.tmptype = res;
+      console.log(this.tmptype);
+
+    });
+
+    this.selectedtype = "";
+  }
+
   public OptionType(): void {
     console.log(this.selectedtype);
+
+  }
+
+  public OptionTypeHAPUS(): void {
+    console.log(this.selectedtype_HAPUS);
 
   }
 
@@ -128,9 +150,24 @@ export class StockAdminPage implements OnInit {
   async SaveType()
   {
     console.log(this.selectedbrand_TYPE);
-    if (this.tmpTypeBaru == "") {
-      console.log(this.tmpTypeBaru);
+    if(this.selectedbrand_TYPE == "" && this.tmpTypeBaru != "")
+    {
+      console.log("brand belum terpilih dan tipe sudah");
+      this.pilihbrandtambahtipe = true;
+      this.masukannamatype = false;
+    }
+    else if (this.selectedbrand_TYPE != "" && this.tmpTypeBaru == "") {
+      // console.log(this.tmpTypeBaru);
+      console.log("brand sudah terpilih dan tipe belum");
+
+      this.pilihbrandtambahtipe = false;
       this.masukannamatype = true;
+    }
+    else if(this.selectedbrand_TYPE == "" && this.tmpTypeBaru == "")
+    {
+      console.log("brand dan tipe belum terpilih");
+      this.masukannamatype = true;
+      this.pilihbrandtambahtipe = true;
     }
     else {
       let alert = await this.alertCtrl.create({
@@ -149,12 +186,116 @@ export class StockAdminPage implements OnInit {
             handler: async () => {
               this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru);
               this.tmpTypeBaru = "";
+              this.selectedbrand_TYPE = "";
+
               const alert = await this.alertCtrl.create({
                 subHeader: 'Tipe berhasil ditambahkan!',
                 buttons: ['OK'],
               });
+
               await alert.present();
               this.masukannamatype = false;
+              this.pilihbrandtambahtipe = false;
+
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
+
+  }
+
+  async HapusBrand()
+  {
+    console.log(this.selectedbrand_HAPUS);
+    if (this.selectedbrand_HAPUS == "") {
+      console.log(this.selectedbrand_HAPUS);
+      this.pilihbrand = true;
+    }
+    else {
+      let alert = await this.alertCtrl.create({
+
+        message: 'Anda yakin ingin menghapus brand ini?',
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.deleteBrand(this.selectedbrand_HAPUS);
+              this.selectedbrand_HAPUS = "";
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Brand berhasil dihapus!',
+                buttons: ['OK'],
+              });
+              await alert.present();
+              this.pilihbrand = false;
+
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
+
+  }
+
+  async HapusType()
+  {
+    console.log(this.selectedbrand_HAPUSTYPE);
+    console.log(this.selectedtype_HAPUS);
+
+    if(this.selectedbrand_HAPUSTYPE == "" && this.selectedtype_HAPUS != "")
+    {
+      console.log("brand belum terpilih dan tipe sudah");
+      this.pilihbrand_hapustipe = true;
+      this.pilihtipe_hapustipe = false;
+    }
+    else if (this.selectedbrand_HAPUSTYPE != "" && this.selectedtype_HAPUS == "") {
+      // console.log(this.tmpTypeBaru);
+      console.log("brand sudah terpilih dan tipe belum");
+
+      this.pilihbrand_hapustipe = false;
+      this.pilihtipe_hapustipe = true;
+    }
+    else if(this.selectedbrand_HAPUSTYPE == "" && this.selectedtype_HAPUS == "")
+    {
+      console.log("brand dan tipe belum terpilih");
+      this.pilihbrand_hapustipe = true;
+      this.pilihtipe_hapustipe = true;
+    }
+    else {
+      let alert = await this.alertCtrl.create({
+
+        message: 'Anda yakin ingin menghapus tipe ini?',
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.deleteType(this.selectedbrand_HAPUSTYPE, this.selectedtype_HAPUS);
+              this.selectedtype_HAPUS = "";
+              this.selectedbrand_HAPUSTYPE = "";
+
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Tipe berhasil dihapus!',
+                buttons: ['OK'],
+              });
+              await alert.present();
+              this.pilihbrand_hapustipe = false;
+              this.pilihtipe_hapustipe = false;
 
             }
           }
@@ -170,7 +311,16 @@ export class StockAdminPage implements OnInit {
     this.modalCtrl.dismiss();
     this.masukannamabrand = false;
     this.masukannamatype = false;
+    this.pilihbrand = false;
+    this.pilihbrandtambahtipe = false;
+    this.pilihbrand_hapustipe = false;
+    this.pilihtipe_hapustipe = false;
+    this.tmpnamabrandbaru = "";
     this.selectedbrand_TYPE = "";
+    this.selectedbrand_HAPUS = "";
+    this.tmpTypeBaru = "";
+    this.selectedtype_HAPUS = "";
+    this.selectedbrand_HAPUSTYPE = "";
   }
 
  

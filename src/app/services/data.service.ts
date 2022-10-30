@@ -1,7 +1,7 @@
 import { User } from './../auth.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/firestore';
+import { collectionData, docData, Firestore, doc, addDoc, deleteDoc } from '@angular/fire/firestore';
 import { collection } from '@firebase/firestore';
 
 export interface Users {
@@ -65,8 +65,15 @@ export class DataService {
     return addDoc(TypeRef, tmpnamatipe);
   }
 
-  // deleteUser(Users: Users)
-  // {
+  deleteBrand(BrandID)
+  {
+    const TypeRef = doc(this.firestore, `Brand/${BrandID}`);
+    return deleteDoc(TypeRef);
+  }
 
-  // }
+  deleteType(BrandID, TypeID)
+  {
+    const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}`);
+    return deleteDoc(TypeRef);
+  }
 }
