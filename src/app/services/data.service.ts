@@ -43,11 +43,15 @@ export class DataService {
   //   return docData(UserDocRef, {idField: 'UserID'}) as Observable<Users>;
   // }
 
-  addBrand(namabrand) 
+  addBrand(namabrandku) 
   {
-    console.log(namabrand);
+    console.log(namabrandku);
+    let tmpnamabrand = {
+      namabrand : namabrandku
+    }
+
     const BrandRef = collection(this.firestore, 'Brand');
-    return addDoc(BrandRef, namabrand);
+    return addDoc(BrandRef, tmpnamabrand);
     
   }
 

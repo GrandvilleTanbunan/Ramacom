@@ -18,13 +18,24 @@ import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/f
 })
 export class StockAdminPage implements OnInit {
   brand: Array<string>;
-  public tmpbrand = [];
+  tmpbrand = [];
+  tmptype = [];
+
+
   kategori: Array<string>;
+
   selectedbrand: string;
   selectedbrand_TYPE: string;
   selectedtype: string;
-  lengkapikolom: string;
-  public tmptype = [];
+
+  masukannamabrand =false;
+
+  // namabrandbaru: string;
+  tmpnamabrandbaru: string;
+  // public namabrandbaru: 
+  //   {
+  //     namabrand: string;
+  //   };
 
   customPopoverOptions = {
     header: 'Pilih Kategori',
@@ -68,6 +79,19 @@ export class StockAdminPage implements OnInit {
 
   public OptionType(): void {
     console.log(this.selectedtype);
+
+  }
+
+  SaveBrand()
+  {
+    if (this.tmpnamabrandbaru == "") {
+      console.log(this.tmpnamabrandbaru);
+      this.masukannamabrand = true;
+    }
+    else {
+      this.dataService.addBrand(this.tmpnamabrandbaru);
+
+    }
 
   }
 
