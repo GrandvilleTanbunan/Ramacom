@@ -20,6 +20,7 @@ export class StockAdminPage implements OnInit {
   brand: Array<string>;
   tmpbrand = [];
   tmptype = [];
+  tmptypeHAPUS = [];
 
 
   kategori: Array<string>;
@@ -90,10 +91,33 @@ export class StockAdminPage implements OnInit {
     this.dataService.getType(this.selectedbrand_HAPUSTYPE).subscribe(res => {
       this.tmptype = res;
       console.log(this.tmptype);
-
     });
 
-    this.selectedtype = "";
+  }
+
+  public optionsBrand_TAMBAHTIPE(): void {
+
+    this.pilihbrandtambahtipe = false;
+  }
+
+  public optionsTipe_TAMBAHTIPE(): void {
+
+    this.masukannamatype = false;
+  }
+
+  public optionsBrand_HAPUSTIPE(): void {
+    this.dataService.getType(this.selectedbrand_HAPUSTYPE).subscribe(res => {
+      this.tmptypeHAPUS = res;
+      console.log(this.tmptypeHAPUS);
+    });
+
+    this.pilihbrand_hapustipe = false;
+  }
+
+  public OptionType_HAPUSTIPE(): void {
+    console.log(this.selectedtype_HAPUS);
+    this.pilihtipe_hapustipe = false;
+
   }
 
   public OptionType(): void {
@@ -101,10 +125,7 @@ export class StockAdminPage implements OnInit {
 
   }
 
-  public OptionTypeHAPUS(): void {
-    console.log(this.selectedtype_HAPUS);
-
-  }
+  
 
   async SaveBrand()
   {
@@ -144,8 +165,6 @@ export class StockAdminPage implements OnInit {
     }
     
   }
-
-  
 
   async SaveType()
   {
@@ -215,8 +234,9 @@ export class StockAdminPage implements OnInit {
     }
     else {
       let alert = await this.alertCtrl.create({
-
+        subHeader: 'Menghapus brand akan menghapus seluruh tipe',
         message: 'Anda yakin ingin menghapus brand ini?',
+        mode:'ios',
         buttons: [
           {
             text: 'Tidak',
@@ -321,6 +341,10 @@ export class StockAdminPage implements OnInit {
     this.tmpTypeBaru = "";
     this.selectedtype_HAPUS = "";
     this.selectedbrand_HAPUSTYPE = "";
+
+    this.tmptypeHAPUS = [];
+
+
   }
 
  
