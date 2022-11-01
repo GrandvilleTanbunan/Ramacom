@@ -6,10 +6,8 @@ import { App } from '@capacitor/app';
 import { DataService } from './../services/data.service';
 import { collection } from '@firebase/firestore';
 import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/firestore';
-
-
-
-
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {of} from 'rxjs'
 
 @Component({
   selector: 'app-stock-admin',
@@ -19,16 +17,16 @@ import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/f
 export class StockAdminPage implements OnInit {
   brand: Array<string>;
   tmpbrand = [];
-  tmptype = [];
+  public tmptype = [];
   tmptypeHAPUS = [];
 
 
   kategori: Array<string>;
 
-  selectedbrand: string;
+  selectedbrand = "";
   selectedbrand_TYPE = "";
-  selectedtype: string;
-  selectedbrand_HAPUS: string;
+  selectedtype = "";
+  selectedbrand_HAPUS = "";
   selectedbrand_HAPUSTYPE = "";
   selectedtype_HAPUS = "";
 
@@ -52,7 +50,7 @@ export class StockAdminPage implements OnInit {
   };
 
 
-  constructor(private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  constructor(private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (!this.routerOutlet.canGoBack()) {
         this.presentConfirm();
@@ -63,28 +61,62 @@ export class StockAdminPage implements OnInit {
 
     this.kategori = ["Handphone", "Aksesoris"];
 
-    this.getBrand();
-    
+
    }
 
-  getBrand() {
+  ngOnInit() {
+    this.getBrand();
+    
 
-    this.dataService.getBrand().subscribe(res => {
-      this.tmpbrand = res;
-      console.log(this.tmpbrand);
+  }
 
-    });
+  async getBrand() {
+
+    //INI BENAR JI CUMA MASIH MAU COBA CARA LAIN
+    // this.dataService.getBrand().subscribe(res => {
+    //   this.tmpbrand = res;
+    //   console.log(this.tmpbrand);
+
+    // });
+
+    // this.dataService.getBrand();
+
+    // this.tmpbrand = this.dataService.tmpbrand;
+
+    this.db.collection('Brand', ref => ref.orderBy('namabrand'))
+        .valueChanges({ idField: 'BrandID' })
+        .subscribe( data => {
+            this.tmpbrand = data;   
+            console.log(this.tmpbrand);
+        }
+    );
   }
 
   
-  public optionsBrand(): void {
-    this.dataService.getType(this.selectedbrand).subscribe(res => {
-      this.tmptype = res;
-      console.log(this.tmptype);
+  public getType() {
+    // this.dataService.getType(this.selectedbrand).subscribe(res => {
+    //   this.tmptype = res;
+    //   console.log(res);
 
-    });
+    // });
 
-    this.selectedtype = "";
+    // this.dataService.getType(this.selectedbrand);
+
+    this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc'))
+        .valueChanges({ idField: 'TypeID' })
+        .subscribe( data => {
+            this.tmptype = data;
+            console.log(this.tmptype)
+            // return of(this.tmptype);
+        }
+        
+    );
+
+  }
+
+  public optionsBrand_TAMBAHBRAND(): void {
+    this.masukannamabrand = false;
+    
   }
 
   public optionsBrandHAPUS(): void {
@@ -96,20 +128,28 @@ export class StockAdminPage implements OnInit {
   }
 
   public optionsBrand_TAMBAHTIPE(): void {
-
     this.pilihbrandtambahtipe = false;
   }
 
   public optionsTipe_TAMBAHTIPE(): void {
-
     this.masukannamatype = false;
   }
 
   public optionsBrand_HAPUSTIPE(): void {
-    this.dataService.getType(this.selectedbrand_HAPUSTYPE).subscribe(res => {
-      this.tmptypeHAPUS = res;
-      console.log(this.tmptypeHAPUS);
-    });
+    // this.dataService.getType(this.selectedbrand_HAPUSTYPE).subscribe(res => {
+    //   this.tmptype = res;
+    //   console.log(this.tmptype);
+    // });
+
+    this.db.collection(`Brand/${this.selectedbrand_HAPUSTYPE}/Type`, ref => ref.orderBy('type', 'asc'))
+        .valueChanges({idField: 'TypeID'})
+        .subscribe( data => {
+            this.tmptypeHAPUS = data;
+            console.log(this.tmptypeHAPUS)
+            // return of(this.tmptype);
+        }
+        
+    );
 
     this.pilihbrand_hapustipe = false;
   }
@@ -118,6 +158,10 @@ export class StockAdminPage implements OnInit {
     console.log(this.selectedtype_HAPUS);
     this.pilihtipe_hapustipe = false;
 
+  }
+
+  public optionsBrand_HAPUSBRAND(): void {
+    this.pilihbrand = false;
   }
 
   public OptionType(): void {
@@ -168,7 +212,7 @@ export class StockAdminPage implements OnInit {
 
   async SaveType()
   {
-    console.log(this.selectedbrand_TYPE);
+    // console.log(this.selectedbrand_TYPE);
     if(this.selectedbrand_TYPE == "" && this.tmpTypeBaru != "")
     {
       console.log("brand belum terpilih dan tipe sudah");
@@ -205,7 +249,7 @@ export class StockAdminPage implements OnInit {
             handler: async () => {
               this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru);
               this.tmpTypeBaru = "";
-              this.selectedbrand_TYPE = "";
+              // this.selectedbrand_TYPE = "";
 
               const alert = await this.alertCtrl.create({
                 subHeader: 'Tipe berhasil ditambahkan!',
@@ -236,7 +280,7 @@ export class StockAdminPage implements OnInit {
       let alert = await this.alertCtrl.create({
         subHeader: 'Menghapus brand akan menghapus seluruh tipe',
         message: 'Anda yakin ingin menghapus brand ini?',
-        mode:'ios',
+        // mode:'ios',
         buttons: [
           {
             text: 'Tidak',
@@ -250,13 +294,13 @@ export class StockAdminPage implements OnInit {
             handler: async () => {
               this.dataService.deleteBrand(this.selectedbrand_HAPUS);
               this.selectedbrand_HAPUS = "";
+              this.selectedbrand = "";
               const alert = await this.alertCtrl.create({
                 subHeader: 'Brand berhasil dihapus!',
                 buttons: ['OK'],
               });
               await alert.present();
               this.pilihbrand = false;
-
             }
           }
         ]
@@ -307,7 +351,9 @@ export class StockAdminPage implements OnInit {
             handler: async () => {
               this.dataService.deleteType(this.selectedbrand_HAPUSTYPE, this.selectedtype_HAPUS);
               this.selectedtype_HAPUS = "";
-              this.selectedbrand_HAPUSTYPE = "";
+              this.selectedtype = "";
+              // this.selectedbrand_HAPUSTYPE = "";
+              this.tmptypeHAPUS = [];
 
               const alert = await this.alertCtrl.create({
                 subHeader: 'Tipe berhasil dihapus!',
@@ -431,8 +477,6 @@ export class StockAdminPage implements OnInit {
     await alert.present();
   }
 
-  ngOnInit() {
-
-  }
+  
 
 }
