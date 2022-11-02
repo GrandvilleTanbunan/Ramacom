@@ -28,6 +28,7 @@
     <ion-label>Pilih Tipe</ion-label>
     <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype" (ionChange)="OptionType();">
       <ion-select-option *ngFor="let item of tmptype">{{item.type}}</ion-select-option>
+
     </ion-select>
   </ion-item>
   

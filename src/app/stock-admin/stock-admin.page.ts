@@ -14,6 +14,8 @@ import {of} from 'rxjs'
   templateUrl: './stock-admin.page.html',
   styleUrls: ['./stock-admin.page.scss'],
 })
+
+
 export class StockAdminPage implements OnInit {
   brand: Array<string>;
   tmpbrand = [];
