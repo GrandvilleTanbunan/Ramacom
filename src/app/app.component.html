@@ -21,7 +21,7 @@
 
       <ion-list class="menu-items2">
         <ion-menu-toggle auto-hide="false" *ngFor="let p of setting; let i = index">
-          <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected" (click)="logout()">
+          <ion-item routerDirection="root" lines="none" detail="false" routerLinkActive="selected" (click)="logout()">
             <ion-img style="width: 30px; height: 30px;" slot="start" [src]="p.icon"></ion-img>
             <ion-label style="font-size: 15pt;">{{ p.title }}</ion-label>
           </ion-item>

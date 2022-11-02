@@ -21,6 +21,9 @@ export class StockAdminPage implements OnInit {
   tmpbrand = [];
   public tmptype = [];
   tmptypeHAPUS = [];
+  tmpcabang = [];
+
+  opsitampilkansemua = true;
 
 
   kategori: Array<string>;
@@ -32,6 +35,8 @@ export class StockAdminPage implements OnInit {
   selectedbrand_HAPUSTYPE = "";
   selectedtype_HAPUS = "";
 
+  selectedCabang = "";
+
   masukannamabrand = false;
   masukannamatype = false;
   pilihbrand = false;
@@ -39,13 +44,10 @@ export class StockAdminPage implements OnInit {
   pilihtipe_hapustipe = false;
   pilihbrand_hapustipe = false;
 
-  // namabrandbaru: string;
   tmpnamabrandbaru = "";
   tmpTypeBaru = "";
-  // public namabrandbaru: 
-  //   {
-  //     namabrand: string;
-  //   };
+
+  tmplihatstock = "";
 
   customPopoverOptions = {
     header: 'Pilih Kategori',
@@ -68,8 +70,30 @@ export class StockAdminPage implements OnInit {
 
   ngOnInit() {
     this.getBrand();
-    
+    this.getCabang();
 
+  }
+
+  pilihBerdasarkan()
+  {
+    console.log(this.tmplihatstock);
+    this.selectedCabang = "";
+  }
+
+  pilihtampilkan()
+  {
+    console.log(this.opsitampilkansemua);
+  }
+
+  getCabang()
+  {
+    this.db.collection('Cabang', ref => ref.orderBy('namacabang'))
+        .valueChanges({ idField: 'CabangID' })
+        .subscribe( data => {
+            this.tmpcabang = data;   
+            console.log(this.tmpcabang);
+        }
+    );
   }
 
   async getBrand() {

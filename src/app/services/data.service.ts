@@ -33,6 +33,7 @@ export class DataService {
     const UsersRef = collection(this.firestore, 'Users');
     return collectionData(UsersRef,{idField: 'UserID'});
   }
+  
 
   getBrand()
   {
