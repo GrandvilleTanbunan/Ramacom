@@ -87,6 +87,7 @@ export class StockAdminPage implements OnInit {
   pilihtampilkan()
   {
     console.log("Opsi tampilkan semua: ", this.opsitampilkansemua);
+    this.selectedBrandCabang = "";
   }
 
   getCabang()
