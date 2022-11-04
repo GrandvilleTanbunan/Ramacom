@@ -23,7 +23,7 @@ export class StockAdminPage implements OnInit {
   tmptypeHAPUS = [];
   tmpcabang = [];
 
-  opsitampilkansemua = true;
+  opsitampilkansemua = "0";
 
 
   kategori: Array<string>;
@@ -36,6 +36,8 @@ export class StockAdminPage implements OnInit {
   selectedtype_HAPUS = "";
 
   selectedCabang = "";
+
+  selectedBrandCabang = "";
 
   masukannamabrand = false;
   masukannamatype = false;
@@ -78,11 +80,13 @@ export class StockAdminPage implements OnInit {
   {
     console.log(this.tmplihatstock);
     this.selectedCabang = "";
+    this.selectedbrand = "";
+    this.opsitampilkansemua = "0";
   }
 
   pilihtampilkan()
   {
-    console.log(this.opsitampilkansemua);
+    console.log("Opsi tampilkan semua: ", this.opsitampilkansemua);
   }
 
   getCabang()

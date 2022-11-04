@@ -56,22 +56,29 @@
   </ion-list> -->
 
   <ion-segment *ngIf="tmplihatstock === 'Cabang' && selectedCabang != '' " [(ngModel)]="opsitampilkansemua" mode="ios" (ionChange)="pilihtampilkan()">
-    <ion-segment-button value="true">
+    <ion-segment-button value='0'>
       <ion-label style="font-size:12pt;">Tampilkan Semua Brand</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="false">
+    <ion-segment-button value='1'>
       <ion-label style="font-size:12pt;">Pilih Brand</ion-label>
     </ion-segment-button>
   </ion-segment>
 
-  <!-- <ion-item *ngIf="selectedbrand" >
+  <ion-item *ngIf="opsitampilkansemua == '1'">
+    <ion-label>Pilih Brand yang Ingin Dicek Pada Cabang</ion-label>
+    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedBrandCabang" (ionChange)="getType();">
+      <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID" >{{item.namabrand}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+<!-- 
+  <ion-item *ngIf="selectedbrand" >
     <ion-label>Pilih Tipe</ion-label>
     <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype" (ionChange)="OptionType();">
       <ion-select-option *ngFor="let item of tmptype">{{item.type}}</ion-select-option>
 
     </ion-select>
-  </ion-item> -->
-  
+  </ion-item>
+   -->
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button color="secondary">
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
