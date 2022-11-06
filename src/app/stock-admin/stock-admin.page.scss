@@ -78,3 +78,80 @@ ion-fab-button[title] {
     --background: #D8D8D8;
   }
 
+  .flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border: none;
+    -ms-box-orient: horizontal;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.wrap    {
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 320px) {
+
+  .flex-container.wrap > div{
+      width: 50%;
+      max-width: 50%;
+      text-overflow: '';
+      white-space:nowrap;
+      overflow: hidden;
+  }
+
+}
+
+
+
+.isi-row{
+  border-right:2px solid #000;
+  border-bottom:2px solid #000;
+
+}
+
+
+.isi-row-tipe{
+  border-right:2px solid #000;
+  border-bottom:2px solid #000;
+  border-top:2px solid #000;
+  border-left:2px solid #000;
+  background-color: #009cff;
+  color: white;
+
+}
+
+.isi-row-cabang{
+  border-right:2px solid #000;
+  border-bottom:2px solid #000;
+  border-top:2px solid #000;
+  background-color: #009cff;
+  color: white;
+
+}
+
+
+.isi-row-tipe-hp{
+  border-right:2px solid #000;
+  border-bottom:2px solid #000;
+  border-left:2px solid #000;
+
+}
+
+
+.isi-row-header{
+
+  border-right:2px solid #000;
+  border-bottom:2px solid #000;
+  border-left:2px solid #000;
+  border-top:2px solid #000;
+}
+
+

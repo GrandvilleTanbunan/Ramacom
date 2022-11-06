@@ -51,6 +51,9 @@ export class StockAdminPage implements OnInit {
 
   tmplihatstock = "";
 
+  rand = [];
+ 
+
   customPopoverOptions = {
     header: 'Pilih Kategori',
   };
@@ -67,6 +70,8 @@ export class StockAdminPage implements OnInit {
 
     this.kategori = ["Handphone", "Aksesoris"];
 
+    
+  
 
    }
 
@@ -139,10 +144,23 @@ export class StockAdminPage implements OnInit {
             this.tmptype = data;
             console.log(this.tmptype)
             // return of(this.tmptype);
+            this.getRandomNumber();
+
         }
         
     );
 
+
+  }
+
+  getRandomNumber(){
+    // this.rand = Math.floor(Math.random() * 5);
+    console.log("banyak type = ", this.tmptype.length.toString());
+    for(let i=0; i<7; i++)
+    {
+      this.rand.push(Math.floor(Math.random() * 5));
+    }
+    console.log("isi random= ",this.rand);
   }
 
   public optionsBrand_TAMBAHBRAND(): void {

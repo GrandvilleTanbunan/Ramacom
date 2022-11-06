@@ -70,15 +70,40 @@
       <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID" >{{item.namabrand}}</ion-select-option>
     </ion-select>
   </ion-item>
-<!-- 
-  <ion-item *ngIf="selectedbrand" >
-    <ion-label>Pilih Tipe</ion-label>
-    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype" (ionChange)="OptionType();">
-      <ion-select-option *ngFor="let item of tmptype">{{item.type}}</ion-select-option>
 
-    </ion-select>
-  </ion-item>
-   -->
+  <ion-grid *ngIf="tmptype?.length > 0" class="header-row">
+    <ion-row>
+      <ion-col size="3" class="isi-row-tipe" style="text-align: center;">
+        Tipe
+      </ion-col>
+      <ion-col *ngFor="let item of tmpcabang" class="isi-row-cabang" style="text-align: center;">
+        {{item.namacabang}} 
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let tipe of tmptype">
+      <ion-col size="3" class="isi-row-tipe-hp">
+        {{tipe.type}}
+      </ion-col>
+      <ion-col *ngFor="let item of rand" class="isi-row" style="text-align: center;">
+        {{item}}
+      </ion-col>
+    </ion-row>
+  
+  </ion-grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button color="secondary">
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
