@@ -8,6 +8,7 @@ import { collection } from '@firebase/firestore';
 import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {of} from 'rxjs'
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stock-admin',
@@ -22,6 +23,8 @@ export class StockAdminPage implements OnInit {
   public tmptype = [];
   tmptypeHAPUS = [];
   tmpcabang = [];
+  tmpstock = [];
+  tmpstockfinal= [];
 
   opsitampilkansemua = "0";
 
@@ -87,6 +90,7 @@ export class StockAdminPage implements OnInit {
     this.selectedCabang = "";
     this.selectedbrand = "";
     this.opsitampilkansemua = "0";
+    this.tmptype = [];
   }
 
   pilihtampilkan()
@@ -130,33 +134,92 @@ export class StockAdminPage implements OnInit {
 
   
   public getType() {
-    // this.dataService.getType(this.selectedbrand).subscribe(res => {
-    //   this.tmptype = res;
-    //   console.log(res);
-
-    // });
 
     // this.dataService.getType(this.selectedbrand);
 
-    this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc'))
-        .valueChanges({ idField: 'TypeID' })
-        .subscribe( data => {
-            this.tmptype = data;
-            console.log(this.tmptype)
-            // return of(this.tmptype);
-            this.getRandomNumber();
+    // this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc'))
+    //   .valueChanges({ idField: 'TypeID' })
+    //   .take(1)
+    //   .subscribe(data => {
+    //     this.tmptype = data;
+    //     console.log(this.tmptype)
+    //     // return of(this.tmptype);
+    //     this.getRandomNumber();
+    //     this.getstockdicabang();
 
-        }
-        
-    );
+    //   }
+
+    //   );
+
+      // console.log(this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).ref.get());
+
+      this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
+      .subscribe(data => {
+        this.tmptype = data;
+        console.log(this.tmptype)
+        // return of(this.tmptype);
+        // this.getRandomNumber();
+        this.getstockdicabang();
+      });
 
 
   }
 
+  public TambahTipeClicked()
+  {
+    this.selectedbrand = "";
+    this.tmptype = [];
+  }
+
+  public getstockdicabang()
+  {
+
+    this.tmpstock = [];
+    this.tmpstockfinal = [];
+    console.log(this.tmpcabang);
+
+    for (let i = 0; i < this.tmptype.length; i++) {
+      console.log(this.tmptype[i].TypeID);
+      this.db.collection(`Brand/${this.selectedbrand}/Type/${this.tmptype[i].TypeID}/stockdicabang`)
+        .valueChanges({ idField: 'CabangID' })
+        .subscribe(data => {
+          this.tmpstock.push(data);
+          console.log(this.tmpstock)
+          // return of(this.tmptype);
+          // this.getRandomNumber();
+          // this.stockfinal(this.tmptype[i].type, data)
+
+        }
+
+        );
+    }
+    
+  }
+
+  // public stockfinal(type, data)
+  // {
+  //   this.tmpstockfinal.push({type: type, data})
+  //   // console.log(this.tmpstockfinal);
+  //   // for(let i=0; i<this.tmptype.length; i++)
+  //   // {
+  //   //   // console.log("ini i=", i)
+  //   //   // console.log(this.tmpstockfinal[i].data.length);
+  //   //   for(let j=0; j<this.tmpcabang.length; j++)
+  //   //   {
+  //   //     // if(this.tmpstockfinal[i].length)
+  //   //     console.log(this.tmpstockfinal[i].data[j].jumlah);
+  //   //     // console.log("ini J: ", j)
+  //   //   }
+      
+      
+  //   // }
+  // }
+
   getRandomNumber(){
-    // this.rand = Math.floor(Math.random() * 5);
+    // this.rand = Math.floor(Math.random() * 5);\
+    this.rand = [];
     console.log("banyak type = ", this.tmptype.length.toString());
-    for(let i=0; i<7; i++)
+    for(let i=0; i<8; i++)
     {
       this.rand.push(Math.floor(Math.random() * 5));
     }
@@ -178,6 +241,7 @@ export class StockAdminPage implements OnInit {
 
   public optionsBrand_TAMBAHTIPE(): void {
     this.pilihbrandtambahtipe = false;
+    
   }
 
   public optionsTipe_TAMBAHTIPE(): void {
@@ -297,6 +361,7 @@ export class StockAdminPage implements OnInit {
             text: 'YA',
             handler: async () => {
               this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru);
+              this.dataService.addStock(this.selectedbrand_TYPE);
               this.tmpTypeBaru = "";
               // this.selectedbrand_TYPE = "";
 

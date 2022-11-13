@@ -66,7 +66,6 @@ export class DataService {
     );
     return of(this.tmptype);
 
-
   }
 
 
@@ -90,6 +89,16 @@ export class DataService {
 
     const TypeRef = collection(this.firestore, `Brand/${BrandID}/Type`);
     return addDoc(TypeRef, tmpnamatipe);
+
+  }
+
+  addStock(BrandID)
+  {
+    this.db.collection(`Brand/${BrandID}/Type`).doc("LA").set({
+      name: "Los Angeles",
+      state: "CA",
+      country: "USA"
+  })
   }
 
   deleteBrand(BrandID)
