@@ -81,14 +81,24 @@ export class DataService {
     
   }
 
-  addType(BrandID, namatipeku)
+  async addType(BrandID, namatipeku, cabang)
   {
     let tmpnamatipe = {
       type : namatipeku
     }
 
-    const TypeRef = collection(this.firestore, `Brand/${BrandID}/Type`);
-    return addDoc(TypeRef, tmpnamatipe);
+    // const TypeRef = collection(this.firestore, `Brand/${BrandID}/Type`);
+    // return addDoc(TypeRef, tmpnamatipe);
+
+    const res = await this.db.collection(`Brand/${BrandID}/Type`).add(tmpnamatipe);
+
+    console.log('Added document with ID: ', res.id);
+    for(let i=0; i<cabang.length; i++)
+    {
+      this.db.collection(`Brand/${BrandID}/Type/${res.id}/stockdicabang`).doc(cabang[i].namacabang).set({
+        jumlah: "0"
+      })
+    }
 
   }
 
