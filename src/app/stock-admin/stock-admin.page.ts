@@ -185,12 +185,7 @@ export class StockAdminPage implements OnInit {
         .subscribe(data => {
           this.tmpstock.push(data);
           console.log(this.tmpstock)
-          // return of(this.tmptype);
-          // this.getRandomNumber();
           this.stockfinal(this.tmptype[i].type, data)
-          // this.tmpstockfinal.push(this.tmptype[i].type, data)
-          
-
         }
 
         );
@@ -204,19 +199,6 @@ export class StockAdminPage implements OnInit {
   {
     this.tmpstockfinal.push({type: type, data})
     console.log(this.tmpstockfinal);
-    // for(let i=0; i<this.tmptype.length; i++)
-    // {
-    //   // console.log("ini i=", i)
-    //   // console.log(this.tmpstockfinal[i].data.length);
-    //   for(let j=0; j<this.tmpcabang.length; j++)
-    //   {
-    //     // if(this.tmpstockfinal[i].length)
-    //     console.log(this.tmpstockfinal[i].data[j].jumlah);
-    //     // console.log("ini J: ", j)
-    //   }
-      
-      
-    // }
   }
 
   getRandomNumber(){
@@ -364,7 +346,7 @@ export class StockAdminPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru, this.tmpcabang);
+              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru);
               // this.dataService.addStock(this.selectedbrand_TYPE);
               this.tmpTypeBaru = "";
               // this.selectedbrand_TYPE = "";

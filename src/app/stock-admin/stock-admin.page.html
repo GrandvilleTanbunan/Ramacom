@@ -81,13 +81,12 @@
       </ion-col>
     </ion-row>
 
-    <!-- <ion-row *ngFor="let tipe of tmptype; let i = index">
+    <ion-row *ngFor="let tipe of tmptype; let i = index">
       <ion-col size="3" class="isi-row-tipe-hp">
         {{tipe.type}}
-        
       </ion-col>
       <ion-col *ngFor="let stock of tmpcabang; let j = index" class="isi-row" style="text-align: center;" size-sm="1.1" size-xs="1.1">
-        {{stock[j].jumlah}}
+        <!-- {{stock[j].jumlah}} -->
         {{tmpstock[i][j].jumlah}}
         {{tmpstockfinal[i].data[j].jumlah}}
       </ion-col>
