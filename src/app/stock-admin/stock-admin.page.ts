@@ -183,9 +183,9 @@ export class StockAdminPage implements OnInit {
       this.db.collection(`Brand/${this.selectedbrand}/Type/${this.tmptype[i].TypeID}/stockdicabang`)
         .valueChanges({ idField: 'CabangID' })
         .subscribe(data => {
-          this.tmpstock.push(data);
+          this.tmpstock.push({type: this.tmptype[i].type, data});
           console.log(this.tmpstock)
-          this.stockfinal(this.tmptype[i].type, data)
+          // this.stockfinal(this.tmptype[i].type, data)
         }
 
         );
