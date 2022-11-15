@@ -111,22 +111,22 @@
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Pindahkan Stock">
+      <ion-fab-button color="light" title="Pindahkan Stock" (click)="CleanSelection()">
         <ion-icon name="swap-horizontal"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Update Stock">
+      <ion-fab-button color="light" title="Update Stock" (click)="CleanSelection()">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Hapus Tipe" id="open-modal-hapustipe" (click)="TambahTipeClicked()">
+      <ion-fab-button color="light" title="Hapus Tipe" id="open-modal-hapustipe" (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Hapus Brand" id="open-modal-hapusbrand">
+      <ion-fab-button color="light" title="Hapus Brand" id="open-modal-hapusbrand" (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Tipe" id="open-modal-tambahtipe" (click)="TambahTipeClicked()">
+      <ion-fab-button color="light" title="Tambah Tipe" id="open-modal-tambahtipe" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Brand" id="open-modal-tambahbrand">
+      <ion-fab-button color="light" title="Tambah Brand" id="open-modal-tambahbrand" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
