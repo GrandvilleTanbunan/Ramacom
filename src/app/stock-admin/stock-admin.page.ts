@@ -298,6 +298,11 @@ export class StockAdminPage implements OnInit {
   public optionsType_UpdateStock(): void {
     // this.pilihbrand = false;
     console.log(this.selectedtype_UpdateStock)
+    this.arrjumlahdari = [];
+    this.tmpjumlahdari = undefined;
+    this.tmpjumlahke = undefined;
+    this.selectedCabang_DARI_UpdateStock = undefined;
+    this.selectedCabang_KE_UpdateStock =undefined;
 
   }
 
