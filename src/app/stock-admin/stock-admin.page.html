@@ -111,7 +111,7 @@
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Pindahkan Stock" (click)="CleanSelection()">
+      <ion-fab-button color="light" title="Pindahkan Stock" id="open-modal-pindahkanstock" (click)="CleanSelection()">
         <ion-icon name="swap-horizontal"></ion-icon>
       </ion-fab-button>
       <ion-fab-button color="light" title="Update Stock" id="open-modal-updatestock" (click)="CleanSelection()">
@@ -293,7 +293,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #modaltipe trigger="open-modal-updatestock" class="modal_pindahstock">
+  <ion-modal #modaltipe trigger="open-modal-pindahkanstock" class="modal_pindahstock">
     <ng-template>
       <ion-content>
         <ion-toolbar>
@@ -314,7 +314,7 @@
         </ion-item>
         <ion-item>
           <ion-label>Dipindahkan dari</ion-label>
-          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_DARI_UpdateStock" (ionChange)="OptionTCabang_UpdateStock();">
+          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_DARI_UpdateStock" (ionChange)="OptionTCabang_DARI_DAN_KE_UpdateStock();">
             <ion-select-option *ngFor="let cabang of tmpcabang" [value]="{CabangID: cabang.CabangID, namacabang: cabang.namacabang}">{{cabang.namacabang}}</ion-select-option>
 
           </ion-select>
@@ -322,24 +322,19 @@
 
         <ion-item>
           <ion-label>Dipindahkan ke</ion-label>
-          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_KE_UpdateStock" (ionChange)="OptionTCabang_UpdateStock();">
+          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_KE_UpdateStock" (ionChange)="OptionTCabang_DARI_DAN_KE_UpdateStock();">
             <ion-select-option *ngFor="let cabang of tmpcabang" [value]="{CabangID: cabang.CabangID, namacabang: cabang.namacabang}">{{cabang.namacabang}}</ion-select-option>
 
           </ion-select>
         </ion-item>
 
-        <ion-item *ngIf="selectedCabang_DARI_UpdateStock && selectedtype_UpdateStock" class="ion-text-center" lines="none" style="font-size:30pt ;">
-          <ion-label>Stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_DARI_UpdateStock.namacabang}}</ion-label>
-          <!-- <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_KE_UpdateStock" (ionChange)="OptionTCabang_UpdateStock();">
-            <ion-select-option *ngFor="let cabang of tmpcabang" [value]="cabang.CabangID">{{cabang.namacabang}}</ion-select-option>
-          </ion-select> -->
+        <ion-item *ngIf="selectedCabang_DARI_UpdateStock && selectedtype_UpdateStock" class="ion-text-center" lines="none" style="font-size:15pt ;">
+          <ion-label>Stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_DARI_UpdateStock.namacabang}} = {{tmpjumlahdari}}</ion-label>
         </ion-item>
 
-        <ion-item *ngIf="selectedCabang_KE_UpdateStock && selectedtype_UpdateStock" class="ion-text-center" lines="none" style="font-size:30pt ;">
-          <ion-label>Stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_KE_UpdateStock.namacabang}}</ion-label>
-          <!-- <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_KE_UpdateStock" (ionChange)="OptionTCabang_UpdateStock();">
-            <ion-select-option *ngFor="let cabang of tmpcabang" [value]="cabang.CabangID">{{cabang.namacabang}}</ion-select-option>
-          </ion-select> -->
+        <ion-item *ngIf="selectedCabang_KE_UpdateStock && selectedtype_UpdateStock" class="ion-text-center" lines="none" style="font-size:15pt ;">
+          <ion-label>Stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_KE_UpdateStock.namacabang}} = {{tmpjumlahke}}</ion-label>
+
         </ion-item>
         
       
@@ -363,7 +358,7 @@
             </ion-col>
             <ion-col col-6>
               <ion-button expand="full" color="secondary" (click)="HapusType()">
-                HAPUS
+                PINDAHKAN
               </ion-button>
             </ion-col>
           </ion-row>

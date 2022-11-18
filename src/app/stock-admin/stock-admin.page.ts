@@ -41,7 +41,11 @@ export class StockAdminPage implements OnInit {
   selectedbrand_UpdateStock = "";
   selectedtype_UpdateStock;
   selectedCabang_DARI_UpdateStock;
-  selectedCabang_KE_UpdateStock
+  selectedCabang_KE_UpdateStock;
+  arrjumlahdari = [];
+  tmpjumlahdari;
+  tmpjumlahke;
+  
   tmptype_Updatestock = [];
 
   selectedCabang = "";
@@ -297,9 +301,44 @@ export class StockAdminPage implements OnInit {
 
   }
 
-  public OptionTCabang_UpdateStock(): void {
+  public OptionTCabang_DARI_DAN_KE_UpdateStock(): void {
     // this.pilihbrand = false;
+    console.log(this.selectedCabang_DARI_UpdateStock)
     console.log(this.selectedCabang_KE_UpdateStock)
+
+    this.arrjumlahdari = [];
+    this.tmpjumlahdari = undefined;
+    this.tmpjumlahke = undefined;
+
+    this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`)
+        .valueChanges({idField: "namacabang"})
+        // .pipe(take(1))
+        .subscribe(data => {
+          this.arrjumlahdari = data;
+          console.log(this.arrjumlahdari);
+          for(let i=0; i<this.arrjumlahdari.length; i++)
+          {
+            if(this.selectedCabang_DARI_UpdateStock!=undefined && this.selectedCabang_DARI_UpdateStock.namacabang == this.arrjumlahdari[i].namacabang)
+            {
+              this.tmpjumlahdari = this.arrjumlahdari[i].jumlah;
+              console.log(this.tmpjumlahdari);
+            }
+
+            if(this.selectedCabang_KE_UpdateStock !=undefined && this.selectedCabang_KE_UpdateStock.namacabang == this.arrjumlahdari[i].namacabang)
+            {
+              this.tmpjumlahke = this.arrjumlahdari[i].jumlah;
+              console.log(this.tmpjumlahke);
+            }
+           
+          }
+        }
+
+        );
+
+  }
+
+  public OptionTCabang_KE_UpdateStock(): void {
+    
   }
 
 
