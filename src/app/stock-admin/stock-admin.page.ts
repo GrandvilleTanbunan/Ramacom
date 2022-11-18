@@ -38,6 +38,12 @@ export class StockAdminPage implements OnInit {
   selectedbrand_HAPUSTYPE = "";
   selectedtype_HAPUS = "";
 
+  selectedbrand_UpdateStock = "";
+  selectedtype_UpdateStock;
+  selectedCabang_DARI_UpdateStock;
+  selectedCabang_KE_UpdateStock
+  tmptype_Updatestock = [];
+
   selectedCabang = "";
 
   selectedBrandCabang = "";
@@ -267,6 +273,38 @@ export class StockAdminPage implements OnInit {
     this.pilihbrand = false;
   }
 
+  public optionsBrand_UpdateStock(): void {
+    // this.pilihbrand = false;
+    this.selectedtype_UpdateStock = "";
+
+    this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type`, ref => ref.orderBy('type', 'asc'))
+        .valueChanges({idField: 'TypeID'})
+        .subscribe( data => {
+            this.tmptype_Updatestock = data;
+            console.log(this.tmptype_Updatestock)
+            // return of(this.tmptype);
+        }
+        
+    );
+
+    console.log(this.selectedbrand_UpdateStock)
+    console.log(this.selectedtype_UpdateStock)
+  }
+
+  public optionsType_UpdateStock(): void {
+    // this.pilihbrand = false;
+    console.log(this.selectedtype_UpdateStock)
+
+  }
+
+  public OptionTCabang_UpdateStock(): void {
+    // this.pilihbrand = false;
+    console.log(this.selectedCabang_KE_UpdateStock)
+  }
+
+
+
+
   public OptionType(): void {
     console.log(this.selectedtype);
 
@@ -350,7 +388,7 @@ export class StockAdminPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru);
+              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru, this.tmpcabang);
               // this.dataService.addStock(this.selectedbrand_TYPE);
               this.tmpTypeBaru = "";
               // this.selectedbrand_TYPE = "";
@@ -491,6 +529,10 @@ export class StockAdminPage implements OnInit {
     this.tmpTypeBaru = "";
     this.selectedtype_HAPUS = "";
     this.selectedbrand_HAPUSTYPE = "";
+    this.selectedbrand_UpdateStock = undefined;
+    this.selectedtype_UpdateStock = undefined;
+    this.selectedCabang_DARI_UpdateStock = undefined;
+    this.selectedCabang_KE_UpdateStock = undefined;
 
     this.tmptypeHAPUS = [];
 
