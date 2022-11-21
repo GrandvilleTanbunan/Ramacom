@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, IonRouterOutlet, AlertController, ToastController, ModalController  } from '@ionic/angular';
+import { Platform, IonRouterOutlet, AlertController, ToastController, ModalController, LoadingController   } from '@ionic/angular';
 // import { ModalExampleComponent } from './modal-example.component';
 import { AddTypeModalComponent } from '../add-type-modal/add-type-modal.component';
 import { App } from '@capacitor/app';
@@ -60,6 +60,8 @@ export class StockAdminPage implements OnInit {
   pilihtipe_hapustipe = false;
   pilihbrand_hapustipe = false;
   stocktidakcukup = false;
+  stock_DARI_FINAL = 0;
+  stock_KE_FINAL = 0;
 
   tmpnamabrandbaru = "";
   tmpTypeBaru = "";
@@ -74,7 +76,7 @@ export class StockAdminPage implements OnInit {
   };
 
 
-  constructor(private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  constructor(private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (!this.routerOutlet.canGoBack()) {
         this.presentConfirm();
@@ -84,9 +86,6 @@ export class StockAdminPage implements OnInit {
     });
 
     this.kategori = ["Handphone", "Aksesoris"];
-
-    
-  
 
    }
 
@@ -291,6 +290,8 @@ export class StockAdminPage implements OnInit {
   public optionsBrand_PindahkanStock(): void {
     // this.pilihbrand = false;
     this.selectedtype_PindahkanStock = "";
+    this.stocktidakcukup = false;
+    this.jumlahyangdipindahkan =1;
 
     this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type`, ref => ref.orderBy('type', 'asc'))
         .valueChanges({idField: 'TypeID'})
@@ -598,7 +599,7 @@ export class StockAdminPage implements OnInit {
 
   }
 
-  PindahkanStock()
+  async PindahkanStock()
   {
     if(this.tmpjumlahdari < this.jumlahyangdipindahkan)
     {
@@ -607,7 +608,57 @@ export class StockAdminPage implements OnInit {
     else{
       console.log(this.jumlahyangdipindahkan);
       this.stocktidakcukup = false;
+      let alert = await this.alertCtrl.create({
+
+        subHeader: `Anda yakin ingin memindahkan ${this.jumlahyangdipindahkan} unit '${this.selectedtype_PindahkanStock.type}' dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.prosespindahkan();
+            }
+          }
+        ]
+      });
+      await alert.present();
     }
+  }
+
+  public async prosespindahkan()
+  {
+    const loading = await this.loadingCtrl.create({
+      message: 'Mohon tunggu...',
+    });
+
+    loading.present();
+    
+    this.stock_DARI_FINAL = this.tmpjumlahdari - this.jumlahyangdipindahkan;
+    this.stock_KE_FINAL = (parseInt(this.tmpjumlahke) + parseInt(this.jumlahyangdipindahkan.toString()));
+    // console.log("Stock dari: ",this.stock_DARI_FINAL);
+    // console.log("Stock ke: ",this.stock_KE_FINAL);
+
+    const pindahkandari = this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`).doc(this.selectedCabang_DARI_PindahkanStock.namacabang);
+    
+    const pindahkanke = this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`).doc(this.selectedCabang_KE_PindahkanStock.namacabang);
+    
+    const res1 = await pindahkandari.update({jumlah: this.stock_DARI_FINAL});
+    const res2 = await pindahkanke.update({jumlah: this.stock_KE_FINAL});
+
+    
+
+    const alert = await this.alertCtrl.create({
+      subHeader: 'Stock berhasil dipindahkan!',
+      buttons: ['OK'],
+    });
+    loading.dismiss();
+    await alert.present();
   }
 
 
