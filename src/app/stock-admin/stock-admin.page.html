@@ -297,24 +297,24 @@
     <ng-template>
       <ion-content>
         <ion-toolbar>
-          <ion-title class="ion-text-center">Update Stock</ion-title>
+          <ion-title class="ion-text-center">Pindahkan Stock</ion-title>
         </ion-toolbar>
         <ion-item>
           <ion-label>Pilih Brand</ion-label>
-          <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_UpdateStock" (ionChange)="optionsBrand_UpdateStock();">
+          <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_PindahkanStock" (ionChange)="optionsBrand_PindahkanStock();">
             <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID">{{item.namabrand}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-label>Pilih Tipe</ion-label>
-          <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype_UpdateStock" (ionChange)="optionsType_UpdateStock();">
-            <ion-select-option *ngFor="let item of tmptype_Updatestock" [value]="{TypeID: item.TypeID, type: item.type}">{{item.type}}</ion-select-option>
+          <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype_PindahkanStock" (ionChange)="optionsType_PindahkanStock();">
+            <ion-select-option *ngFor="let item of tmptype_PindahkanStock" [value]="{TypeID: item.TypeID, type: item.type}">{{item.type}}</ion-select-option>
 
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-label>Dipindahkan dari</ion-label>
-          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_DARI_UpdateStock" (ionChange)="OptionTCabang_DARI_DAN_KE_UpdateStock();">
+          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_DARI_PindahkanStock" (ionChange)="OptionTCabang_DARI_DAN_KE_PindahkanStock();">
             <ion-select-option *ngFor="let cabang of tmpcabang" [value]="{CabangID: cabang.CabangID, namacabang: cabang.namacabang}">{{cabang.namacabang}}</ion-select-option>
 
           </ion-select>
@@ -322,28 +322,37 @@
 
         <ion-item>
           <ion-label>Dipindahkan ke</ion-label>
-          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_KE_UpdateStock" (ionChange)="OptionTCabang_DARI_DAN_KE_UpdateStock();">
+          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_KE_PindahkanStock" (ionChange)="OptionTCabang_DARI_DAN_KE_PindahkanStock();">
             <ion-select-option *ngFor="let cabang of tmpcabang" [value]="{CabangID: cabang.CabangID, namacabang: cabang.namacabang}">{{cabang.namacabang}}</ion-select-option>
 
           </ion-select>
         </ion-item>
 
-        <ion-item *ngIf="selectedCabang_DARI_UpdateStock && selectedtype_UpdateStock" class="ion-text-center" lines="none" style="font-size:15pt ;">
-          <ion-label>Stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_DARI_UpdateStock.namacabang}} = {{tmpjumlahdari}}</ion-label>
+        <ion-item *ngIf="selectedCabang_DARI_PindahkanStock && selectedtype_PindahkanStock" class="ion-text-center" lines="none" style="font-size:15pt ;">
+          <ion-label>Stock {{selectedtype_PindahkanStock.type}} di {{selectedCabang_DARI_PindahkanStock.namacabang}} = {{tmpjumlahdari}}</ion-label>
         </ion-item>
 
-        <ion-item *ngIf="selectedCabang_KE_UpdateStock && selectedtype_UpdateStock" class="ion-text-center" lines="none" style="font-size:15pt ;">
-          <ion-label>Stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_KE_UpdateStock.namacabang}} = {{tmpjumlahke}}</ion-label>
+        <ion-item *ngIf="selectedCabang_KE_PindahkanStock && selectedtype_PindahkanStock" class="ion-text-center" lines="none" style="font-size:15pt ;">
+          <ion-label>Stock {{selectedtype_PindahkanStock.type}} di {{selectedCabang_KE_PindahkanStock.namacabang}} = {{tmpjumlahke}}</ion-label>
 
         </ion-item>
-        
+
+        <ion-item *ngIf="selectedCabang_DARI_PindahkanStock && selectedtype_PindahkanStock && selectedCabang_KE_PindahkanStock" lines="none">
+          <ion-label primary style="text-align: center; font-size: 15pt;" item-text-wrap>Jumlah yang ingin dipindahkan:</ion-label>
+          <!-- <ion-input [(ngModel)]="jumlahyangdipindahkan" class="jumlahpindah" type="number" placeholder="1"maxlength="10"></ion-input> -->
+        </ion-item>
+
+        <div class="ion-text-center" *ngIf="selectedCabang_DARI_PindahkanStock && selectedtype_PindahkanStock && selectedCabang_KE_PindahkanStock">
+          <ion-list>
+            <ion-icon class="icondecrease" name="remove-circle" (click)="decrement()"></ion-icon>
+            <input [(ngModel)]="jumlahyangdipindahkan" text-center style="text-align:center;" type="number" class="inputbg">
+            <ion-icon class="iconincrease" name="add-circle" (click)="increment()"></ion-icon>
+          </ion-list>
+        </div>
       
 
-        <ion-item lines="none" *ngIf="pilihbrand_hapustipe === true">
-          <ion-label style="color: red;" class="ion-text-center">PILIH BRAND!</ion-label>
-        </ion-item>
-        <ion-item lines="none" *ngIf="pilihtipe_hapustipe === true">
-          <ion-label style="color: red;" class="ion-text-center">PILIH TIPE!</ion-label>
+        <ion-item lines="none" *ngIf="stocktidakcukup === true">
+          <ion-label style="color: red; font-size: 15pt;" class="ion-text-center" >Stock tidak cukup!</ion-label>
         </ion-item>
         
       </ion-content>
@@ -357,7 +366,7 @@
               </ion-button>
             </ion-col>
             <ion-col col-6>
-              <ion-button expand="full" color="secondary" (click)="HapusType()">
+              <ion-button expand="full" color="secondary" (click)="PindahkanStock()">
                 PINDAHKAN
               </ion-button>
             </ion-col>

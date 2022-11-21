@@ -160,3 +160,46 @@ ion-fab-button[title] {
   border-left:2px solid #000;
   border-top:2px solid #000;
 }
+
+.jumlahpindah
+{
+  text-align: left;
+  width: 10px;
+  font-size: 15pt;
+}
+
+.contaier-login {
+  width: 90%;
+  padding: 10px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75);
+}
+
+.inputbg{
+  background-color: #FFFFFF;
+  width: 70px;
+  font-size: 15pt;
+  display: inline-block;
+   vertical-align: middle;
+}
+
+.iconsize{
+font-size: 12pt
+}
+
+.iconincrease {
+  display: inline-block;
+  font-size: 35px;
+  color: #009cff;
+  vertical-align: middle;
+ }
+
+ .icondecrease{
+  display: inline-block;
+  font-size: 35px;
+  color: #eb445a;
+  vertical-align: middle;
+ }

@@ -38,15 +38,16 @@ export class StockAdminPage implements OnInit {
   selectedbrand_HAPUSTYPE = "";
   selectedtype_HAPUS = "";
 
-  selectedbrand_UpdateStock = "";
-  selectedtype_UpdateStock;
-  selectedCabang_DARI_UpdateStock;
-  selectedCabang_KE_UpdateStock;
+  selectedbrand_PindahkanStock = "";
+  selectedtype_PindahkanStock;
+  selectedCabang_DARI_PindahkanStock;
+  selectedCabang_KE_PindahkanStock;
   arrjumlahdari = [];
   tmpjumlahdari;
   tmpjumlahke;
+  jumlahyangdipindahkan = 1;
   
-  tmptype_Updatestock = [];
+  tmptype_PindahkanStock = [];
 
   selectedCabang = "";
 
@@ -58,6 +59,7 @@ export class StockAdminPage implements OnInit {
   pilihbrandtambahtipe = false;
   pilihtipe_hapustipe = false;
   pilihbrand_hapustipe = false;
+  stocktidakcukup = false;
 
   tmpnamabrandbaru = "";
   tmpTypeBaru = "";
@@ -179,6 +181,15 @@ export class StockAdminPage implements OnInit {
   {
     this.selectedbrand = "";
     this.tmptype = [];
+    this.selectedbrand_PindahkanStock = "";
+    this.selectedtype_PindahkanStock = undefined;
+    this.selectedCabang_DARI_PindahkanStock = undefined;
+    this.selectedCabang_KE_PindahkanStock = undefined;
+    this.arrjumlahdari = [];
+    this.tmpjumlahdari = undefined;
+    this.tmpjumlahke = undefined;
+
+    console.log(this.selectedtype_PindahkanStock);
   }
 
   public getstockdicabang()
@@ -277,45 +288,45 @@ export class StockAdminPage implements OnInit {
     this.pilihbrand = false;
   }
 
-  public optionsBrand_UpdateStock(): void {
+  public optionsBrand_PindahkanStock(): void {
     // this.pilihbrand = false;
-    this.selectedtype_UpdateStock = "";
+    this.selectedtype_PindahkanStock = "";
 
-    this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type`, ref => ref.orderBy('type', 'asc'))
+    this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type`, ref => ref.orderBy('type', 'asc'))
         .valueChanges({idField: 'TypeID'})
         .subscribe( data => {
-            this.tmptype_Updatestock = data;
-            console.log(this.tmptype_Updatestock)
+            this.tmptype_PindahkanStock = data;
+            console.log(this.tmptype_PindahkanStock)
             // return of(this.tmptype);
         }
         
     );
 
-    console.log(this.selectedbrand_UpdateStock)
-    console.log(this.selectedtype_UpdateStock)
+    console.log(this.selectedbrand_PindahkanStock)
+    console.log(this.selectedtype_PindahkanStock)
   }
 
-  public optionsType_UpdateStock(): void {
+  public optionsType_PindahkanStock(): void {
     // this.pilihbrand = false;
-    console.log(this.selectedtype_UpdateStock)
+    console.log(this.selectedtype_PindahkanStock)
     this.arrjumlahdari = [];
     this.tmpjumlahdari = undefined;
     this.tmpjumlahke = undefined;
-    this.selectedCabang_DARI_UpdateStock = undefined;
-    this.selectedCabang_KE_UpdateStock =undefined;
+    this.selectedCabang_DARI_PindahkanStock = undefined;
+    this.selectedCabang_KE_PindahkanStock =undefined;
 
   }
 
-  public OptionTCabang_DARI_DAN_KE_UpdateStock(): void {
+  public OptionTCabang_DARI_DAN_KE_PindahkanStock(): void {
     // this.pilihbrand = false;
-    console.log(this.selectedCabang_DARI_UpdateStock)
-    console.log(this.selectedCabang_KE_UpdateStock)
+    console.log(this.selectedCabang_DARI_PindahkanStock)
+    console.log(this.selectedCabang_KE_PindahkanStock)
 
     this.arrjumlahdari = [];
     this.tmpjumlahdari = undefined;
     this.tmpjumlahke = undefined;
 
-    this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`)
+    this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`)
         .valueChanges({idField: "namacabang"})
         // .pipe(take(1))
         .subscribe(data => {
@@ -323,13 +334,13 @@ export class StockAdminPage implements OnInit {
           console.log(this.arrjumlahdari);
           for(let i=0; i<this.arrjumlahdari.length; i++)
           {
-            if(this.selectedCabang_DARI_UpdateStock!=undefined && this.selectedCabang_DARI_UpdateStock.namacabang == this.arrjumlahdari[i].namacabang)
+            if(this.selectedCabang_DARI_PindahkanStock!=undefined && this.selectedCabang_DARI_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
             {
               this.tmpjumlahdari = this.arrjumlahdari[i].jumlah;
               console.log(this.tmpjumlahdari);
             }
 
-            if(this.selectedCabang_KE_UpdateStock !=undefined && this.selectedCabang_KE_UpdateStock.namacabang == this.arrjumlahdari[i].namacabang)
+            if(this.selectedCabang_KE_PindahkanStock !=undefined && this.selectedCabang_KE_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
             {
               this.tmpjumlahke = this.arrjumlahdari[i].jumlah;
               console.log(this.tmpjumlahke);
@@ -573,75 +584,31 @@ export class StockAdminPage implements OnInit {
     this.tmpTypeBaru = "";
     this.selectedtype_HAPUS = "";
     this.selectedbrand_HAPUSTYPE = "";
-    this.selectedbrand_UpdateStock = undefined;
-    this.selectedtype_UpdateStock = undefined;
-    this.selectedCabang_DARI_UpdateStock = undefined;
-    this.selectedCabang_KE_UpdateStock = undefined;
+    this.selectedbrand_PindahkanStock = undefined;
+    this.selectedtype_PindahkanStock = undefined;
+    this.selectedCabang_DARI_PindahkanStock = undefined;
+    this.selectedCabang_KE_PindahkanStock = undefined;
+    this.jumlahyangdipindahkan = 1;
+    this.stocktidakcukup = false;
+
+    console.log(this.selectedtype_PindahkanStock)
 
     this.tmptypeHAPUS = [];
 
 
   }
 
- 
-
-  // async addBrand() {
-
-  //   const prompt= await this.alertCtrl.create({
-  //     header: 'Tambah Brand',
-  //     cssClass: 'my-custom-alert',
-  //     // message: 'enter text',
-  //     inputs: [
-  //       {
-  //         name: 'namabrand',
-  //         placeholder: 'Nama Brand'
-  //       }
-  //     ],
-  //     buttons: [{
-  //         text: 'Batal',
-  //         role: 'cancel',
-  //         cssClass:'my-custom-alert-buttons'
-  //       }, {
-  //         text: 'Tambah',
-  //         cssClass:'my-custom-alert-buttons',
-  //         handler: (res) => {
-  //           if(res.namabrand==""){
-  //             prompt.message = "Nama brand tidak boleh kosong!";
-              
-  //             return false;
-  //           }
-  //           else{
-  //             console.log(res);
-  //             this.dataService.addBrand(res);
-
-  //           }
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   await prompt.present();
-
-  // }
-
-  // async addType() {
-
-  //   this.openModal();
-    
-
-  // }
-
-  // async openModal() {
-  //   const modal = await this.modalCtrl.create({
-  //     component: AddTypeModalComponent,
-  //   });
-  //   modal.present();
-
-  //   const { data, role } = await modal.onWillDismiss();
-
-  //   // if (role === 'confirm') {
-  //   //   this.message = `Hello, ${data}!`;
-  //   // }
-  // }
+  PindahkanStock()
+  {
+    if(this.tmpjumlahdari < this.jumlahyangdipindahkan)
+    {
+      this.stocktidakcukup = true;
+    }
+    else{
+      console.log(this.jumlahyangdipindahkan);
+      this.stocktidakcukup = false;
+    }
+  }
 
 
    async presentConfirm() {
@@ -667,6 +634,17 @@ export class StockAdminPage implements OnInit {
     await alert.present();
   }
 
+  increment () {
+    if(this.jumlahyangdipindahkan >= 999) this.jumlahyangdipindahkan = 999;
+    else this.jumlahyangdipindahkan++;
+    
+  }
   
+  decrement () {
+    if(this.jumlahyangdipindahkan<=1) this.jumlahyangdipindahkan = 0;
+    else this.jumlahyangdipindahkan--;
+  }
 
 }
+
+
