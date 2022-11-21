@@ -60,6 +60,7 @@ export class StockAdminPage implements OnInit {
   pilihtipe_hapustipe = false;
   pilihbrand_hapustipe = false;
   stocktidakcukup = false;
+  cabangsama = false;
   stock_DARI_FINAL = 0;
   stock_KE_FINAL = 0;
 
@@ -601,13 +602,21 @@ export class StockAdminPage implements OnInit {
 
   async PindahkanStock()
   {
+    console.log("dari:",  this.selectedCabang_DARI_PindahkanStock);
+    console.log("ke:",  this.selectedCabang_KE_PindahkanStock);
+
     if(this.tmpjumlahdari < this.jumlahyangdipindahkan)
     {
       this.stocktidakcukup = true;
     }
+    else if(this.selectedCabang_DARI_PindahkanStock.CabangID == this.selectedCabang_KE_PindahkanStock.CabangID)
+    {
+      this.cabangsama = true;
+    }
     else{
       console.log(this.jumlahyangdipindahkan);
       this.stocktidakcukup = false;
+      this.cabangsama = false;
       let alert = await this.alertCtrl.create({
 
         subHeader: `Anda yakin ingin memindahkan ${this.jumlahyangdipindahkan} unit '${this.selectedtype_PindahkanStock.type}' dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}?`,
