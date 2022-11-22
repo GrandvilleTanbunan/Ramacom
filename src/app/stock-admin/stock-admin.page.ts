@@ -324,34 +324,45 @@ export class StockAdminPage implements OnInit {
     console.log(this.selectedCabang_DARI_PindahkanStock)
     console.log(this.selectedCabang_KE_PindahkanStock)
 
-    this.arrjumlahdari = [];
-    this.tmpjumlahdari = undefined;
-    this.tmpjumlahke = undefined;
+    if(this.selectedCabang_DARI_PindahkanStock.CabangID == this.selectedCabang_KE_PindahkanStock.CabangID)
+    {
+      this.cabangsama = true;
+    }
+    else
+    {
+      this.cabangsama = false;
 
-    this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`)
-        .valueChanges({idField: "namacabang"})
-        // .pipe(take(1))
-        .subscribe(data => {
-          this.arrjumlahdari = data;
-          console.log(this.arrjumlahdari);
-          for(let i=0; i<this.arrjumlahdari.length; i++)
-          {
-            if(this.selectedCabang_DARI_PindahkanStock!=undefined && this.selectedCabang_DARI_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
+      this.arrjumlahdari = [];
+      this.tmpjumlahdari = undefined;
+      this.tmpjumlahke = undefined;
+  
+      this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`)
+          .valueChanges({idField: "namacabang"})
+          // .pipe(take(1))
+          .subscribe(data => {
+            this.arrjumlahdari = data;
+            console.log(this.arrjumlahdari);
+            for(let i=0; i<this.arrjumlahdari.length; i++)
             {
-              this.tmpjumlahdari = this.arrjumlahdari[i].jumlah;
-              console.log(this.tmpjumlahdari);
+              if(this.selectedCabang_DARI_PindahkanStock!=undefined && this.selectedCabang_DARI_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
+              {
+                this.tmpjumlahdari = this.arrjumlahdari[i].jumlah;
+                console.log(this.tmpjumlahdari);
+              }
+  
+              if(this.selectedCabang_KE_PindahkanStock !=undefined && this.selectedCabang_KE_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
+              {
+                this.tmpjumlahke = this.arrjumlahdari[i].jumlah;
+                console.log(this.tmpjumlahke);
+              }
+             
             }
-
-            if(this.selectedCabang_KE_PindahkanStock !=undefined && this.selectedCabang_KE_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
-            {
-              this.tmpjumlahke = this.arrjumlahdari[i].jumlah;
-              console.log(this.tmpjumlahke);
-            }
-           
           }
-        }
+  
+          );
+    }
 
-        );
+    
 
   }
 
@@ -701,7 +712,7 @@ export class StockAdminPage implements OnInit {
   }
   
   decrement () {
-    if(this.jumlahyangdipindahkan<=1) this.jumlahyangdipindahkan = 0;
+    if(this.jumlahyangdipindahkan<=1) this.jumlahyangdipindahkan = 1;
     else this.jumlahyangdipindahkan--;
   }
 
