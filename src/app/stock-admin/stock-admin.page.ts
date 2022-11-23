@@ -202,30 +202,49 @@ export class StockAdminPage implements OnInit {
     this.tmpstock = [];
     this.tmpstockfinal = [];
     console.log(this.tmpcabang);
-    
-    const loading = await this.loadingCtrl.create({
-      message: 'Mohon tunggu...',
-    });
+    console.log(this.tmptype);
 
-    loading.present();
-
-    for (let i = 0; i < this.tmptype.length; i++) {
-      console.log(this.tmptype[i].TypeID);
-      this.db.collection(`Brand/${this.selectedbrand}/Type/${this.tmptype[i].TypeID}/stockdicabang`)
-        .valueChanges({ idField: 'CabangID' })
-        .pipe(take(1))
-        .subscribe(data => {
-          this.tmpstock.push({ type: this.tmptype[i].type, data });
-          // console.log(data);
-          // this.tmpstock = [{type: this.tmptype[i].type, data}];
-          console.log(this.tmpstock)
-
-          // this.stockfinal(this.tmptype[i].type, data)
-          loading.dismiss();
-        }
-
-        );
+    if(this.tmptype.length == 0)
+    {
+      let alert = await this.alertCtrl.create({
+      
+        message: 'Belum ada tipe pada brand ini, silahkan tambahkan tipe pada menu Tambah Tipe!',
+        buttons: [
+          {
+            text: 'OK'
+          }
+        ]
+      });
+      await alert.present();
     }
+    else
+    {
+      const loading = await this.loadingCtrl.create({
+        message: 'Mohon tunggu...',
+      });
+  
+      loading.present();
+  
+      for (let i = 0; i < this.tmptype.length; i++) {
+        console.log(this.tmptype[i].TypeID);
+        this.db.collection(`Brand/${this.selectedbrand}/Type/${this.tmptype[i].TypeID}/stockdicabang`)
+          .valueChanges({ idField: 'CabangID' })
+          .pipe(take(1))
+          .subscribe(data => {
+            this.tmpstock.push({ type: this.tmptype[i].type, data });
+            // console.log(data);
+            // this.tmpstock = [{type: this.tmptype[i].type, data}];
+            console.log(this.tmpstock)
+  
+            // this.stockfinal(this.tmptype[i].type, data)
+            loading.dismiss();
+          }
+  
+          );
+      }
+    }
+    
+    
 
 
     
