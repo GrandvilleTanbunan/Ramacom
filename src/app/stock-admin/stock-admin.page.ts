@@ -164,15 +164,19 @@ export class StockAdminPage implements OnInit {
     //   );
 
       // console.log(this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).ref.get());
+    
+    this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
+    .subscribe(data => {
+      this.tmptype = data;
+      console.log(this.tmptype)
+      // return of(this.tmptype);
+      // this.getRandomNumber();
+      this.getstockdicabang();
+    });
+    
+      
 
-      this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
-      .subscribe(data => {
-        this.tmptype = data;
-        console.log(this.tmptype)
-        // return of(this.tmptype);
-        // this.getRandomNumber();
-        this.getstockdicabang();
-      });
+      
 
 
   }
@@ -192,12 +196,18 @@ export class StockAdminPage implements OnInit {
     console.log(this.selectedtype_PindahkanStock);
   }
 
-  public getstockdicabang()
+  public async getstockdicabang()
   {
 
     this.tmpstock = [];
     this.tmpstockfinal = [];
     console.log(this.tmpcabang);
+    
+    const loading = await this.loadingCtrl.create({
+      message: 'Mohon tunggu...',
+    });
+
+    loading.present();
 
     for (let i = 0; i < this.tmptype.length; i++) {
       console.log(this.tmptype[i].TypeID);
@@ -211,6 +221,7 @@ export class StockAdminPage implements OnInit {
           console.log(this.tmpstock)
 
           // this.stockfinal(this.tmptype[i].type, data)
+          loading.dismiss();
         }
 
         );
