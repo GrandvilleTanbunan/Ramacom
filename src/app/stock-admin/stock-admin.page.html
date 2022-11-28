@@ -16,7 +16,7 @@
       
     </ion-row>
   </ion-grid> -->
-
+<!-- 
   <ion-item>
     <ion-label>Lihat Stock Berdasarkan</ion-label>
       <ion-select interface="popover" placeholder=""  [(ngModel)]="tmplihatstock" (ionChange)="pilihBerdasarkan()">
@@ -26,16 +26,16 @@
       </ion-select>
 
 
-  </ion-item>
+  </ion-item> -->
 
-  <ion-item *ngIf="tmplihatstock === 'Cabang'">
+  <!-- <ion-item *ngIf="tmplihatstock === 'Cabang'">
     <ion-label>Pilih Cabang</ion-label>
       <ion-select interface="popover" placeholder="" [(ngModel)]="selectedCabang">
         <ion-select-option *ngFor="let item of tmpcabang" [value]="item.CabangID" >{{item.namacabang}}</ion-select-option>
       </ion-select>
-  </ion-item>
+  </ion-item> -->
 
-  <ion-item *ngIf="tmplihatstock === 'Brand'">
+  <ion-item>
     <ion-label>Pilih Brand</ion-label>
     <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedbrand" (ionChange)="getType();">
       <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID" >{{item.namabrand}}</ion-select-option>
@@ -55,7 +55,7 @@
     </ion-radio-group>
   </ion-list> -->
 
-  <ion-segment *ngIf="tmplihatstock === 'Cabang' && selectedCabang != '' " [(ngModel)]="opsitampilkansemua" mode="ios" (ionChange)="pilihtampilkan()">
+  <!-- <ion-segment *ngIf="tmplihatstock === 'Cabang' && selectedCabang != '' " [(ngModel)]="opsitampilkansemua" mode="ios" (ionChange)="pilihtampilkan()">
     <ion-segment-button value='0'>
       <ion-label style="font-size:12pt;">Tampilkan Semua Brand</ion-label>
     </ion-segment-button>
@@ -69,7 +69,7 @@
     <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedBrandCabang" (ionChange)="getType();">
       <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID" >{{item.namabrand}}</ion-select-option>
     </ion-select>
-  </ion-item>
+  </ion-item>-->
 
   <ion-grid *ngIf="tmptype?.length > 0" class="header-row">
     <ion-row>
@@ -90,7 +90,7 @@
       </ion-col>
     </ion-row>
   
-  </ion-grid>
+  </ion-grid> 
 
 
 
