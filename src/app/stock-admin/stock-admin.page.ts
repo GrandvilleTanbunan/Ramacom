@@ -49,6 +49,13 @@ export class StockAdminPage implements OnInit {
   
   tmptype_PindahkanStock = [];
 
+  selectedbrand_UpdateStock = "";
+  selectedtype_UpdateStock;
+  selectedCabang_UpdateStock;
+  arrjumlahstock_UpdateStock = [];
+  tmptype_UpdateStock = [];
+  tmpjumlahstocksaatini;
+
   selectedCabang = "";
 
   selectedBrandCabang = "";
@@ -70,6 +77,9 @@ export class StockAdminPage implements OnInit {
   tmplihatstock = "";
 
   rand = [];
+
+  tmpupdate_tambah = "UPDATE";
+  togglevalue_UpdateStock= false;
  
 
   customPopoverOptions = {
@@ -208,7 +218,7 @@ export class StockAdminPage implements OnInit {
     {
       let alert = await this.alertCtrl.create({
       
-        message: 'Belum ada tipe pada brand ini, silahkan tambahkan tipe pada menu Tambah Tipe!',
+        subHeader: 'Belum ada tipe pada brand ini, silahkan tambahkan tipe pada menu Tambah Tipe!',
         buttons: [
           {
             text: 'OK'
@@ -396,12 +406,66 @@ export class StockAdminPage implements OnInit {
 
   }
 
-  public OptionTCabang_KE_UpdateStock(): void {
-    
+  
+  public optionsBrand_UpdateStock(): void {
+    // this.pilihbrand = false;
+    this.selectedtype_UpdateStock = "";
+    this.selectedCabang_UpdateStock = "";
+
+    this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type`, ref => ref.orderBy('type', 'asc'))
+        .valueChanges({idField: 'TypeID'})
+        .subscribe( data => {
+            this.tmptype_UpdateStock = data;
+            console.log(this.tmptype_UpdateStock)
+            // return of(this.tmptype);
+        }
+        
+    );
+
+    console.log(this.selectedbrand_UpdateStock)
+    console.log(this.tmptype_UpdateStock)
   }
 
+  public optionsType_UpdateStock(): void {
+    console.log(this.selectedtype_UpdateStock);
+    this.selectedCabang_UpdateStock = "";
 
 
+  }
+
+  public optionCabang_UpdateStock(): void{
+    this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`)
+    .valueChanges({idField: "namacabang"})
+    // .pipe(take(1))
+    .subscribe(data => {
+      this.arrjumlahstock_UpdateStock = data;
+      console.log(this.arrjumlahstock_UpdateStock);
+      for(let i=0; i<this.arrjumlahstock_UpdateStock.length; i++)
+      {
+        if(this.selectedCabang_UpdateStock.namacabang == this.arrjumlahstock_UpdateStock[i].namacabang)
+        {
+          this.tmpjumlahstocksaatini = this.arrjumlahstock_UpdateStock[i].jumlah;
+          console.log(this.tmpjumlahstocksaatini);
+        }
+       
+      }
+    }
+
+    );
+  }
+
+  public toggle_UpdateStock(): void{
+    console.log(this.togglevalue_UpdateStock);
+    if(this.togglevalue_UpdateStock == false)
+    {
+      this.tmpupdate_tambah = "UPDATE";
+    }
+    else
+    {
+      this.tmpupdate_tambah = "TAMBAH";
+    }
+
+  }
 
   public OptionType(): void {
     console.log(this.selectedtype);
@@ -627,12 +691,17 @@ export class StockAdminPage implements OnInit {
     this.tmpTypeBaru = "";
     this.selectedtype_HAPUS = "";
     this.selectedbrand_HAPUSTYPE = "";
+
     this.selectedbrand_PindahkanStock = undefined;
     this.selectedtype_PindahkanStock = undefined;
     this.selectedCabang_DARI_PindahkanStock = undefined;
     this.selectedCabang_KE_PindahkanStock = undefined;
     this.jumlahyangdipindahkan = 1;
     this.stocktidakcukup = false;
+
+    this.selectedbrand_UpdateStock = undefined;
+    this.selectedtype_UpdateStock = undefined;
+    this.selectedCabang_UpdateStock = undefined;
 
     console.log(this.selectedtype_PindahkanStock)
 
