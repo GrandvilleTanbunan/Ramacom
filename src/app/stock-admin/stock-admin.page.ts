@@ -818,7 +818,7 @@ export class StockAdminPage implements OnInit {
     else this.jumlahyangdipindahkan--;
   }
 
-  increment_update () {
+  increment_Tambah () {
     if(this.togglevalue_UpdateStock == true)
     {
       if(this.tmpjumlahupdate_tambah >= 999) this.tmpjumlahupdate_tambah = 999;
@@ -829,7 +829,7 @@ export class StockAdminPage implements OnInit {
     }
   }
   
-  decrement_update() {
+  decrement_Tambah() {
     if(this.togglevalue_UpdateStock == true)
     {
       if (this.tmpjumlahupdate_tambah <= 1) this.tmpjumlahupdate_tambah = 1;
