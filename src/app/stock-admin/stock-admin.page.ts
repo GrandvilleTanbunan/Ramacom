@@ -852,7 +852,7 @@ export class StockAdminPage implements OnInit {
     {
       let alert = await this.alertCtrl.create({
 
-        subHeader: `Anda yakin ingin mengupdate jumlah ${this.selectedtype_UpdateStock.type} pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit?`,
+        subHeader: `Anda yakin ingin mengupdate jumlah '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit?`,
         buttons: [
           {
             text: 'Tidak',
@@ -895,7 +895,7 @@ export class StockAdminPage implements OnInit {
 
       let alert = await this.alertCtrl.create({
 
-        subHeader: `Anda yakin ingin mengupdate jumlah ${this.selectedtype_UpdateStock.type} pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit?`,
+        subHeader: `Anda yakin ingin mengupdate jumlah '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit?`,
         buttons: [
           {
             text: 'Tidak',
