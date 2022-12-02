@@ -819,32 +819,74 @@ export class StockAdminPage implements OnInit {
   }
 
   increment_Tambah () {
-    if(this.togglevalue_UpdateStock == true)
-    {
-      if(this.tmpjumlahupdate_tambah >= 999) this.tmpjumlahupdate_tambah = 999;
-      else{
-        this.tmpjumlahupdate_tambah++;
-        this.hitungupdate();
-      }
+    
+    if(this.tmpjumlahupdate_tambah >= 999) this.tmpjumlahupdate_tambah = 999;
+    else{
+      this.tmpjumlahupdate_tambah++;
+      this.hitungupdate();
     }
+    
   }
   
   decrement_Tambah() {
-    if(this.togglevalue_UpdateStock == true)
+    
+    if (this.tmpjumlahupdate_tambah <= 1) this.tmpjumlahupdate_tambah = 1;
+    else 
     {
-      if (this.tmpjumlahupdate_tambah <= 1) this.tmpjumlahupdate_tambah = 1;
-      else 
-      {
-        this.tmpjumlahupdate_tambah--;
-        this.hitungupdate();
-      }
+      this.tmpjumlahupdate_tambah--;
+      this.hitungupdate();
     }
+  
   }
 
   hitungupdate()
   {
     console.log("Hitung")
     this.tmpjumlahstocksetelahdijumlah = parseInt(this.tmpjumlahupdate_tambah.toString())+parseInt(this.tmpjumlahstocksaatini.toString());
+  }
+  
+
+  public async UpdateStock(): Promise<void>{
+    if(this.togglevalue_UpdateStock == true)
+    {
+      const loading = await this.loadingCtrl.create({
+        message: 'Mohon tunggu...',
+      });
+  
+      loading.present();
+      console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
+      console.log(this.selectedCabang_UpdateStock);
+
+      const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+      
+      const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah});
+
+      const alert = await this.alertCtrl.create({
+        subHeader: 'Stock berhasil ditambah!',
+        buttons: ['OK'],
+      });
+      loading.dismiss();
+      await alert.present();
+    }
+    else
+    {
+      const loading = await this.loadingCtrl.create({
+        message: 'Mohon tunggu...',
+      });
+      console.log("Stock akan menjadi: ", this.tmpjumlahupdate_tambah);
+      console.log(this.selectedCabang_UpdateStock);
+
+      const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+      
+      const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah});
+
+      const alert = await this.alertCtrl.create({
+        subHeader: 'Stock berhasil diupdate!',
+        buttons: ['OK'],
+      });
+      loading.dismiss();
+      await alert.present();
+    }
   }
 
 }
