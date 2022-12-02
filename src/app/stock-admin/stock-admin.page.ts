@@ -705,6 +705,7 @@ export class StockAdminPage implements OnInit {
     this.selectedbrand_UpdateStock = undefined;
     this.selectedtype_UpdateStock = undefined;
     this.selectedCabang_UpdateStock = undefined;
+    this.tmpjumlahupdate_tambah = 1;
 
     console.log(this.selectedtype_PindahkanStock)
 

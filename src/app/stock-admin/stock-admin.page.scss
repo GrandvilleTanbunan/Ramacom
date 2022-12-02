@@ -30,7 +30,7 @@ ion-card {
 //     }
 //   }
 
-ion-fab-button[title] {
+  ion-fab-button[title] {
     position: relative;
     
   }
@@ -39,10 +39,10 @@ ion-fab-button[title] {
     position: absolute;
     content: attr(title);
     z-index: 1;
-    right: 65px;
-    bottom: 7px;
+    right: 57px;
+    bottom: 3px;
     background-color: #009cff;
-    font-size: medium;
+    font-size: 10pt;
     padding: 9px;
     border-radius: 15px;
     color: white;
@@ -50,11 +50,12 @@ ion-fab-button[title] {
   }
 
   ion-fab-button{
-    height:55px;
-    width: 55px;
+    height:45px;
+    width: 45px;
+    margin-right: 10px;
     ion-icon{
-        height: 30px;
-        width: 30px;
+        height: 20px;
+        width: 20px;
     }
   }
 
