@@ -55,6 +55,7 @@ export class StockAdminPage implements OnInit {
   arrjumlahstock_UpdateStock = [];
   tmptype_UpdateStock = [];
   tmpjumlahstocksaatini;
+  tmpjumlahstocksetelahdijumlah;
 
   selectedCabang = "";
 
@@ -79,6 +80,7 @@ export class StockAdminPage implements OnInit {
   rand = [];
 
   tmpupdate_tambah = "UPDATE";
+  tmpjumlahupdate_tambah = 1;
   togglevalue_UpdateStock= false;
  
 
@@ -446,6 +448,7 @@ export class StockAdminPage implements OnInit {
         {
           this.tmpjumlahstocksaatini = this.arrjumlahstock_UpdateStock[i].jumlah;
           console.log(this.tmpjumlahstocksaatini);
+          this.hitungupdate();
         }
        
       }
@@ -813,6 +816,35 @@ export class StockAdminPage implements OnInit {
   decrement () {
     if(this.jumlahyangdipindahkan<=1) this.jumlahyangdipindahkan = 1;
     else this.jumlahyangdipindahkan--;
+  }
+
+  increment_update () {
+    if(this.togglevalue_UpdateStock == true)
+    {
+      if(this.tmpjumlahupdate_tambah >= 999) this.tmpjumlahupdate_tambah = 999;
+      else{
+        this.tmpjumlahupdate_tambah++;
+        this.hitungupdate();
+      }
+    }
+  }
+  
+  decrement_update() {
+    if(this.togglevalue_UpdateStock == true)
+    {
+      if (this.tmpjumlahupdate_tambah <= 1) this.tmpjumlahupdate_tambah = 1;
+      else 
+      {
+        this.tmpjumlahupdate_tambah--;
+        this.hitungupdate();
+      }
+    }
+  }
+
+  hitungupdate()
+  {
+    console.log("Hitung")
+    this.tmpjumlahstocksetelahdijumlah = parseInt(this.tmpjumlahupdate_tambah.toString())+parseInt(this.tmpjumlahstocksaatini.toString());
   }
 
 }

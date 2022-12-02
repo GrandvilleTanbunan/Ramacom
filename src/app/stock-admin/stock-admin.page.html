@@ -427,14 +427,14 @@
 
         <div class="ion-text-center" *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock">
           <ion-list>
-            <ion-icon class="icondecrease" name="remove-circle" (click)="decrement()"></ion-icon>
-            <input [(ngModel)]="tmpupdate_tambah" text-center style="text-align:center;" type="number" class="inputbg">
-            <ion-icon class="iconincrease" name="add-circle" (click)="increment()"></ion-icon>
+            <ion-icon class="icondecrease" name="remove-circle" (click)="decrement_update()"></ion-icon>
+            <input [(ngModel)]="tmpjumlahupdate_tambah" text-center style="text-align:center;" type="number" class="inputbg" (ngModelChange)="hitungupdate()">
+            <ion-icon class="iconincrease" name="add-circle" (click)="increment_update()"></ion-icon>
           </ion-list>
         </div>
 
         <ion-item class="ion-text-center" lines="none" style="font-size:15pt ;" *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock && tmpupdate_tambah == 'TAMBAH' ">
-          <ion-label>Total stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} = {{tmpjumlahstocksaatini}}</ion-label>
+          <ion-label>Total stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} menjadi = {{tmpjumlahstocksetelahdijumlah}}</ion-label>
         </ion-item>
 
         <!-- <ion-item lines="none" *ngIf="stocktidakcukup === true">
