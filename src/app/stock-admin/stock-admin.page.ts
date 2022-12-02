@@ -845,48 +845,91 @@ export class StockAdminPage implements OnInit {
     console.log("Hitung")
     this.tmpjumlahstocksetelahdijumlah = parseInt(this.tmpjumlahupdate_tambah.toString())+parseInt(this.tmpjumlahstocksaatini.toString());
   }
-  
 
   public async UpdateStock(): Promise<void>{
+
     if(this.togglevalue_UpdateStock == true)
     {
-      const loading = await this.loadingCtrl.create({
-        message: 'Mohon tunggu...',
-      });
-  
-      loading.present();
-      console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
-      console.log(this.selectedCabang_UpdateStock);
+      let alert = await this.alertCtrl.create({
 
-      const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
-      
-      const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah});
-
-      const alert = await this.alertCtrl.create({
-        subHeader: 'Stock berhasil ditambah!',
-        buttons: ['OK'],
+        subHeader: `Anda yakin ingin mengupdate jumlah ${this.selectedtype_UpdateStock.type} pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
+              });
+          
+              loading.present();
+              console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
+              console.log(this.selectedCabang_UpdateStock);
+        
+              const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+              
+              const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah});
+        
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Stock berhasil ditambah!',
+                buttons: ['OK'],
+              });
+              loading.dismiss();
+              await alert.present();
+            }
+          }
+        ]
       });
-      loading.dismiss();
       await alert.present();
+
+     
     }
     else
     {
-      const loading = await this.loadingCtrl.create({
-        message: 'Mohon tunggu...',
-      });
-      console.log("Stock akan menjadi: ", this.tmpjumlahupdate_tambah);
-      console.log(this.selectedCabang_UpdateStock);
 
-      const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
-      
-      const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah});
+      let alert = await this.alertCtrl.create({
 
-      const alert = await this.alertCtrl.create({
-        subHeader: 'Stock berhasil diupdate!',
-        buttons: ['OK'],
+        subHeader: `Anda yakin ingin mengupdate jumlah ${this.selectedtype_UpdateStock.type} pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
+              });
+              console.log("Stock akan menjadi: ", this.tmpjumlahupdate_tambah);
+              console.log(this.selectedCabang_UpdateStock);
+        
+              const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+              
+              const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah});
+        
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Stock berhasil diupdate!',
+                buttons: ['OK'],
+              });
+              loading.dismiss();
+              await alert.present();
+            }
+          }
+        ]
       });
-      loading.dismiss();
       await alert.present();
+
+      
     }
   }
 
