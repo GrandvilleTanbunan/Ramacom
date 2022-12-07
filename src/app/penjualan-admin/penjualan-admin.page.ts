@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import { format, parseISO } from 'date-fns';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-penjualan-admin',
@@ -16,8 +17,8 @@ export class PenjualanAdminPage implements OnInit {
   }
 
   public PilihTanggal(): void {
-    console.log(this.tmpselectedDate);
-    // this.selectedDate = format(parseISO(dateFromIonDatetime), 'MMM d, yyyy');
+    this.selectedDate = moment(this.tmpselectedDate).format('DD/MM/YYYY')
+    console.log(this.selectedDate);
     
   }
 
