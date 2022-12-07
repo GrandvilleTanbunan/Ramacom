@@ -1,9 +1,20 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>penjualan-admin</ion-title>
+  <ion-toolbar color="secondary">
+    <ion-title>Penjualan</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-item>
+    <ion-label>
+      Pilih Tanggal
+    </ion-label>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-popover [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime [(ngModel)]="tmpselectedDate" values="date" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="date" (ionChange)="PilihTanggal()"></ion-datetime>
+        </ng-template>
+      </ion-popover>
+  </ion-item>
+ 
 </ion-content>
