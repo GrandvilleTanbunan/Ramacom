@@ -127,10 +127,11 @@ export class AppComponent {
         },
         {
           text: 'YA',
-          handler: () => {
+          handler: async () => {
           console.log('Mau Logout!');
-          this.authService.logout();
-          this.navCtrl.navigateRoot('login');
+          await this.authService.logout();
+          // this.router.navigateByUrl('/', {replaceUrl:true});
+          this.navCtrl.navigateRoot('/', {replaceUrl: true});
           }
         }
       ]
