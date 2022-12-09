@@ -7,6 +7,10 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {take , map, switchMap} from 'rxjs/operators';
+import { signOut, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+// import {  } from '@firebase/auth';
 export interface User {
   name: string;
   role: number;
@@ -22,7 +26,12 @@ export class AuthService {
   currentUser: User;
 
 
-  public user: Observable<any>;
+  public user;
+  public loggeduser;
+  public tmpemail;
+  public emailku;
+
+  private usernameterdaftar = false;
   private userData = new BehaviorSubject(null);
 
   authState = new BehaviorSubject(null);
@@ -34,7 +43,7 @@ export class AuthService {
   public terdaftar = false;
   public cekpassword = false;
 
-  constructor(private dataService: DataService, private storage : Storage, private http: HttpClientModule, private plt: Platform, private router: Router) {
+  constructor(private db: AngularFirestore, private auth: Auth, private dataService: DataService, private storage : Storage, private http: HttpClientModule, private plt: Platform, private router: Router) {
     this.dataService.getUser().subscribe(res => {
       this.tmpuser = res;
       console.log(this.tmpuser);
@@ -42,50 +51,95 @@ export class AuthService {
   };
 
 
-  login(name: string, pw: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      for (let i = 0; i < this.tmpuser.length; i++) {
-        if (name == this.tmpuser[i].username) {
-          this.terdaftar = true;
-          if (pw == this.tmpuser[i].password) {
-            this.cekpassword = true;
-          }
-          else {
-            this.cekpassword = false;
-          }
-        }
-      }
+  // login(name: string, pw: string): Promise<boolean> {
+  //   return new Promise((resolve, reject) => {
+  //     for (let i = 0; i < this.tmpuser.length; i++) {
+  //       if (name == this.tmpuser[i].username) {
+  //         this.terdaftar = true;
+  //         if (pw == this.tmpuser[i].password) {
+  //           this.cekpassword = true;
+  //         }
+  //         else {
+  //           this.cekpassword = false;
+  //         }
+  //       }
+  //     }
 
-      if (this.terdaftar == true && this.cekpassword == true) {
-        this.currentUser = {
-          name: name,
-          role: 0
-        }
-        resolve(true);
-        this._statusChange$.next(name);
-      }
+  //     if (this.terdaftar == true && this.cekpassword == true) {
+  //       this.currentUser = {
+  //         name: name,
+  //         role: 0
+  //       }
+  //       resolve(true);
+  //       this._statusChange$.next(name);
+  //     }
 
-      if (this.terdaftar == true && this.cekpassword == false) {
-        resolve(false);
-      }
-      if (this.terdaftar == false) {
-        resolve(false);
-      }
-    });
-  }
+  //     if (this.terdaftar == true && this.cekpassword == false) {
+  //       resolve(false);
+  //     }
+  //     if (this.terdaftar == false) {
+  //       resolve(false);
+  //     }
+  //   });
+  // }
 
    isLoggedIn()
    {
       return this.currentUser != null;
    }
 
-   logout()
-   {
-    return this.currentUser = null;
-   }
+  //  logout()
+  //  {
+  //   return this.currentUser = null;
+  //  }
 
    isAdmin()
    {
     return this.currentUser.role == 0;
+   }
+
+   async register ({email, password}){
+     try{
+       this.user = await createUserWithEmailAndPassword(
+         this.auth, email, password
+       );
+       return this.user;
+     } catch (e){
+       console.log(e)
+       return null;
+     }
+   }
+
+  async login({ username, password }) {
+
+    let idx;
+    for (let i = 0; i < this.tmpuser.length; i++) {
+      if (this.tmpuser[i].username == username) {
+        idx = i;
+      }
+    }
+    if(idx){
+      this.emailku = this.tmpuser[idx].email;
+      this.loggeduser = username;
+      this._statusChange$.next(username);
+      console.log(this.emailku);
+      console.log(this.loggeduser);
+
+    }
+    
+    try {
+      this.user = await signInWithEmailAndPassword(
+        this.auth, this.emailku, password
+      );
+      return this.user;
+    } catch (e) {
+      return null;
+    }
+
+  }
+
+   logout()
+   {
+     return signOut(this.auth);
    }
 }

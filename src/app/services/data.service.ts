@@ -23,6 +23,8 @@ export class DataService {
   items: Observable<any[]>;
   public tmpbrand: any = [];
   public tmptype: any = [];
+  public tmpusername;
+  public loggeduser;
   
 
   constructor(private firestore: Firestore, private db: AngularFirestore) { 
@@ -32,6 +34,21 @@ export class DataService {
   {
     const UsersRef = collection(this.firestore, 'Users');
     return collectionData(UsersRef,{idField: 'UserID'});
+  }
+
+  getUsernameByEmail(email): Observable<any>
+  {
+    this.db.collection('Users', ref => ref.where('email', '==', `${email}`))
+        .valueChanges()
+        .subscribe( data => {
+            this.tmpusername = data;
+            console.log(this.tmpusername);
+            console.log(this.tmpusername[0].username);
+            this.loggeduser = this.tmpusername[0].username;
+        }
+        
+    );
+    return of(this.tmpusername);
   }
   
 

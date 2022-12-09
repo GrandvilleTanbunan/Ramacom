@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, IonRouterOutlet, AlertController, ToastController, ModalController, LoadingController   } from '@ionic/angular';
+import { Platform, IonRouterOutlet, AlertController, ToastController, ModalController, LoadingController, NavController   } from '@ionic/angular';
 // import { ModalExampleComponent } from './modal-example.component';
 import { AddTypeModalComponent } from '../add-type-modal/add-type-modal.component';
 import { App } from '@capacitor/app';
@@ -9,6 +9,8 @@ import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/f
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {of} from 'rxjs'
 import { take } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stock-admin',
@@ -89,7 +91,7 @@ export class StockAdminPage implements OnInit {
   };
 
 
-  constructor(private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private router: Router, private authService: AuthService, private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (!this.routerOutlet.canGoBack()) {
         this.presentConfirm();
@@ -931,6 +933,13 @@ export class StockAdminPage implements OnInit {
 
       
     }
+  }
+
+  async logout()
+  {
+    await this.authService.logout();
+    // this.router.navigateByUrl('/', {replaceUrl:true});
+    this.navCtrl.navigateRoot('/', {replaceUrl: true});
   }
 
 }

@@ -1,5 +1,5 @@
 <ion-content>
-    <ion-grid class="grid1">
+    <!-- <ion-grid class="grid1">
         <ion-row class="row1">
             <ion-col>
               <ion-row class="rowperson">
@@ -28,18 +28,21 @@
                 </ion-row>
                 <ion-row>
                   <ion-col>
-                      <ion-list>
-                          <ion-item>
-                              <ion-icon name="person" class="icon-login"></ion-icon>
-                              <ion-input name="user" type="text" required placeholder="Username" [(ngModel)]="name"></ion-input>
-                          </ion-item>
-                          <br />
-                          <ion-item>
-                              <ion-icon name="lock-closed-outline" class="icon-login"></ion-icon>
-                              <ion-input name="password" type="password" required placeholder="Password" [(ngModel)]="pw"></ion-input>
-                          </ion-item>
-  
-                      </ion-list>
+                    <form [formGroup]="credentials" (ngSubmit)="login()">
+                        <ion-list>
+                            <ion-item>
+                                <ion-icon name="person" class="icon-login"></ion-icon>
+                                <ion-input name="user" type="text" required placeholder="Username" [(ngModel)]="name"></ion-input>
+                            </ion-item>
+                            <br />
+                            <ion-item>
+                                <ion-icon name="lock-closed-outline" class="icon-login"></ion-icon>
+                                <ion-input name="password" type="password" required placeholder="Password" [(ngModel)]="pw"></ion-input>
+                            </ion-item>
+                    
+                        </ion-list>
+                    </form>
+                      
                   </ion-col>
               </ion-row>
               <ion-row>
@@ -51,6 +54,20 @@
               </ion-row>
             </ion-grid>
         </div>
-    </ion-slide>
+    </ion-slide> -->
+    <form [formGroup]="credentials" (ngSubmit)="login()">
+        <ion-item fill="solid" class="ion-margin-bottom">
+            <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
+            <!-- <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email invalid</ion-note> -->
+        </ion-item>
 
+        <ion-item fill="solid" class="ion-margin-bottom">
+            <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+            <!-- <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email invalid</ion-note> -->
+        </ion-item>
+
+        <ion-button expand="full" type="submit">Login</ion-button>
+        <ion-button expand="full" type="button" (click)="register()">Buat Akun</ion-button>
+
+    </form>
 </ion-content>

@@ -1,11 +1,17 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import {canActivate, redirectUnauthorizedTo, redirectLoggedInTo} from '@angular/fire/auth-guard';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['']);
+const redirectLoggedInToHome = () => redirectLoggedInTo(['stock-admin']);
+
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule),
+    ...canActivate(redirectLoggedInToHome)
   },
   {
     path: 'folder/:id',
@@ -17,7 +23,10 @@ const routes: Routes = [
   },
   {
     path: 'stock-admin',
-    loadChildren: () => import('./stock-admin/stock-admin.module').then( m => m.StockAdminPageModule)
+    loadChildren: () => import('./stock-admin/stock-admin.module').then( m => m.StockAdminPageModule),
+    ...canActivate(redirectUnauthorizedToLogin)
+
+  
   },
   {
     path: 'stock-cabang',
