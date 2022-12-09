@@ -70,7 +70,7 @@ export class LoginPage implements OnInit {
       this.router.navigateByUrl('/stock-admin', {replaceUrl: true});
       this.menuCtrl.enable(true);
     }else{
-      this.showAlert('Login failed', 'Please try again!');
+      this.showAlert('Login Gagal', 'Silahkan Cek Username/Password!');
     }
   }
 

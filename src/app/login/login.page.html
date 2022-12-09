@@ -1,5 +1,5 @@
 <ion-content>
-    <!-- <ion-grid class="grid1">
+    <ion-grid class="grid1">
         <ion-row class="row1">
             <ion-col>
               <ion-row class="rowperson">
@@ -28,46 +28,24 @@
                 </ion-row>
                 <ion-row>
                   <ion-col>
-                    <form [formGroup]="credentials" (ngSubmit)="login()">
-                        <ion-list>
-                            <ion-item>
-                                <ion-icon name="person" class="icon-login"></ion-icon>
-                                <ion-input name="user" type="text" required placeholder="Username" [(ngModel)]="name"></ion-input>
-                            </ion-item>
-                            <br />
-                            <ion-item>
-                                <ion-icon name="lock-closed-outline" class="icon-login"></ion-icon>
-                                <ion-input name="password" type="password" required placeholder="Password" [(ngModel)]="pw"></ion-input>
-                            </ion-item>
-                    
-                        </ion-list>
-                    </form>
+                        <form [formGroup]="credentials" (ngSubmit)="login()">
+                                <ion-item fill="solid" class="ion-margin-bottom">
+                                    <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
+                                </ion-item>
+                        
+                                <ion-item fill="solid" class="ion-margin-bottom">
+                                    <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+                                    <!-- <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password minimal 5 karakter!</ion-note> -->
+                                </ion-item>
+                        
+                                <ion-button fill="solid" color="secondary" expand="block" size="large" type="submit" [disabled]="!credentials.valid">Login</ion-button>
+                        
+                            </form>
                       
                   </ion-col>
               </ion-row>
-              <ion-row>
-                  <ion-col>
-                    <ion-button  fill="solid" color="secondary" expand="block" size="large" (click)=loginUser()>
-                      Masuk
-                    </ion-button>
-                  </ion-col>
-              </ion-row>
+            
             </ion-grid>
         </div>
-    </ion-slide> -->
-    <form [formGroup]="credentials" (ngSubmit)="login()">
-        <ion-item fill="solid" class="ion-margin-bottom">
-            <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
-            <!-- <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email invalid</ion-note> -->
-        </ion-item>
-
-        <ion-item fill="solid" class="ion-margin-bottom">
-            <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-            <!-- <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email invalid</ion-note> -->
-        </ion-item>
-
-        <ion-button expand="full" type="submit">Login</ion-button>
-        <ion-button expand="full" type="button" (click)="register()">Buat Akun</ion-button>
-
-    </form>
+    </ion-slide>
 </ion-content>
