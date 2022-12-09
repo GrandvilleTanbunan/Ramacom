@@ -1,0 +1,44 @@
+ion-fab-button[title] {
+    position: relative;
+    
+  }
+  
+  ion-fab-button[title]::after {
+    position: absolute;
+    content: attr(title);
+    z-index: 1;
+    right: 57px;
+    bottom: 3px;
+    background-color: #009cff;
+    font-size: 10pt;
+    padding: 9px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+  }
+
+  ion-fab-button{
+    height:45px;
+    width: 45px;
+    margin-right: 10px;
+    ion-icon{
+        height: 20px;
+        width: 20px;
+    }
+  }
+
+  ion-modal {
+    --height: 50%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+  
+  ion-modal::part(backdrop) {
+    background: rgba(209, 213, 219);
+    opacity: 1;
+  }
+  
+  ion-modal ion-toolbar {
+    --background: #009cff;
+    --color: white;
+  }

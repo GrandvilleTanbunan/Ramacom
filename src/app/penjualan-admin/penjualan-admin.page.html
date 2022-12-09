@@ -5,16 +5,62 @@
 </ion-header>
 
 <ion-content>
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="secondary">
+      <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="light" title="Transaksi Baru" id="open-modal-transaksibaru" (click)="CleanSelection()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-modal #modalbrand trigger="open-modal-transaksibaru">
+      <ng-template>
+        <ion-content>
+          <ion-toolbar>
+            <ion-title class="ion-text-center">Transaksi Baru</ion-title>
+          </ion-toolbar>
+          <ion-item>
+            <ion-label>Nama Brand</ion-label>
+            <ion-input class="ion-text-right" placeholder="Input Nama Brand" [(ngModel)]="tmpnamabrandbaru" (ionChange)="optionsBrand_TAMBAHBRAND();"></ion-input>
+          </ion-item>
+          <ion-item lines="none" *ngIf="masukannamabrand === true">
+            <ion-label style="color: red;" class="ion-text-center">MASUKKAN BRAND!</ion-label>
+          </ion-item>
+        </ion-content>
+  
+        <ion-footer class="ion-no-border">
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6>
+                <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+                  BATAL
+                </ion-button>
+              </ion-col>
+              <ion-col col-6>
+                <ion-button expand="full" color="secondary" (click)="SaveBrand()">
+                  SIMPAN
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-footer>
+      </ng-template>
+    </ion-modal>
+
   <ion-item>
     <ion-label>
       Pilih Tanggal
     </ion-label>
-      <ion-datetime-button datetime="datetime"></ion-datetime-button>
-      <ion-popover [keepContentsMounted]="true">
-        <ng-template>
-          <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="date" (ionChange)="PilihTanggal()"></ion-datetime>
-        </ng-template>
-      </ion-popover>
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    <ion-popover [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime"
+          presentation="date" (ionChange)="PilihTanggal()"></ion-datetime>
+      </ng-template>
+    </ion-popover>
   </ion-item>
- 
+
 </ion-content>
