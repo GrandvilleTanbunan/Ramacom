@@ -88,12 +88,12 @@ export class AppComponent {
     if (this.loggeduser == "admin") {
       console.log('Ini admin');
       this.appPages = [
-        { title: 'Stock', url: '/stock-admin', icon: '/assets/images/stock.png' },
-        { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/selling.png' },
-        { title: 'Kategori', url: '/pembelian-admin', icon: '/assets/images/buy.png' },
-        { title: 'Daftar Harga', url: '/pembelian-admin', icon: '/assets/images/price-list-grey.png' },
+        { title: 'Stock', url: '/stock-admin', icon: '/assets/images/stock1.png' },
+        { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
+        { title: 'Kategori', url: '/pembelian-admin', icon: '/assets/images/web.png' },
+        { title: 'Daftar Harga', url: '/pembelian-admin', icon: '/assets/images/price-list1.png' },
 
-        { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
+        { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting1.png' }
       ];
       this.setting = [
         { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },

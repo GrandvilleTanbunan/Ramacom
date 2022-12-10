@@ -1,23 +1,23 @@
 <ion-content>
     <ion-grid class="grid1">
         <ion-row class="row1">
-            <ion-col>
-              <ion-row class="rowperson">
-                <ion-col class="img-container">
-                  <img width="105" height="150" src="assets/images/PERSON.png">
-                </ion-col>
-              </ion-row>
-            </ion-col>
+            <!-- <ion-col>
+                <ion-row class="rowperson">
+                    <ion-col class="img-container">
+                        <img width="105" height="150" src="assets/images/PERSON.png">
+                    </ion-col>
+                </ion-row>
+            </ion-col> -->
         </ion-row>
-    
+
         <ion-row class="row2">
             <ion-col>
-    
+
             </ion-col>
         </ion-row>
-    
+
     </ion-grid>
-    
+
     <ion-slide>
         <div class="contaier-login">
             <ion-grid>
@@ -27,24 +27,24 @@
                     </ion-col>
                 </ion-row>
                 <ion-row>
-                  <ion-col>
+                    <ion-col>
                         <form [formGroup]="credentials" (ngSubmit)="login()">
-                                <ion-item fill="solid" class="ion-margin-bottom">
-                                    <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
-                                </ion-item>
-                        
-                                <ion-item fill="solid" class="ion-margin-bottom">
-                                    <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-                                    <!-- <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password minimal 5 karakter!</ion-note> -->
-                                </ion-item>
-                        
-                                <ion-button fill="solid" color="secondary" expand="block" size="large" type="submit" [disabled]="!credentials.valid">Login</ion-button>
-                        
-                            </form>
-                      
-                  </ion-col>
-              </ion-row>
-            
+                            <ion-item fill="solid" class="ion-margin-bottom">
+                                <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
+                            </ion-item>
+
+                            <ion-item fill="solid" class="ion-margin-bottom">
+                                <ion-input type="password" placeholder="Password" formControlName="password">
+                                </ion-input>
+                                <!-- <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password minimal 5 karakter!</ion-note> -->
+                            </ion-item>
+
+                            <ion-button fill="solid" color="secondary" expand="block" size="large" type="submit"
+                                [disabled]="!credentials.valid">Login</ion-button>
+                        </form>
+                    </ion-col>
+                </ion-row>
+
             </ion-grid>
         </div>
     </ion-slide>
