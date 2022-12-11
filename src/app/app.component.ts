@@ -90,7 +90,7 @@ export class AppComponent {
       this.appPages = [
         { title: 'Stock', url: '/stock-admin', icon: '/assets/images/stock1.png' },
         { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
-        { title: 'Kategori', url: '/pembelian-admin', icon: '/assets/images/web.png' },
+        { title: 'Kategori', url: '/kategori', icon: '/assets/images/web.png' },
         { title: 'Daftar Harga', url: '/pembelian-admin', icon: '/assets/images/price-list1.png' },
 
         { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting1.png' }

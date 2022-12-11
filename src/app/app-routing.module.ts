@@ -39,7 +39,11 @@ const routes: Routes = [
   {
     path: 'penjualan-cabang',
     loadChildren: () => import('./penjualan-cabang/penjualan-cabang.module').then( m => m.PenjualanCabangPageModule)
+  },  {
+    path: 'kategori',
+    loadChildren: () => import('./kategori/kategori.module').then( m => m.KategoriPageModule)
   }
+
 ];
 
 @NgModule({
