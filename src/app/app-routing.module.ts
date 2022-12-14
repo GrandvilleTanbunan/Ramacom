@@ -42,6 +42,10 @@ const routes: Routes = [
   },  {
     path: 'kategori',
     loadChildren: () => import('./kategori/kategori.module').then( m => m.KategoriPageModule)
+  },
+  {
+    path: 'daftarharga',
+    loadChildren: () => import('./daftarharga/daftarharga.module').then( m => m.DaftarhargaPageModule)
   }
 
 ];

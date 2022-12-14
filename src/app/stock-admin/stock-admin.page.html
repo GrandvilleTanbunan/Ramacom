@@ -185,14 +185,21 @@
         </ion-item>
         <ion-item>
           <ion-label>Tipe</ion-label>
-          <ion-input class="ion-text-right" placeholder="Input Tipe" [(ngModel)]="tmpTypeBaru" (ionChange)="optionsTipe_TAMBAHTIPE();"></ion-input>
+          <ion-input class="ion-text-right" placeholder="Input Tipe" [(ngModel)]="tmpTypeBaru" (ionChange)="optionsTipe_TAMBAHTIPE();" ></ion-input>
         </ion-item>
+        <ion-item>
+          <ion-label>Harga</ion-label>
+          <ion-input class="ion-text-right" placeholder="0" [(ngModel)]="tmpHargaBaru" type="number" (keypress)="currencyCheck()" [brmasker]="{numberAndTousand: true, thousand: '.'}"></ion-input>
+
+        </ion-item>
+
         <ion-item lines="none" *ngIf="pilihbrandtambahtipe === true">
           <ion-label style="color: red;" class="ion-text-center">PILIH BRAND!</ion-label>
         </ion-item>
         <ion-item lines="none" *ngIf="masukannamatype === true">
           <ion-label style="color: red;" class="ion-text-center">MASUKKAN TIPE!</ion-label>
         </ion-item>
+        
       </ion-content>
 
       <ion-footer class="ion-no-border">

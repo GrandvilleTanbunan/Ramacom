@@ -76,6 +76,8 @@ export class StockAdminPage implements OnInit {
 
   tmpnamabrandbaru = "";
   tmpTypeBaru = "";
+  tmpHargaBaru: any;
+  old_tmpHargaBaru: any;
 
   tmplihatstock = "";
 
@@ -518,6 +520,11 @@ export class StockAdminPage implements OnInit {
     
   }
 
+  currencyCheck(): void 
+  {
+    
+  }
+
   async SaveType()
   {
     // console.log(this.selectedbrand_TYPE);
@@ -543,7 +550,7 @@ export class StockAdminPage implements OnInit {
     else {
       let alert = await this.alertCtrl.create({
 
-        message: 'Anda yakin ingin menambahkan tipe ini?',
+        subHeader: `Anda yakin ingin menambahkan tipe ${this.tmpTypeBaru}?`,
         buttons: [
           {
             text: 'Tidak',
@@ -555,7 +562,8 @@ export class StockAdminPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru, this.tmpcabang);
+              if(this.tmpHargaBaru == 0) this.tmpHargaBaru = 0;
+              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru, this.tmpcabang, this.tmpHargaBaru);
               // this.dataService.addStock(this.selectedbrand_TYPE);
               this.tmpTypeBaru = "";
               // this.selectedbrand_TYPE = "";
@@ -694,6 +702,7 @@ export class StockAdminPage implements OnInit {
     this.selectedbrand_TYPE = "";
     this.selectedbrand_HAPUS = "";
     this.tmpTypeBaru = "";
+    this.tmpHargaBaru = undefined;
     this.selectedtype_HAPUS = "";
     this.selectedbrand_HAPUSTYPE = "";
 
