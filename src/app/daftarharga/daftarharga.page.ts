@@ -65,6 +65,11 @@ export class DaftarhargaPage implements OnInit {
       )
     })
   }
+
+  EditHarga(item)
+  {
+    console.log(item);
+  }
   
 
 }
