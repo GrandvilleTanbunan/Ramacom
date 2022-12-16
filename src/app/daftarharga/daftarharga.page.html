@@ -5,5 +5,29 @@
 </ion-header>
 
 <ion-content>
+  <ion-item>
+    <ion-label>Pilih Kategori</ion-label>
+    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedKategori" (ionChange)="PilihKategori();">
+      <ion-select-option *ngFor="let item of tmpKategori" [value]="item.namakategori" >{{item.namakategori}}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
+  <ion-item *ngIf="selectedKategori === 'Handphone' ; else templateName">
+    <ion-label>Pilih Brand</ion-label>
+    <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_TYPE" (ionChange)="optionsBrand_TAMBAHTIPE();">
+      <ion-select-option *ngFor="let item of tmpisikategori" [value]="item.ID">{{item.namabrand}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ng-template #templateName>
+    <ng-container *ngIf="selectedKategori">
+      <ion-searchbar [debounce]="100" placeholder="Cari {{selectedKategori}}" show-clear-button="focus" (ionChange)="CariItem($event)"></ion-searchbar>
+      <ion-item *ngFor="let item of results" lines="full">
+        <ion-label>{{item.nama}}</ion-label>
+        <ion-label slot="end">Rp {{item.harga | number}}</ion-label>
+      </ion-item>
+    </ng-container>
+  </ng-template>
+
+ 
 </ion-content>

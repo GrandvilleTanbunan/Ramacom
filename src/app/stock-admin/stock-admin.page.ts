@@ -162,31 +162,11 @@ export class StockAdminPage implements OnInit {
 
   
   public getType() {
-
-    // this.dataService.getType(this.selectedbrand);
-
-    // this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc'))
-    //   .valueChanges({ idField: 'TypeID' })
-    //   .take(1)
-    //   .subscribe(data => {
-    //     this.tmptype = data;
-    //     console.log(this.tmptype)
-    //     // return of(this.tmptype);
-    //     this.getRandomNumber();
-    //     this.getstockdicabang();
-
-    //   }
-
-    //   );
-
-      // console.log(this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).ref.get());
     
     this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
     .subscribe(data => {
       this.tmptype = data;
       console.log(this.tmptype)
-      // return of(this.tmptype);
-      // this.getRandomNumber();
       this.getstockdicabang();
     });
     
