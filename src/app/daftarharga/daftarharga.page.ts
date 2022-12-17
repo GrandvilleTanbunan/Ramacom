@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ModalController } from '@ionic/angular';
+import { EdithargaPage } from '../editharga/editharga.page';
 
 
 @Component({
@@ -13,7 +15,7 @@ export class DaftarhargaPage implements OnInit {
   tmpbrand = [];
   tmpisikategori= [];
   public results = [];
-  constructor(private db: AngularFirestore) { }
+  constructor(private modalCtrl: ModalController, private db: AngularFirestore) { }
 
   ngOnInit() {
     this.getKategori();
@@ -63,12 +65,20 @@ export class DaftarhargaPage implements OnInit {
         item.nama.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
         item.harga.toLowerCase().indexOf(val.toLowerCase()) > -1
       )
-    })
+    });
   }
 
-  EditHarga(item)
-  {
-    console.log(item);
+  // EditHarga(item)
+  // {
+  //   console.log(item);
+  // }
+
+  async EditHarga() {
+    const modal = await this.modalCtrl.create({
+      component: EdithargaPage,
+      cssClass:'custom-popover'
+    });
+    await modal.present();
   }
   
 

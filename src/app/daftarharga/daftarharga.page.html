@@ -29,14 +29,17 @@
         </ion-item>
     
         <ion-item-options>
-          <ion-item-option (click)="EditHarga(item)"  id="open-modal">
+          <ion-item-option (click)="EditHarga(item)">
             <ion-icon slot="start" name="create"></ion-icon>
-            Edit Harga
+            Edit
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     </ng-container>
+    
   </ng-template>
+
+
 
   <ion-modal #modal trigger="open-modal">
       <ng-template>

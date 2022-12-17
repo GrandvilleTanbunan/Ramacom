@@ -50,6 +50,10 @@ const routes: Routes = [
   {
     path: 'pengaturan',
     loadChildren: () => import('./pengaturan/pengaturan.module').then( m => m.PengaturanPageModule)
+  },
+  {
+    path: 'editharga',
+    loadChildren: () => import('./editharga/editharga.module').then( m => m.EdithargaPageModule)
   }
 
 ];
