@@ -94,23 +94,23 @@ export class AppComponent {
         { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
         { title: 'Kategori', url: '/kategori', icon: '/assets/images/web.png' },
 
-        { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting1.png' }
+        { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
       ];
       this.setting = [
-        { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },
+        { title: 'Logout', url: '/login', icon: '/assets/images/logout.png' },
       ]
     }
-    else {
-      this.appPages = [
-        { title: 'Stock', url: '/stock-cabang', icon: '/assets/images/stock.png' },
-        { title: 'Penjualan', url: '/penjualan-cabang', icon: '/assets/images/selling.png' },
-        { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
-      ];
-      this.setting = [
-        { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },
-      ]
-      console.log('Ini BUKAN admin');
-    }
+    // else {
+    //   this.appPages = [
+    //     { title: 'Stock', url: '/stock-cabang', icon: '/assets/images/stock.png' },
+    //     { title: 'Penjualan', url: '/penjualan-cabang', icon: '/assets/images/selling.png' },
+    //     { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
+    //   ];
+    //   this.setting = [
+    //     { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },
+    //   ]
+    //   console.log('Ini BUKAN admin');
+    // }
   }
 
   async logout()

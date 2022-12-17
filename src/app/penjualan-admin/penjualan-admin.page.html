@@ -10,13 +10,13 @@
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Transaksi Baru" id="open-modal-transaksibaru" (click)="CleanSelection()">
+      <ion-fab-button color="light" title="Transaksi Baru" id="open-modal-transaksibaru">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
 
-  <ion-modal #modalbrand trigger="open-modal-transaksibaru">
+  <!-- <ion-modal #modalbrand trigger="open-modal-transaksibaru">
       <ng-template>
         <ion-content>
           <ion-toolbar>
@@ -24,7 +24,7 @@
           </ion-toolbar>
           <ion-item>
             <ion-label>Nama Brand</ion-label>
-            <ion-input class="ion-text-right" placeholder="Input Nama Brand" [(ngModel)]="tmpnamabrandbaru" (ionChange)="optionsBrand_TAMBAHBRAND();"></ion-input>
+            <ion-input class="ion-text-right" placeholder="Input Nama Brand"></ion-input>
           </ion-item>
           <ion-item lines="none" *ngIf="masukannamabrand === true">
             <ion-label style="color: red;" class="ion-text-center">MASUKKAN BRAND!</ion-label>
@@ -48,7 +48,7 @@
           </ion-grid>
         </ion-footer>
       </ng-template>
-    </ion-modal>
+    </ion-modal> -->
 
   <ion-item>
     <ion-label>

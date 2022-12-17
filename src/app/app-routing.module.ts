@@ -46,6 +46,10 @@ const routes: Routes = [
   {
     path: 'daftarharga',
     loadChildren: () => import('./daftarharga/daftarharga.module').then( m => m.DaftarhargaPageModule)
+  },
+  {
+    path: 'pengaturan',
+    loadChildren: () => import('./pengaturan/pengaturan.module').then( m => m.PengaturanPageModule)
   }
 
 ];
