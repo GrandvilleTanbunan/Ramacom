@@ -1,9 +1,41 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>editharga</ion-title>
+  <ion-toolbar  color="secondary" >
+    <ion-title class="ion-text-center">Edit Harga</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
+  <ion-item lines="full">
+    <ion-label>
+      {{detailitem.nama}}
+    </ion-label>
+    <ion-label class="ion-text-right" color="danger">
+      Rp {{detailitem.harga | number}}
+    </ion-label>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Harga Baru</ion-label>
+    <ion-input class="ion-text-right" placeholder="Input Harga" [(ngModel)]="hargabaru"></ion-input>
+  </ion-item>
+
+
 </ion-content>
+
+<ion-footer class="ion-no-border">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6>
+          <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+            BATAL
+          </ion-button>
+        </ion-col>
+        <ion-col col-6>
+          <ion-button expand="full" color="secondary" (click)="SaveBrand()">
+            SIMPAN
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-footer>

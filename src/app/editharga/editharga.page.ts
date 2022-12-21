@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./editharga.page.scss'],
 })
 export class EdithargaPage implements OnInit {
-
+  detailitem;
+  hargabaru;
   constructor() { }
 
   ngOnInit() {
+    console.log(this.detailitem);
   }
 
 }

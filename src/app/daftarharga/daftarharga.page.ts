@@ -73,10 +73,15 @@ export class DaftarhargaPage implements OnInit {
   //   console.log(item);
   // }
 
-  async EditHarga() {
+  async EditHarga(item) {
+    // console.log(item);
+
     const modal = await this.modalCtrl.create({
       component: EdithargaPage,
-      cssClass:'custom-popover'
+      cssClass:'small-modal',
+      componentProps: {
+        detailitem: item,
+      },
     });
     await modal.present();
   }
