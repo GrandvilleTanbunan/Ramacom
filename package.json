@@ -34,6 +34,8 @@
     "globalthis": "^1.0.3",
     "ionicons": "^6.0.3",
     "moment": "^2.29.4",
+    "ng2-currency-mask": "^13.0.3",
+    "ngx-currency": "^3.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"

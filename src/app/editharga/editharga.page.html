@@ -17,7 +17,8 @@
 
   <ion-item>
     <ion-label>Harga Baru</ion-label>
-    <ion-input class="ion-text-right" placeholder="Input Harga" [(ngModel)]="hargabaru"></ion-input>
+    <ion-input class="ion-text-right" placeholder="Input Harga" type="number" [(ngModel)]="hargabaru"></ion-input>
+
   </ion-item>
 
 
@@ -32,7 +33,7 @@
           </ion-button>
         </ion-col>
         <ion-col col-6>
-          <ion-button expand="full" color="secondary" (click)="SaveBrand()">
+          <ion-button expand="full" color="secondary" (click)="EditHarga()">
             SIMPAN
           </ion-button>
         </ion-col>

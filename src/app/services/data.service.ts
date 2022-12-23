@@ -138,4 +138,16 @@ export class DataService {
     const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}`);
     return deleteDoc(TypeRef);
   }
+
+  async EditHarga(detailItem, HargaBaru, kategori)
+  {
+    console.log("Detail item: ", detailItem);
+    console.log("harga baru: ", HargaBaru);
+    console.log("Kategori: ", kategori);
+
+    const UpdateHarga = this.db.collection(`${kategori}`).doc(`${detailItem.ID}`);
+    
+    const res1 = await UpdateHarga.update({harga: HargaBaru});
+    
+  }
 }

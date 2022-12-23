@@ -1,5 +1,5 @@
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -22,12 +22,26 @@ import { HttpClientModule } from '@angular/common/http';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
+import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from "ng2-currency-mask";
+import { CurrencyPipe } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
+import localeId from '@angular/common/locales/id'; 
+registerLocaleData(localeId, 'id'); 
 
+export const customCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: "right",
+  allowNegative: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "R$ ",
+  suffix: "",
+  thousands: "."
+}
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [AngularFirestoreModule, AngularFireModule.initializeApp(environment.firebase), HttpClientModule, IonicStorageModule.forRoot(), BrowserModule, IonicModule.forRoot(), AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebase)), provideAnalytics(() => getAnalytics()), provideAuth(() => getAuth()), provideDatabase(() => getDatabase()), provideFirestore(() => getFirestore()), provideFunctions(() => getFunctions()), provideMessaging(() => getMessaging()), providePerformance(() => getPerformance()), provideRemoteConfig(() => getRemoteConfig()), provideStorage(() => getStorage())],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ScreenTrackingService,UserTrackingService],
+  imports: [CurrencyPipe, CurrencyMaskModule, AngularFirestoreModule, AngularFireModule.initializeApp(environment.firebase), HttpClientModule, IonicStorageModule.forRoot(), BrowserModule, IonicModule.forRoot(), AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebase)), provideAnalytics(() => getAnalytics()), provideAuth(() => getAuth()), provideDatabase(() => getDatabase()), provideFirestore(() => getFirestore()), provideFunctions(() => getFunctions()), provideMessaging(() => getMessaging()), providePerformance(() => getPerformance()), provideRemoteConfig(() => getRemoteConfig()), provideStorage(() => getStorage())],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },{provide: LOCALE_ID, useValue: "id-ID"},{provide: CURRENCY_MASK_CONFIG, useValue: customCurrencyMaskConfig}, ScreenTrackingService,UserTrackingService, CurrencyPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

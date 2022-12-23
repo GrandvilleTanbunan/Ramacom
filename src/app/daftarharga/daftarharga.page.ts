@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ModalController } from '@ionic/angular';
 import { EdithargaPage } from '../editharga/editharga.page';
+import { CurrencyPipe } from '@angular/common';
+
 
 
 @Component({
@@ -15,7 +17,7 @@ export class DaftarhargaPage implements OnInit {
   tmpbrand = [];
   tmpisikategori= [];
   public results = [];
-  constructor(private modalCtrl: ModalController, private db: AngularFirestore) { }
+  constructor(private currencyPipe: CurrencyPipe, private modalCtrl: ModalController, private db: AngularFirestore) { }
 
   ngOnInit() {
     this.getKategori();
@@ -81,6 +83,7 @@ export class DaftarhargaPage implements OnInit {
       cssClass:'small-modal',
       componentProps: {
         detailitem: item,
+        kategori: this.selectedKategori
       },
     });
     await modal.present();
