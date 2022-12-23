@@ -11,6 +11,7 @@ import {of} from 'rxjs'
 import { take } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-stock-admin',
@@ -93,7 +94,7 @@ export class StockAdminPage implements OnInit {
   };
 
 
-  constructor(private navCtrl: NavController, private router: Router, private authService: AuthService, private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  constructor(private currencyPipe: CurrencyPipe, private navCtrl: NavController, private router: Router, private authService: AuthService, private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (!this.routerOutlet.canGoBack()) {
         this.presentConfirm();
@@ -528,9 +529,11 @@ export class StockAdminPage implements OnInit {
       this.pilihbrandtambahtipe = true;
     }
     else {
+      const tmpHargaBaru_formatted = this.currencyPipe.transform(this.tmpHargaBaru, 'Rp ', true, '1.0');
+      
       let alert = await this.alertCtrl.create({
 
-        subHeader: `Anda yakin ingin menambahkan tipe ${this.tmpTypeBaru}?`,
+        subHeader: `Anda yakin ingin menambahkan tipe ${this.tmpTypeBaru} dengan harga ${tmpHargaBaru_formatted}?`,
         buttons: [
           {
             text: 'Tidak',
@@ -556,6 +559,7 @@ export class StockAdminPage implements OnInit {
               await alert.present();
               this.masukannamatype = false;
               this.pilihbrandtambahtipe = false;
+              this.tmpHargaBaru = undefined;
 
             }
           }

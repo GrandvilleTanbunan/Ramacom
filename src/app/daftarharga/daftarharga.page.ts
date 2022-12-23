@@ -63,9 +63,9 @@ export class DaftarhargaPage implements OnInit {
   CariItem(event : any) {
     const val = event.target.value;
     this.results = this.tmpisikategori.filter((item) => {
-      return (item.ID.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-        item.nama.toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-        item.harga.toLowerCase().indexOf(val.toLowerCase()) > -1
+      return (item.ID.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.nama.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
       )
     });
   }

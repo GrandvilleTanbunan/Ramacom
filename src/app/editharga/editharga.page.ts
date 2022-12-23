@@ -58,6 +58,8 @@ export class EdithargaPage implements OnInit {
               buttons: ['OK'],
             });
             await alert.present();
+
+            this.modalCtrl.dismiss();
           }
         }
       ]
