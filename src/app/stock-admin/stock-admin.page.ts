@@ -171,11 +171,6 @@ export class StockAdminPage implements OnInit {
       this.getstockdicabang();
     });
     
-      
-
-      
-
-
   }
 
   public CleanSelection()

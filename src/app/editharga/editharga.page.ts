@@ -13,6 +13,7 @@ export class EdithargaPage implements OnInit {
   detailitem;
   kategori;
   hargabaru;
+  IDBrand;
   hargabaru_formated;
 
   constructor(private currencyPipe: CurrencyPipe, private alertCtrl: AlertController, private navCtrl :NavController, private modalCtrl: ModalController, private dataService: DataService) { }
@@ -20,7 +21,7 @@ export class EdithargaPage implements OnInit {
   ngOnInit() {
     console.log(this.detailitem);
     console.log(this.kategori);
-
+    console.log(this.IDBrand);
   }
 
   Dismissmodal()
@@ -52,6 +53,41 @@ export class EdithargaPage implements OnInit {
           text: 'YA',
           handler: async () => {
             this.dataService.EditHarga(this.detailitem, this.hargabaru, this.kategori);
+            
+            const alert = await this.alertCtrl.create({
+              subHeader: 'Harga berhasil diedit!',
+              buttons: ['OK'],
+            });
+            await alert.present();
+
+            this.modalCtrl.dismiss();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async EditHargaHp()
+  {
+    this.hargabaru_formated = this.getCurrency(this.hargabaru);
+    console.log(this.hargabaru_formated)
+    
+    let alert = await this.alertCtrl.create({
+
+      subHeader: `Anda yakin ingin mengubah harga ${this.detailitem.type} menjadi ${this.hargabaru_formated}?`,
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: async () => {
+            this.dataService.EditHargaHp(this.IDBrand, this.hargabaru, this.kategori, this.detailitem);
             
             const alert = await this.alertCtrl.create({
               subHeader: 'Harga berhasil diedit!',

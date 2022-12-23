@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ModalController } from '@ionic/angular';
 import { EdithargaPage } from '../editharga/editharga.page';
 import { CurrencyPipe } from '@angular/common';
+import { DataService } from '../services/data.service';
 
 
 
@@ -13,11 +14,13 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class DaftarhargaPage implements OnInit {
   selectedKategori = "";
+  selectedbrand;
   tmpKategori = [];
   tmpbrand = [];
   tmpisikategori= [];
   public results = [];
-  constructor(private currencyPipe: CurrencyPipe, private modalCtrl: ModalController, private db: AngularFirestore) { }
+  public tmptype;
+  constructor(private currencyPipe: CurrencyPipe, private modalCtrl: ModalController, private db: AngularFirestore, private dataService: DataService) { }
 
   ngOnInit() {
     this.getKategori();
@@ -33,6 +36,19 @@ export class DaftarhargaPage implements OnInit {
         }
     );
   }
+
+  getHargaHp()
+  {
+    this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc'))
+        .valueChanges({ idField: 'TypeID' })
+        .subscribe( data => {
+            this.tmptype = data;
+            console.log(this.tmptype)
+        }
+        
+    );
+  }
+
   PilihKategori(): void 
   {
     this.tmpisikategori = [];
@@ -83,6 +99,20 @@ export class DaftarhargaPage implements OnInit {
       cssClass:'small-modal',
       componentProps: {
         detailitem: item,
+        kategori: this.selectedKategori
+      },
+    });
+    await modal.present();
+  }
+
+  async EditHargaHp(item) {
+
+    const modal = await this.modalCtrl.create({
+      component: EdithargaPage,
+      cssClass:'small-modal',
+      componentProps: {
+        detailitem: item,
+        IDBrand: this.selectedbrand,
         kategori: this.selectedKategori
       },
     });

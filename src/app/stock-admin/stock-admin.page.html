@@ -47,35 +47,6 @@
     </ion-select>
   </ion-item>
 
-  <!-- <ion-list>
-    <ion-radio-group value="strawberries">
-      <ion-item>
-        <ion-label>Tampilan Semua Brand</ion-label>
-        <ion-radio slot="end" value="grapes"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Pilih Brand</ion-label>
-        <ion-radio slot="end" value="strawberries"> Pilih Brand</ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list> -->
-
-  <!-- <ion-segment *ngIf="tmplihatstock === 'Cabang' && selectedCabang != '' " [(ngModel)]="opsitampilkansemua" mode="ios" (ionChange)="pilihtampilkan()">
-    <ion-segment-button value='0'>
-      <ion-label style="font-size:12pt;">Tampilkan Semua Brand</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value='1'>
-      <ion-label style="font-size:12pt;">Pilih Brand</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
-  <ion-item *ngIf="opsitampilkansemua == '1'">
-    <ion-label>Pilih Brand yang Ingin Dicek Pada Cabang</ion-label>
-    <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedBrandCabang" (ionChange)="getType();">
-      <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID" >{{item.namabrand}}</ion-select-option>
-    </ion-select>
-  </ion-item>-->
-
   <ion-grid *ngIf="tmptype?.length > 0" class="header-row">
     <ion-row>
       <ion-col size="3" class="isi-row-tipe" style="text-align: center;">

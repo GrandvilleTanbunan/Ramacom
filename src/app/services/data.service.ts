@@ -150,4 +150,17 @@ export class DataService {
     const res1 = await UpdateHarga.update({harga: HargaBaru});
     
   }
+
+  async EditHargaHp(IDBrand, HargaBaru, kategori, detailItem)
+  {
+    console.log("Detail Item: ", detailItem)
+    console.log("ID brand: ", IDBrand);
+    console.log("harga baru: ", HargaBaru);
+    console.log("Kategori: ", kategori);
+
+    const UpdateHarga = this.db.collection(`Brand/${IDBrand}/Type`).doc(`${detailItem.TypeID}`);
+    
+    const res1 = await UpdateHarga.update({harga: HargaBaru});
+    
+  }
 }
