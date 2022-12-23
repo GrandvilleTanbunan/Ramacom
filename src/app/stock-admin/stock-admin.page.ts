@@ -66,6 +66,7 @@ export class StockAdminPage implements OnInit {
 
   masukannamabrand = false;
   masukannamatype = false;
+  masukkanharga = false;
   pilihbrand = false;
   pilihbrandtambahtipe = false;
   pilihtipe_hapustipe = false;
@@ -509,6 +510,8 @@ export class StockAdminPage implements OnInit {
       console.log("brand belum terpilih dan tipe sudah");
       this.pilihbrandtambahtipe = true;
       this.masukannamatype = false;
+      this.masukkanharga = true;
+
     }
     else if (this.selectedbrand_TYPE != "" && this.tmpTypeBaru == "") {
       // console.log(this.tmpTypeBaru);
@@ -516,12 +519,22 @@ export class StockAdminPage implements OnInit {
 
       this.pilihbrandtambahtipe = false;
       this.masukannamatype = true;
+      this.masukkanharga = true;
+
     }
     else if(this.selectedbrand_TYPE == "" && this.tmpTypeBaru == "")
     {
       console.log("brand dan tipe belum terpilih");
       this.masukannamatype = true;
       this.pilihbrandtambahtipe = true;
+      this.masukkanharga = true;
+
+    }
+    else if(this.tmpHargaBaru == undefined)
+    {
+      this.masukannamatype = false;
+      this.pilihbrandtambahtipe = false;
+      this.masukkanharga = true;
     }
     else {
       const tmpHargaBaru_formatted = this.currencyPipe.transform(this.tmpHargaBaru, 'Rp ', true, '1.0');
@@ -554,6 +567,8 @@ export class StockAdminPage implements OnInit {
               await alert.present();
               this.masukannamatype = false;
               this.pilihbrandtambahtipe = false;
+              this.masukkanharga = false;
+
               this.tmpHargaBaru = undefined;
 
             }
@@ -645,7 +660,7 @@ export class StockAdminPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.deleteType(this.selectedbrand_HAPUSTYPE, this.selectedtype_HAPUS);
+              this.dataService.deleteType(this.selectedbrand_HAPUSTYPE, this.selectedtype_HAPUS, this.tmpcabang);
               this.selectedtype_HAPUS = "";
               this.selectedtype = "";
               // this.selectedbrand_HAPUSTYPE = "";
@@ -695,6 +710,7 @@ export class StockAdminPage implements OnInit {
     this.selectedbrand_UpdateStock = undefined;
     this.selectedtype_UpdateStock = undefined;
     this.selectedCabang_UpdateStock = undefined;
+    this.masukkanharga = false;
     this.tmpjumlahupdate_tambah = 1;
 
     console.log(this.selectedtype_PindahkanStock)

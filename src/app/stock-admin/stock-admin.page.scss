@@ -5,6 +5,16 @@ ion-card {
     text-align: center;
 }
 
+.item-no-padding{
+  --padding-start: 0;
+  --padding-end: 0;
+  
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  
+  --min-height: 0;
+}
+
 // ion-fab-button {
 //     // margin-left: 140px;  
 //     overflow: visible;
@@ -67,6 +77,12 @@ ion-card {
 
   .modal_pindahstock{
     --height: 80%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .modal_tambahtype{
+    --height: 60%;
     --border-radius: 16px;
     --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }

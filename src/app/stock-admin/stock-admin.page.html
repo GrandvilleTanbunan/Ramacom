@@ -142,7 +142,7 @@
   </ion-modal>
 
 
-  <ion-modal #modaltipe trigger="open-modal-tambahtipe">
+  <ion-modal #modaltipe trigger="open-modal-tambahtipe" class="modal_tambahtype">
     <ng-template>
       <ion-content>
         <ion-toolbar>
@@ -161,14 +161,18 @@
         <ion-item>
           <ion-label>Harga</ion-label>
           <ion-input class="ion-text-right" placeholder="0" [(ngModel)]="tmpHargaBaru" type="number" (keypress)="currencyCheck()"></ion-input>
+          <ion-note slot="helper">Jika harga belum ada, dapat diisi 0. Harga dapat diedit di menu Daftar Harga</ion-note>
 
         </ion-item>
 
-        <ion-item lines="none" *ngIf="pilihbrandtambahtipe === true">
+        <ion-item lines="none" *ngIf="pilihbrandtambahtipe === true" class="item-no-padding">
           <ion-label style="color: red;" class="ion-text-center">PILIH BRAND!</ion-label>
         </ion-item>
-        <ion-item lines="none" *ngIf="masukannamatype === true">
-          <ion-label style="color: red;" class="ion-text-center">MASUKKAN TIPE!</ion-label>
+        <ion-item lines="none" *ngIf="masukannamatype === true" class="item-no-padding">
+          <ion-label style="color: red;" class="ion-text-center" >MASUKKAN TIPE!</ion-label>
+        </ion-item>
+        <ion-item lines="none" *ngIf="masukkanharga === true" class="item-no-padding">
+          <ion-label style="color: red;" class="ion-text-center">MASUKKAN HARGA!</ion-label>
         </ion-item>
         
       </ion-content>

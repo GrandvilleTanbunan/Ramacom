@@ -43,6 +43,7 @@ export class DaftarhargaPage implements OnInit {
         .valueChanges({ idField: 'TypeID' })
         .subscribe( data => {
             this.tmptype = data;
+            this.results = [...this.tmptype];
             console.log(this.tmptype)
         }
         
@@ -51,6 +52,7 @@ export class DaftarhargaPage implements OnInit {
 
   PilihKategori(): void 
   {
+    this.results=[];
     this.tmpisikategori = [];
     console.log(this.selectedKategori);
     if (this.selectedKategori == "Handphone") {
@@ -81,6 +83,16 @@ export class DaftarhargaPage implements OnInit {
     this.results = this.tmpisikategori.filter((item) => {
       return (item.ID.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
         item.nama.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
+      )
+    });
+  }
+
+  CariItemHp(event : any) {
+    console.log(this.tmptype);
+    const val = event.target.value;
+    this.results = this.tmptype.filter((item) => {
+      return (item.type.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
         item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
       )
     });

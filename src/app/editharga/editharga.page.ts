@@ -98,7 +98,7 @@ export class EdithargaPage implements OnInit {
             this.modalCtrl.dismiss();
           }
         }
-      ]
+      ],
     });
     await alert.present();
   }

@@ -20,9 +20,9 @@
         </ion-select>
       </ion-item>
       <!-- <ion-item *ngIf="selectedbrand" lines="none"> -->
-          <ion-searchbar *ngIf="selectedbrand" [debounce]="100" placeholder="Cari {{selectedKategori}}" show-clear-button="focus" (ionChange)="CariItem($event)"></ion-searchbar>
+          <ion-searchbar *ngIf="selectedbrand" [debounce]="100" placeholder="Cari {{selectedKategori}}" show-clear-button="focus" (ionChange)="CariItemHp($event)"></ion-searchbar>
       <!-- </ion-item> -->
-      <ion-item-sliding *ngFor="let item of tmptype">
+      <ion-item-sliding *ngFor="let item of results">
           <ion-item lines="full">
             <ion-label>{{item.type}}</ion-label>
             <ion-label slot="end">Rp {{item.harga | number}}</ion-label>

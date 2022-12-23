@@ -133,10 +133,25 @@ export class DataService {
     return deleteDoc(TypeRef);
   }
 
-  deleteType(BrandID, TypeID)
+  async deleteType(BrandID, TypeID, tmpCabang)
   {
+    this.deletecoll(BrandID, TypeID, tmpCabang);
     const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}`);
     return deleteDoc(TypeRef);
+    
+  }
+
+  async deletecoll(BrandID, TypeID, tmpCabang)
+  {
+    console.log(tmpCabang);
+    for(let i=0; i<tmpCabang.length; i++)
+    {
+      // const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}/stockdicabang/${tmpCabang[i].namacabang}`);
+      // return deleteDoc(TypeRef);
+
+      const res = await this.db.collection(`Brand/${BrandID}/Type/${TypeID}/stockdicabang`).doc(tmpCabang[i].namacabang).delete();
+    }
+    
   }
 
   async EditHarga(detailItem, HargaBaru, kategori)
