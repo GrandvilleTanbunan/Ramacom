@@ -95,7 +95,7 @@ export class StockAdminPage implements OnInit {
   };
 
 
-  constructor(private currencyPipe: CurrencyPipe, private navCtrl: NavController, private router: Router, private authService: AuthService, private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  constructor(private toastController: ToastController, private currencyPipe: CurrencyPipe, private navCtrl: NavController, private router: Router, private authService: AuthService, private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (!this.routerOutlet.canGoBack()) {
         this.presentConfirm();
@@ -481,11 +481,20 @@ export class StockAdminPage implements OnInit {
             handler: async () => {
               this.dataService.addBrand(this.tmpnamabrandbaru);
               this.tmpnamabrandbaru = "";
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Brand berhasil ditambahkan!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Brand berhasil ditambahkan!',
+              //   buttons: ['OK'],
+              // });
+              // await alert.present();
+
+              const toast = await this.toastController.create({
+                message: 'Brand berhasil ditambahkan!',
+                duration: 1500,
+                position: 'bottom'
               });
-              await alert.present();
+
+              await toast.present();
+
               this.masukannamabrand = false;
 
             }
@@ -559,12 +568,20 @@ export class StockAdminPage implements OnInit {
               this.tmpTypeBaru = "";
               // this.selectedbrand_TYPE = "";
 
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Tipe berhasil ditambahkan!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Tipe berhasil ditambahkan!',
+              //   buttons: ['OK'],
+              // });
+
+              // await alert.present();
+
+              const toast = await this.toastController.create({
+                message: 'Tipe berhasil ditambahkan!',
+                duration: 1500,
+                position: 'bottom'
               });
 
-              await alert.present();
+              await toast.present();
               this.masukannamatype = false;
               this.pilihbrandtambahtipe = false;
               this.masukkanharga = false;
@@ -606,11 +623,20 @@ export class StockAdminPage implements OnInit {
               this.dataService.deleteBrand(this.selectedbrand_HAPUS);
               this.selectedbrand_HAPUS = "";
               this.selectedbrand = "";
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Brand berhasil dihapus!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Brand berhasil dihapus!',
+              //   buttons: ['OK'],
+              // });
+              // await alert.present();
+
+              const toast = await this.toastController.create({
+                message: 'Brand berhasil dihapus!',
+                duration: 1500,
+                position: 'bottom'
               });
-              await alert.present();
+
+              await toast.present();
+
               this.pilihbrand = false;
             }
           }
@@ -648,7 +674,7 @@ export class StockAdminPage implements OnInit {
     else {
       let alert = await this.alertCtrl.create({
 
-        message: 'Anda yakin ingin menghapus tipe ini?',
+        subHeader: 'Anda yakin ingin menghapus tipe ini?',
         buttons: [
           {
             text: 'Tidak',
@@ -666,11 +692,20 @@ export class StockAdminPage implements OnInit {
               // this.selectedbrand_HAPUSTYPE = "";
               this.tmptypeHAPUS = [];
 
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Tipe berhasil dihapus!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Tipe berhasil dihapus!',
+              //   buttons: ['OK'],
+              // });
+              // await alert.present();
+
+              const toast = await this.toastController.create({
+                message: 'Tipe berhasil dihapus!',
+                duration: 1500,
+                position: 'bottom'
               });
-              await alert.present();
+
+              await toast.present();
+
               this.pilihbrand_hapustipe = false;
               this.pilihtipe_hapustipe = false;
 
@@ -782,12 +817,20 @@ export class StockAdminPage implements OnInit {
 
     
 
-    const alert = await this.alertCtrl.create({
-      subHeader: 'Stock berhasil dipindahkan!',
-      buttons: ['OK'],
+    // const alert = await this.alertCtrl.create({
+    //   subHeader: 'Stock berhasil dipindahkan!',
+    //   buttons: ['OK'],
+    // });
+
+    const toast = await this.toastController.create({
+      message: 'Stock berhasil dipindahkan!',
+      duration: 1500,
+      position: 'bottom'
     });
     loading.dismiss();
-    await alert.present();
+    await toast.present();
+
+    // await alert.present();
   }
 
 
@@ -882,11 +925,20 @@ export class StockAdminPage implements OnInit {
               
               const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah});
         
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Stock berhasil ditambah!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Stock berhasil ditambah!',
+              //   buttons: ['OK'],
+              // });
+              // loading.dismiss();
+              const toast = await this.toastController.create({
+                message: 'Stock berhasil ditambah!',
+                duration: 1500,
+                position: 'bottom'
               });
+
               loading.dismiss();
+
+              await toast.present();
               await alert.present();
             }
           }
@@ -923,12 +975,21 @@ export class StockAdminPage implements OnInit {
               
               const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah});
         
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Stock berhasil diupdate!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Stock berhasil diupdate!',
+              //   buttons: ['OK'],
+              // });
+
+              const toast = await this.toastController.create({
+                message: 'Stock berhasil diupdate!',
+                duration: 1500,
+                position: 'bottom'
               });
+              
               loading.dismiss();
-              await alert.present();
+
+              await toast.present();
+              // await alert.present();
             }
           }
         ]
