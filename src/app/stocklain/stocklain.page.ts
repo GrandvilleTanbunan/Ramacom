@@ -62,8 +62,6 @@ export class StocklainPage implements OnInit {
     } else {
       console.log(this.ionicForm.value)
       const tmpHargaBaru_formatted = this.currencyPipe.transform(this.ionicForm.value.harga, 'Rp ', true, '1.0');
-
-
       let alert = await this.alertCtrl.create({
 
         subHeader: `Anda yakin ingin menambahkan ${this.ionicForm.value.nama} dengan harga ${tmpHargaBaru_formatted}?`,
@@ -79,7 +77,6 @@ export class StocklainPage implements OnInit {
             text: 'YA',
             handler: async () => {
               this.dataService.addItem(this.ionicForm.value)
-
 
               const toast = await this.toastController.create({
                 message: 'Item berhasil ditambahkan!',

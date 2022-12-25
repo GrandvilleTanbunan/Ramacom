@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { CurrencyPipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-editharga',
@@ -15,13 +16,21 @@ export class EdithargaPage implements OnInit {
   hargabaru;
   IDBrand;
   hargabaru_formated;
+  errorharga = false;
+  ionicForm: FormGroup;
+  isSubmitted = false;
 
-  constructor(private currencyPipe: CurrencyPipe, private alertCtrl: AlertController, private navCtrl :NavController, private modalCtrl: ModalController, private dataService: DataService) { }
+
+
+  constructor(public formBuilder: FormBuilder, private currencyPipe: CurrencyPipe, private alertCtrl: AlertController, private navCtrl :NavController, private modalCtrl: ModalController, private dataService: DataService) { }
 
   ngOnInit() {
     console.log(this.detailitem);
     console.log(this.kategori);
     console.log(this.IDBrand);
+    this.ionicForm = this.formBuilder.group({
+      harga:['', [Validators.required]]
+    })
   }
 
   Dismissmodal()
@@ -33,73 +42,81 @@ export class EdithargaPage implements OnInit {
     return this.currencyPipe.transform(amount, 'Rp ', true, '1.0');
   }
 
-  async EditHarga()
-  {
+  async EditHarga() {
     this.hargabaru_formated = this.getCurrency(this.hargabaru);
     console.log(this.hargabaru_formated)
-    
-    let alert = await this.alertCtrl.create({
+    if (this.hargabaru != null) {
+      let alert = await this.alertCtrl.create({
 
-      subHeader: `Anda yakin ingin mengubah harga ${this.detailitem.nama} menjadi ${this.hargabaru_formated}?`,
-      buttons: [
-        {
-          text: 'Tidak',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'YA',
-          handler: async () => {
-            this.dataService.EditHarga(this.detailitem, this.hargabaru, this.kategori);
-            
-            const alert = await this.alertCtrl.create({
-              subHeader: 'Harga berhasil diedit!',
-              buttons: ['OK'],
-            });
-            await alert.present();
+        subHeader: `Anda yakin ingin mengubah harga ${this.detailitem.nama} menjadi ${this.hargabaru_formated}?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.EditHarga(this.detailitem, this.hargabaru, this.kategori);
 
-            this.modalCtrl.dismiss();
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Harga berhasil diedit!',
+                buttons: ['OK'],
+              });
+              await alert.present();
+
+              this.modalCtrl.dismiss();
+            }
           }
-        }
-      ]
-    });
-    await alert.present();
+        ]
+      });
+      await alert.present();
+    }
+    else {
+      this.errorharga = true;
+    }
+
   }
 
-  async EditHargaHp()
-  {
+  async EditHargaHp() {
     this.hargabaru_formated = this.getCurrency(this.hargabaru);
     console.log(this.hargabaru_formated)
-    
-    let alert = await this.alertCtrl.create({
+    if (this.hargabaru != null) {
+      let alert = await this.alertCtrl.create({
 
-      subHeader: `Anda yakin ingin mengubah harga ${this.detailitem.type} menjadi ${this.hargabaru_formated}?`,
-      buttons: [
-        {
-          text: 'Tidak',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'YA',
-          handler: async () => {
-            this.dataService.EditHargaHp(this.IDBrand, this.hargabaru, this.kategori, this.detailitem);
-            
-            const alert = await this.alertCtrl.create({
-              subHeader: 'Harga berhasil diedit!',
-              buttons: ['OK'],
-            });
-            await alert.present();
+        subHeader: `Anda yakin ingin mengubah harga ${this.detailitem.type} menjadi ${this.hargabaru_formated}?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.EditHargaHp(this.IDBrand, this.hargabaru, this.kategori, this.detailitem);
 
-            this.modalCtrl.dismiss();
+              const alert = await this.alertCtrl.create({
+                subHeader: 'Harga berhasil diedit!',
+                buttons: ['OK'],
+              });
+              await alert.present();
+
+              this.modalCtrl.dismiss();
+            }
           }
-        }
-      ],
-    });
-    await alert.present();
+        ],
+      });
+      await alert.present();
+    }
+    else {
+      this.errorharga = true;
+
+    }
   }
 }

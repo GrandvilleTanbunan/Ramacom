@@ -5,7 +5,6 @@
 </ion-header>
 
 <ion-content>
-
   <ion-item lines="full">
     <ion-label *ngIf="kategori == 'Handphone'">
       {{detailitem.type}}
@@ -21,7 +20,10 @@
   <ion-item>
     <ion-label>Harga Baru</ion-label>
     <ion-input class="ion-text-right" placeholder="Input Harga" type="number" [(ngModel)]="hargabaru"></ion-input>
-
+    
+  </ion-item>
+  <ion-item lines="none" *ngIf="errorharga === true" class="item-no-padding">
+    <ion-label style="color: red;" class="ion-text-center">MASUKKAN HARGA!</ion-label>
   </ion-item>
 
 
