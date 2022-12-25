@@ -25,6 +25,8 @@ import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from "ng2-currency-mask";
 import { CurrencyPipe } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule  } from "@angular/forms";
+
 import localeId from '@angular/common/locales/id'; 
 registerLocaleData(localeId, 'id'); 
 
@@ -40,8 +42,8 @@ export const customCurrencyMaskConfig: CurrencyMaskConfig = {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [CurrencyPipe, CurrencyMaskModule, AngularFirestoreModule, AngularFireModule.initializeApp(environment.firebase), HttpClientModule, IonicStorageModule.forRoot(), BrowserModule, IonicModule.forRoot(), AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebase)), provideAnalytics(() => getAnalytics()), provideAuth(() => getAuth()), provideDatabase(() => getDatabase()), provideFirestore(() => getFirestore()), provideFunctions(() => getFunctions()), provideMessaging(() => getMessaging()), providePerformance(() => getPerformance()), provideRemoteConfig(() => getRemoteConfig()), provideStorage(() => getStorage())],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },{provide: LOCALE_ID, useValue: "id-ID"},{provide: CURRENCY_MASK_CONFIG, useValue: customCurrencyMaskConfig}, ScreenTrackingService,UserTrackingService, CurrencyPipe],
+  imports: [ReactiveFormsModule,CurrencyPipe, CurrencyMaskModule, AngularFirestoreModule, AngularFireModule.initializeApp(environment.firebase), HttpClientModule, IonicStorageModule.forRoot(), BrowserModule, IonicModule.forRoot(), AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebase)), provideAnalytics(() => getAnalytics()), provideAuth(() => getAuth()), provideDatabase(() => getDatabase()), provideFirestore(() => getFirestore()), provideFunctions(() => getFunctions()), provideMessaging(() => getMessaging()), providePerformance(() => getPerformance()), provideRemoteConfig(() => getRemoteConfig()), provideStorage(() => getStorage())],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },{provide: LOCALE_ID, useValue: "id-ID"},{provide: CURRENCY_MASK_CONFIG, useValue: customCurrencyMaskConfig}, ScreenTrackingService,UserTrackingService, CurrencyPipe,FormBuilder],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -25,7 +25,6 @@ const routes: Routes = [
     path: 'stock-admin',
     loadChildren: () => import('./stock-admin/stock-admin.module').then( m => m.StockAdminPageModule),
     ...canActivate(redirectUnauthorizedToLogin)
-
   
   },
   {
@@ -39,7 +38,8 @@ const routes: Routes = [
   {
     path: 'penjualan-cabang',
     loadChildren: () => import('./penjualan-cabang/penjualan-cabang.module').then( m => m.PenjualanCabangPageModule)
-  },  {
+  },
+  {
     path: 'kategori',
     loadChildren: () => import('./kategori/kategori.module').then( m => m.KategoriPageModule)
   },
@@ -54,6 +54,10 @@ const routes: Routes = [
   {
     path: 'editharga',
     loadChildren: () => import('./editharga/editharga.module').then( m => m.EdithargaPageModule)
+  },
+  {
+    path: 'stocklain',
+    loadChildren: () => import('./stocklain/stocklain.module').then( m => m.StocklainPageModule)
   }
 
 ];

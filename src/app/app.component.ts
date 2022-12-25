@@ -89,7 +89,7 @@ export class AppComponent {
       console.log('Ini admin');
       this.appPages = [
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
-        { title: 'Stock Lain', url: '/stock-admin', icon: '/assets/images/stock1.png' },
+        { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock1.png' },
         { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list1.png' },
         { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
         { title: 'Kategori', url: '/kategori', icon: '/assets/images/web.png' },
@@ -117,7 +117,7 @@ export class AppComponent {
   {
        let alert = await this.alertCtrl.create({
       
-      message: 'Anda yakin ingin logout?',
+      subHeader: 'Anda yakin ingin logout?',
       buttons: [
         {
           text: 'Tidak',

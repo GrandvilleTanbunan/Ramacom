@@ -837,7 +837,7 @@ export class StockAdminPage implements OnInit {
    async presentConfirm() {
     let alert = await this.alertCtrl.create({
       
-      message: 'Anda yakin ingin keluar aplikasi?',
+      subHeader: 'Anda yakin ingin keluar aplikasi?',
       buttons: [
         {
           text: 'Tidak',
