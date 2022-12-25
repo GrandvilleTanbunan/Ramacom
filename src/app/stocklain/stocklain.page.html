@@ -61,12 +61,12 @@
           </ion-note >
           <ion-item>
             <ion-label>Item</ion-label>
-            <ion-input formControlName="item" class="ion-text-right" placeholder="Input Item"></ion-input>
+            <ion-input formControlName="nama" class="ion-text-right" placeholder="Input Item"></ion-input>
           </ion-item>
-          <ion-note  class="error ion-padding" *ngIf="isSubmitted && errorControl.item.errors?.required">
+          <ion-note  class="error ion-padding" *ngIf="isSubmitted && errorControl.nama.errors?.required">
             Nama item dibutuhkan.
           </ion-note >
-          <ion-note  class="error ion-padding" *ngIf="isSubmitted && errorControl.item.errors?.minlength">
+          <ion-note  class="error ion-padding" *ngIf="isSubmitted && errorControl.nama.errors?.minlength">
             Minimal 2 huruf.
           </ion-note >
           <ion-item>

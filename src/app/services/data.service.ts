@@ -127,6 +127,17 @@ export class DataService {
   })
   }
 
+  async addItem(itemdetail)
+  {
+    console.log(itemdetail);
+    let item ={
+      harga: itemdetail.harga,
+      nama: itemdetail.nama
+    }
+    const res = await this.db.collection(itemdetail.kategori).add(item);
+
+  }
+
   deleteBrand(BrandID)
   {
     const TypeRef = doc(this.firestore, `Brand/${BrandID}`);

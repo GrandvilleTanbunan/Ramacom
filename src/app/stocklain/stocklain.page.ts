@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController } from '@ionic/angular';
 import { EdithargaPage } from '../editharga/editharga.page';
 import { CurrencyPipe } from '@angular/common';
 import { DataService } from '../services/data.service';
@@ -23,13 +23,13 @@ export class StocklainPage implements OnInit {
   isSubmitted = false;
   ionicForm: FormGroup;
 
-  constructor(public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore) { }
+  constructor(private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
 
   ngOnInit() {
     this.getKategori();
     this.ionicForm = this.formBuilder.group({
       kategori: ['', [Validators.required]],
-      item: ['', [Validators.required, Validators.minLength(2)]],
+      nama: ['', [Validators.required, Validators.minLength(2)]],
       harga:['', [Validators.required]]
     })
   }
@@ -53,47 +53,49 @@ export class StocklainPage implements OnInit {
     return this.ionicForm.controls;
   }
 
-  SaveItem()
+  async SaveItem()
   {
-    // if(this.selectedKategori_TambahItem == "" && this.tmpItemBaru != "")
-    // {
-    //   console.log("brand belum terpilih dan tipe sudah");
-    //   this.pilikategoritambahtipe = true;
-    //   this.masukannamaitem = false;
-    //   this.masukkanharga = true;
-
-    // }
-    // else if (this.selectedKategori_TambahItem != "" && this.tmpItemBaru == "") {
-    //   // console.log(this.tmpTypeBaru);
-    //   console.log("brand sudah terpilih dan tipe belum");
-
-    //   this.pilikategoritambahtipe = false;
-    //   this.masukannamaitem = true;
-    //   this.masukkanharga = true;
-
-    // }
-    // else if(this.selectedKategori_TambahItem == "" && this.tmpItemBaru == "")
-    // {
-    //   console.log("brand dan tipe belum terpilih");
-    //   this.masukannamaitem = true;
-    //   this.pilikategoritambahtipe = true;
-    //   this.masukkanharga = true;
-
-    // }
-    // else if(this.tmpHargaBaru == undefined)
-    // {
-    //   this.masukannamaitem = false;
-    //   this.pilikategoritambahtipe = false;
-    //   this.masukkanharga = true;
-    // }
-    console.log("test")
-
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;
     } else {
       console.log(this.ionicForm.value)
+      const tmpHargaBaru_formatted = this.currencyPipe.transform(this.ionicForm.value.harga, 'Rp ', true, '1.0');
+
+
+      let alert = await this.alertCtrl.create({
+
+        subHeader: `Anda yakin ingin menambahkan ${this.ionicForm.value.nama} dengan harga ${tmpHargaBaru_formatted}?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.addItem(this.ionicForm.value)
+
+
+              const toast = await this.toastController.create({
+                message: 'Item berhasil ditambahkan!',
+                duration: 1500,
+                position: 'bottom'
+              });
+
+              await toast.present();
+              this.ionicForm.reset();
+
+
+            }
+          }
+        ]
+      });
+      await alert.present();
     }
 
   }
@@ -102,7 +104,7 @@ export class StocklainPage implements OnInit {
   {
     console.log("masuk sini")
     this.isSubmitted = false;
-
+    this.ionicForm.reset();
     this.modalCtrl.dismiss();
     this.selectedKategori_TambahItem = "";
     this.tmpItemBaru = "";
