@@ -30,7 +30,7 @@ export class AppComponent {
     //INI SAAT KELUAR APLIKASI TERUS MASUK LAGI
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user)
+        // console.log(user)
         const email = user.email;
         console.log(email);
         this.db.collection('Users', ref => ref.where('email', '==', `${email}`))
@@ -41,6 +41,7 @@ export class AppComponent {
             this.loggeduser = this.tmpusername[0].username;
             console.log(this.loggeduser);
             this.cekadmin();
+            
           }
 
           );
@@ -89,6 +90,7 @@ export class AppComponent {
   cekadmin()
   {
     if (this.loggeduser == "admin") {
+      this.authService._statusChange$.next(this.loggeduser);
       console.log('Ini admin');
       this.appPages = [
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
@@ -104,10 +106,12 @@ export class AppComponent {
       ]
     }
     else {
+      this.authService._statusChange$.next(this.loggeduser);
       this.appPages = [
-        { title: 'Stock', url: '/stock-cabang', icon: '/assets/images/stock.png' },
-        { title: 'Penjualan', url: '/penjualan-cabang', icon: '/assets/images/selling.png' },
-        { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
+        { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
+        { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
+        { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
+        { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
       ];
       this.setting = [
         { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },

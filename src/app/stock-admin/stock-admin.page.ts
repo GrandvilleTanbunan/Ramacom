@@ -12,6 +12,7 @@ import { take } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 @Component({
   selector: 'app-stock-admin',
@@ -80,14 +81,17 @@ export class StockAdminPage implements OnInit {
   tmpTypeBaru = "";
   tmpHargaBaru: any;
   old_tmpHargaBaru: any;
-
   tmplihatstock = "";
 
   rand = [];
 
+  loggeduser;
+
   tmpupdate_tambah = "UPDATE";
   tmpjumlahupdate_tambah = 1;
   togglevalue_UpdateStock= false;
+
+  tmpusername;
  
 
   customPopoverOptions = {
@@ -104,14 +108,18 @@ export class StockAdminPage implements OnInit {
       }
     });
 
-    this.kategori = ["Handphone", "Aksesoris"];
-
+    // this.kategori = ["Handphone", "Aksesoris"];
    }
 
   ngOnInit() {
     this.getBrand();
     this.getCabang();
 
+    this.authService.getloggeduser().subscribe(user => {
+      this.loggeduser  = user;
+      console.log("Logged user: ", this.loggeduser);
+
+   })
   }
 
   pilihBerdasarkan()

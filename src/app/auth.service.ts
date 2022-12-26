@@ -36,8 +36,8 @@ export class AuthService {
 
   authState = new BehaviorSubject(null);
 
-  private _statusChange$ = new Subject<string>();
-  public loginStatus$ = this._statusChange$.asObservable();
+  public _statusChange$ = new Subject<string>();
+  // public loginStatus$ = this._statusChange$.asObservable();
   public tmpuser = [];
 
   public terdaftar = false;
@@ -103,6 +103,11 @@ export class AuthService {
       return null;
     }
 
+  }
+
+  getloggeduser()
+  {
+    return this._statusChange$.asObservable();
   }
 
    logout()
