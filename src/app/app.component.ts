@@ -4,6 +4,9 @@ import { AlertController, IonRouterOutlet, NavController, Platform } from '@ioni
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { DataService } from './services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { App } from '@capacitor/app';
+import {take , map, switchMap} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-root',
@@ -12,6 +15,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 
 export class AppComponent {
+  [x: string]: any;
   
   public appPages = [];
   public setting = [];
@@ -19,8 +23,6 @@ export class AppComponent {
   public tmpuser = [];
   public tmpusername;
   
-  
-  // public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor(private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
 
     const auth = getAuth();
@@ -28,16 +30,17 @@ export class AppComponent {
     //INI SAAT KELUAR APLIKASI TERUS MASUK LAGI
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user)
         const email = user.email;
         console.log(email);
         this.db.collection('Users', ref => ref.where('email', '==', `${email}`))
-          .valueChanges()
+          .valueChanges().pipe(take(1))
           .subscribe(data => {
             this.tmpusername = data;
+            console.log(this.tmpusername)
             this.loggeduser = this.tmpusername[0].username;
             console.log(this.loggeduser);
             this.cekadmin();
-            
           }
 
           );
@@ -89,10 +92,10 @@ export class AppComponent {
       console.log('Ini admin');
       this.appPages = [
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
-        { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock1.png' },
-        { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list1.png' },
+        { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
+        { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list.png' },
         { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
-        { title: 'Kategori', url: '/kategori', icon: '/assets/images/web.png' },
+        { title: 'Kategori', url: '/kategori', icon: '/assets/images/categories.png' },
 
         { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
       ];
@@ -100,17 +103,17 @@ export class AppComponent {
         { title: 'Logout', url: '/login', icon: '/assets/images/logout.png' },
       ]
     }
-    // else {
-    //   this.appPages = [
-    //     { title: 'Stock', url: '/stock-cabang', icon: '/assets/images/stock.png' },
-    //     { title: 'Penjualan', url: '/penjualan-cabang', icon: '/assets/images/selling.png' },
-    //     { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
-    //   ];
-    //   this.setting = [
-    //     { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },
-    //   ]
-    //   console.log('Ini BUKAN admin');
-    // }
+    else {
+      this.appPages = [
+        { title: 'Stock', url: '/stock-cabang', icon: '/assets/images/stock.png' },
+        { title: 'Penjualan', url: '/penjualan-cabang', icon: '/assets/images/selling.png' },
+        { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
+      ];
+      this.setting = [
+        { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },
+      ]
+      console.log('Ini BUKAN admin');
+    }
   }
 
   async logout()
@@ -133,6 +136,8 @@ export class AppComponent {
           await this.authService.logout();
           // this.router.navigateByUrl('/', {replaceUrl:true});
           this.navCtrl.navigateRoot('/', {replaceUrl: true});
+          // App.exitApp();
+
           }
         }
       ]

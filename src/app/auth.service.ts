@@ -44,55 +44,22 @@ export class AuthService {
   public cekpassword = false;
 
   constructor(private db: AngularFirestore, private auth: Auth, private dataService: DataService, private storage : Storage, private http: HttpClientModule, private plt: Platform, private router: Router) {
-    this.dataService.getUser().subscribe(res => {
-      this.tmpuser = res;
-      console.log(this.tmpuser);
-    })
+    // this.dataService.getUser().subscribe(res => {
+    //   this.tmpuser = res;
+    //   console.log(this.tmpuser);
+    // })
+
+    this.db.collection(`Users`).valueChanges({ idField: 'UserID' }).pipe(take(1))
+    .subscribe(data => {
+      this.tmpuser = data;
+      console.log(this.tmpuser)
+    });
   };
-
-
-  // login(name: string, pw: string): Promise<boolean> {
-  //   return new Promise((resolve, reject) => {
-  //     for (let i = 0; i < this.tmpuser.length; i++) {
-  //       if (name == this.tmpuser[i].username) {
-  //         this.terdaftar = true;
-  //         if (pw == this.tmpuser[i].password) {
-  //           this.cekpassword = true;
-  //         }
-  //         else {
-  //           this.cekpassword = false;
-  //         }
-  //       }
-  //     }
-
-  //     if (this.terdaftar == true && this.cekpassword == true) {
-  //       this.currentUser = {
-  //         name: name,
-  //         role: 0
-  //       }
-  //       resolve(true);
-  //       this._statusChange$.next(name);
-  //     }
-
-  //     if (this.terdaftar == true && this.cekpassword == false) {
-  //       resolve(false);
-  //     }
-  //     if (this.terdaftar == false) {
-  //       resolve(false);
-  //     }
-  //   });
-  // }
 
    isLoggedIn()
    {
       return this.currentUser != null;
    }
-
-  //  logout()
-  //  {
-  //   return this.currentUser = null;
-  //  }
-
    isAdmin()
    {
     return this.currentUser.role == 0;
