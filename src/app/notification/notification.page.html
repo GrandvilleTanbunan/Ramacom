@@ -1,9 +1,39 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title>Pemberitahuan</ion-title>
+    <ion-title class="ion-text-center">Pemberitahuan</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!-- <ion-item *ngFor="let item of tmpnotif">
+    {{item.judul}} - {{item.waktu}}
+  </ion-item> -->
+  <!-- <ion-list>
+    <div *ngFor="let item of tmpnotif">
+      <button ion-item no-lines>
+        <ion-avatar item-start>
+          <img src="../assets/images/avatar.png">
+        </ion-avatar>
+        <h2>{{item.judul}}</h2>
+        <p>{{item.waktu}}</p>
+        <div style="color:red" item-content>ABCDEF</div>
+      </button>
+    </div>
+  
+  </ion-list> -->
+
+  <ion-list>
+    <ion-item *ngFor="let item of tmpnotif">
+
+      <ion-label text-wrap>
+        {{item.judul}}
+      </ion-label>
+      <ion-label slot="end">
+        <h6>{{item.hari}}, {{item.tanggal}}</h6>
+        <h6 style="text-align: right">Pukul {{item.waktu}}</h6>
+      </ion-label>
+      
+    </ion-item>
+  </ion-list>
 
 </ion-content>

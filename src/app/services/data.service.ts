@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { collectionData, docData, Firestore, doc, addDoc, deleteDoc} from '@angular/fire/firestore';
 import { collection, orderBy, where} from '@firebase/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import * as moment from 'moment';
 
 export interface Users {
   id?: string;
@@ -86,8 +87,9 @@ export class DataService {
   }
 
 
-  addBrand(namabrandku) 
+  addBrand(namabrandku, loggeduser) 
   {
+    this.addnotif(`${loggeduser} menambah brand '${namabrandku}'`);
     console.log(namabrandku);
     let tmpnamabrand = {
       namabrand : namabrandku
@@ -98,8 +100,10 @@ export class DataService {
     
   }
 
-  async addType(BrandID, namatipeku, cabang, harga)
+
+  async addType(loggeduser, BrandID,namabrand, namatipeku, cabang, harga)
   {
+    this.addnotif(`${loggeduser} menambah tipe '${namatipeku}' pada brand '${namabrand}'`)
     let tmptipe = {
       type : namatipeku,
       harga: harga
@@ -138,8 +142,9 @@ export class DataService {
 
   }
 
-  deleteBrand(BrandID)
+  deleteBrand(loggeduser,BrandID, namabrand)
   {
+    this.addnotif(`${loggeduser} menghapus brand '${namabrand}'`)
     const TypeRef = doc(this.firestore, `Brand/${BrandID}`);
     return deleteDoc(TypeRef);
   }
@@ -188,5 +193,20 @@ export class DataService {
     
     const res1 = await UpdateHarga.update({harga: HargaBaru});
     
+  }
+
+  addnotif(isinotif: string)
+  {
+    moment.locale('id')
+    let tmpnotif = {
+      judul : isinotif,
+      tanggal: moment().format('l'),
+      hari: moment().format('dddd'),  
+      waktu: moment().format('LTS'),
+      timestamp: moment().format()
+    }
+
+    const BrandRef = collection(this.firestore, 'Pemberitahuan');
+    return addDoc(BrandRef, tmpnotif);
   }
 }

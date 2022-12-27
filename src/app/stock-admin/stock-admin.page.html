@@ -147,7 +147,7 @@
         <ion-item>
           <ion-label>Pilih Brand</ion-label>
           <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_TYPE" (ionChange)="optionsBrand_TAMBAHTIPE();">
-            <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID">{{item.namabrand}}</ion-select-option>
+            <ion-select-option *ngFor="let item of tmpbrand" [value]="item">{{item.namabrand}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
@@ -201,7 +201,7 @@
         <ion-item>
           <ion-label>Pilih Brand</ion-label>
           <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_HAPUS" (ionChange)="optionsBrand_HAPUSBRAND();">
-            <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID">{{item.namabrand}}</ion-select-option>
+            <ion-select-option *ngFor="let item of tmpbrand" [value]="item">{{item.namabrand}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item lines="none" *ngIf="pilihbrand === true">

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 
 @Component({
   selector: 'app-notification',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationPage implements OnInit {
 
-  constructor() { }
-
+  constructor(private db: AngularFirestore) { }
+  tmpnotif;
   ngOnInit() {
+    this.getnotif();
+  }
+  getnotif()
+  {
+    this.db.collection('Pemberitahuan', ref => ref.orderBy('timestamp', "desc"))
+    .valueChanges({ idField: 'NotifID' })
+    .subscribe( data => {
+        this.tmpnotif = data;   
+        console.log(this.tmpnotif);
+    }
+);
   }
 
 }

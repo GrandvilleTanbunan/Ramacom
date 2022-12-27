@@ -36,9 +36,9 @@ export class StockAdminPage implements OnInit {
   kategori: Array<string>;
 
   selectedbrand = "";
-  selectedbrand_TYPE = "";
+  selectedbrand_TYPE;
   selectedtype = "";
-  selectedbrand_HAPUS = "";
+  selectedbrand_HAPUS;
   selectedbrand_HAPUSTYPE = "";
   selectedtype_HAPUS = "";
 
@@ -488,7 +488,7 @@ export class StockAdminPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.addBrand(this.tmpnamabrandbaru);
+              this.dataService.addBrand(this.tmpnamabrandbaru, this.loggeduser);
               this.tmpnamabrandbaru = "";
               // const alert = await this.alertCtrl.create({
               //   subHeader: 'Brand berhasil ditambahkan!',
@@ -525,7 +525,7 @@ export class StockAdminPage implements OnInit {
   async SaveType()
   {
     // console.log(this.selectedbrand_TYPE);
-    if(this.selectedbrand_TYPE == "" && this.tmpTypeBaru != "")
+    if(this.selectedbrand_TYPE == undefined && this.tmpTypeBaru != "")
     {
       console.log("brand belum terpilih dan tipe sudah");
       this.pilihbrandtambahtipe = true;
@@ -533,7 +533,7 @@ export class StockAdminPage implements OnInit {
       this.masukkanharga = true;
 
     }
-    else if (this.selectedbrand_TYPE != "" && this.tmpTypeBaru == "") {
+    else if (this.selectedbrand_TYPE != undefined && this.tmpTypeBaru == "") {
       // console.log(this.tmpTypeBaru);
       console.log("brand sudah terpilih dan tipe belum");
 
@@ -542,7 +542,7 @@ export class StockAdminPage implements OnInit {
       this.masukkanharga = true;
 
     }
-    else if(this.selectedbrand_TYPE == "" && this.tmpTypeBaru == "")
+    else if(this.selectedbrand_TYPE == undefined && this.tmpTypeBaru == "")
     {
       console.log("brand dan tipe belum terpilih");
       this.masukannamatype = true;
@@ -574,7 +574,7 @@ export class StockAdminPage implements OnInit {
             text: 'YA',
             handler: async () => {
               if(this.tmpHargaBaru == 0) this.tmpHargaBaru = 0;
-              this.dataService.addType(this.selectedbrand_TYPE, this.tmpTypeBaru, this.tmpcabang, this.tmpHargaBaru);
+              this.dataService.addType(this.loggeduser, this.selectedbrand_TYPE.BrandID, this.selectedbrand_TYPE.namabrand,this.tmpTypeBaru, this.tmpcabang, this.tmpHargaBaru);
               // this.dataService.addStock(this.selectedbrand_TYPE);
               this.tmpTypeBaru = "";
               // this.selectedbrand_TYPE = "";
@@ -631,7 +631,7 @@ export class StockAdminPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.deleteBrand(this.selectedbrand_HAPUS);
+              this.dataService.deleteBrand(this.loggeduser, this.selectedbrand_HAPUS.BrandID, this.selectedbrand_HAPUS.namabrand);
               this.selectedbrand_HAPUS = "";
               this.selectedbrand = "";
               // const alert = await this.alertCtrl.create({
@@ -742,7 +742,7 @@ export class StockAdminPage implements OnInit {
     this.pilihtipe_hapustipe = false;
     this.tmpnamabrandbaru = "";
     this.selectedbrand_TYPE = "";
-    this.selectedbrand_HAPUS = "";
+    this.selectedbrand_HAPUS = undefined;
     this.tmpTypeBaru = "";
     this.tmpHargaBaru = undefined;
     this.selectedtype_HAPUS = "";
