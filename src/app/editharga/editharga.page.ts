@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavController, ModalController, AlertController } from '@ionic/angular';
+import { NavController, ModalController, AlertController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { CurrencyPipe } from '@angular/common';
 
@@ -22,7 +22,7 @@ export class EdithargaPage implements OnInit {
 
 
 
-  constructor(public formBuilder: FormBuilder, private currencyPipe: CurrencyPipe, private alertCtrl: AlertController, private navCtrl :NavController, private modalCtrl: ModalController, private dataService: DataService) { }
+  constructor(private toastController: ToastController,public formBuilder: FormBuilder, private currencyPipe: CurrencyPipe, private alertCtrl: AlertController, private navCtrl :NavController, private modalCtrl: ModalController, private dataService: DataService) { }
 
   ngOnInit() {
     console.log(this.detailitem);
@@ -62,11 +62,18 @@ export class EdithargaPage implements OnInit {
             handler: async () => {
               this.dataService.EditHarga(this.detailitem, this.hargabaru, this.kategori);
 
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Harga berhasil diedit!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Harga berhasil diedit!',
+              //   buttons: ['OK'],
+              // });
+              // await alert.present();
+
+              const toast = await this.toastController.create({
+                message: 'Harga berhasil diedit!',
+                duration: 1500,
+                position: 'bottom'
               });
-              await alert.present();
+              await toast.present();
 
               this.modalCtrl.dismiss();
             }
@@ -101,11 +108,19 @@ export class EdithargaPage implements OnInit {
             handler: async () => {
               this.dataService.EditHargaHp(this.IDBrand, this.hargabaru, this.kategori, this.detailitem);
 
-              const alert = await this.alertCtrl.create({
-                subHeader: 'Harga berhasil diedit!',
-                buttons: ['OK'],
+              // const alert = await this.alertCtrl.create({
+              //   subHeader: 'Harga berhasil diedit!',
+              //   buttons: ['OK'],
+              // });
+              // await alert.present();
+
+              const toast = await this.toastController.create({
+                message: 'Harga berhasil diedit!',
+                duration: 1500,
+                position: 'bottom'
               });
-              await alert.present();
+              await toast.present();
+
 
               this.modalCtrl.dismiss();
             }

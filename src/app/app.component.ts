@@ -1,12 +1,13 @@
 import { AuthService } from './auth.service';
 import { Component } from '@angular/core';
-import { AlertController, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
+import { AlertController, IonRouterOutlet, NavController, Platform, ModalController } from '@ionic/angular';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { DataService } from './services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { App } from '@capacitor/app';
 import {take , map, switchMap} from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { NotificationPage } from './notification/notification.page';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class AppComponent {
   public tmpuser = [];
   public tmpusername;
   
-  constructor(private router: Router,private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(private modalCtrl: ModalController, private router: Router,private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
 
     const auth = getAuth();
     const user = auth.currentUser;
@@ -55,41 +56,6 @@ export class AppComponent {
       }
     });
 
-    
-
-    //INI SAAT LOGIN
-  //   this.authService.loginStatus$.subscribe((isLoggedIn) => {
-  //     console.log(isLoggedIn);
-  //     if(isLoggedIn == "admin"){
-  //       console.log('Ini admin');
-  //       this.loggeduser = isLoggedIn;
-  //       this.appPages = [
-  //         { title: 'Stock', url: '/stock-admin', icon: '/assets/images/stock.png' },
-  //         { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/selling.png' },
-  //         { title: 'Kategori', url: '/pembelian-admin', icon:'/assets/images/buy.png' },
-  //         { title: 'Daftar Harga', url: '/pembelian-admin', icon:'/assets/images/price-list-grey.png' },
-
-  //         { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
-  //       ];
-  //       this.setting = [
-  //         { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png'},
-  //       ]
-  //     }
-  //     else
-  //     {
-  //       this.loggeduser = isLoggedIn;
-  //       this.appPages = [
-  //         { title: 'Stock', url: '/stock-cabang', icon: '/assets/images/stock.png' },
-  //         { title: 'Penjualan', url: '/penjualan-cabang', icon: '/assets/images/selling.png' },
-  //         { title: 'Pengaturan', url: '/home/Stock', icon: '/assets/images/setting.png' }
-  //       ];
-  //       this.setting = [
-  //         { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },
-  //       ]
-  //       console.log('Ini BUKAN admin');
-  //     }
-  // })
-  
   }
 
   cekadmin()
@@ -158,4 +124,23 @@ export class AppComponent {
     });
     await alert.present();
   }
+
+
+  async ShowNotif()
+  {
+    const modal = await this.modalCtrl.create({
+      component: NotificationPage,
+      cssClass:'large-modal',
+      componentProps: {
+        // detailitem: item,
+        // IDBrand: this.selectedbrand,
+        // kategori: this.selectedKategori
+      },
+    });
+    await modal.present();
+    console.log("abc")
+  }
+
+
+
 }

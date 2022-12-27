@@ -646,8 +646,6 @@ export class StockAdminPage implements OnInit {
                 position: 'bottom'
               });
 
-
-
               await toast.present();
 
 
@@ -1021,6 +1019,8 @@ export class StockAdminPage implements OnInit {
     // this.router.navigateByUrl('/', {replaceUrl:true});
     this.navCtrl.navigateRoot('/', {replaceUrl: true});
   }
+
+ 
 
 }
 

@@ -58,7 +58,11 @@ const routes: Routes = [
   {
     path: 'stocklain',
     loadChildren: () => import('./stocklain/stocklain.module').then( m => m.StocklainPageModule)
+  },  {
+    path: 'notification',
+    loadChildren: () => import('./notification/notification.module').then( m => m.NotificationPageModule)
   }
+
 
 ];
 

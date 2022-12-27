@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { EdithargaPage } from '../editharga/editharga.page';
 import { CurrencyPipe } from '@angular/common';
 import { DataService } from '../services/data.service';
@@ -22,7 +22,7 @@ export class DaftarhargaPage implements OnInit {
   public results = [];
   public tmptype;
   public loggeduser;
-  constructor( private authService: AuthService, private currencyPipe: CurrencyPipe, private modalCtrl: ModalController, private db: AngularFirestore, private dataService: DataService) {
+  constructor(private alertCtrl:AlertController ,private authService: AuthService, private currencyPipe: CurrencyPipe, private modalCtrl: ModalController, private db: AngularFirestore, private dataService: DataService) {
     
    }
 
@@ -119,30 +119,55 @@ export class DaftarhargaPage implements OnInit {
 
     
     // console.log(item);
-    console.log(this.loggeduser);
-    const modal = await this.modalCtrl.create({
-      component: EdithargaPage,
-      cssClass:'small-modal',
-      componentProps: {
-        detailitem: item,
-        kategori: this.selectedKategori
-      },
-    });
-    await modal.present();
+    if (this.loggeduser == 'admin') {
+      console.log(this.loggeduser);
+      const modal = await this.modalCtrl.create({
+        component: EdithargaPage,
+        cssClass: 'small-modal',
+        componentProps: {
+          detailitem: item,
+          kategori: this.selectedKategori
+        },
+      });
+      await modal.present();
+    }
+    else
+    {
+      const alert = await this.alertCtrl.create({
+        header: 'Login sebagai admin untuk mengedit harga.',
+        buttons: ['OK'],
+        mode:'ios'
+
+      });
+      await alert.present();
+    }
+    
   }
 
   async EditHargaHp(item) {
-
-    const modal = await this.modalCtrl.create({
-      component: EdithargaPage,
-      cssClass:'small-modal',
-      componentProps: {
-        detailitem: item,
-        IDBrand: this.selectedbrand,
-        kategori: this.selectedKategori
-      },
-    });
-    await modal.present();
+    if(this.loggeduser == 'admin')
+    {
+      const modal = await this.modalCtrl.create({
+        component: EdithargaPage,
+        cssClass:'small-modal',
+        componentProps: {
+          detailitem: item,
+          IDBrand: this.selectedbrand,
+          kategori: this.selectedKategori
+        },
+      });
+      await modal.present();
+    }
+    else
+    {
+      const alert = await this.alertCtrl.create({
+        header: 'Login sebagai admin untuk mengedit harga.',
+        buttons: ['OK'],
+        mode:'ios'
+      });
+      await alert.present();
+    }
+    
   }
   
 
