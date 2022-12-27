@@ -163,7 +163,7 @@ export class StockAdminPage implements OnInit {
     // this.tmpbrand = this.dataService.tmpbrand;
 
     this.db.collection('Brand', ref => ref.orderBy('namabrand'))
-        .valueChanges({ idField: 'BrandID' }).pipe(take(1))
+        .valueChanges({ idField: 'BrandID' })
         .subscribe( data => {
             this.tmpbrand = data;   
             console.log(this.tmpbrand);
@@ -195,7 +195,7 @@ export class StockAdminPage implements OnInit {
     this.tmpjumlahdari = undefined;
     this.tmpjumlahke = undefined;
 
-    console.log(this.selectedtype_PindahkanStock);
+    // console.log(this.selectedtype_PindahkanStock);
   }
 
   public async getstockdicabang()
@@ -504,6 +504,7 @@ export class StockAdminPage implements OnInit {
 
               await toast.present();
 
+
               this.masukannamabrand = false;
 
             }
@@ -511,6 +512,7 @@ export class StockAdminPage implements OnInit {
         ]
       });
       await alert.present();
+
     }
     
   }
@@ -644,7 +646,10 @@ export class StockAdminPage implements OnInit {
                 position: 'bottom'
               });
 
+
+
               await toast.present();
+
 
               this.pilihbrand = false;
             }
@@ -652,6 +657,7 @@ export class StockAdminPage implements OnInit {
         ]
       });
       await alert.present();
+
     }
 
   }
