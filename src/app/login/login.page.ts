@@ -66,7 +66,8 @@ export class LoginPage implements OnInit {
 
     await loading.dismiss();
 
-    if(user) {  
+    if(user) {
+      console.log("ada usernya");
       this.router.navigateByUrl('/stock-admin', {replaceUrl: true});
       this.menuCtrl.enable(true);
     }else{
@@ -86,33 +87,5 @@ export class LoginPage implements OnInit {
   ionViewWillEnter(){
     this.menuCtrl.enable(false);
   }
-
-  // async loginUser(){
-  //   this.authService.login(this.name, this.pw).then(async success =>{
-  //     if(success){
-  //       if(this.name == "admin")
-  //       {
-  //         this.navCtrl.navigateRoot('stock-admin');
-  //         this.menuCtrl.enable(true);
-
-  //       }
-  //       else
-  //       {
-  //         this.navCtrl.navigateRoot('stock-cabang');
-  //         this.menuCtrl.enable(true);
-  //       }
-  //     }
-  //     else{
-  //       let alert = await this.alertCtrl.create({
-  //         header: 'Login Failed',
-  //         message: 'Check username/password',
-  //         buttons:['OK']
-  //       });
-  //       await alert.present();
-  //     }
-
-  //   });
-
-  // }
 
 }

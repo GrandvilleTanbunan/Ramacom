@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { EdithargaPage } from '../editharga/editharga.page';
 import { CurrencyPipe } from '@angular/common';
 import { DataService } from '../services/data.service';
+import { AuthService } from '../auth.service';
 
 
 
@@ -20,10 +21,21 @@ export class DaftarhargaPage implements OnInit {
   tmpisikategori= [];
   public results = [];
   public tmptype;
-  constructor(private currencyPipe: CurrencyPipe, private modalCtrl: ModalController, private db: AngularFirestore, private dataService: DataService) { }
+  public loggeduser;
+  constructor( private authService: AuthService, private currencyPipe: CurrencyPipe, private modalCtrl: ModalController, private db: AngularFirestore, private dataService: DataService) {
+    
+   }
 
   ngOnInit() {
     this.getKategori();
+
+    this.authService.loginStatus$.subscribe(user => {
+      this.loggeduser = user;
+      console.log("Logged user daftar harga: ", this.loggeduser);
+
+    });
+
+
   }
 
   getKategori()
@@ -104,8 +116,10 @@ export class DaftarhargaPage implements OnInit {
   // }
 
   async EditHarga(item) {
-    // console.log(item);
 
+    
+    // console.log(item);
+    console.log(this.loggeduser);
     const modal = await this.modalCtrl.create({
       component: EdithargaPage,
       cssClass:'small-modal',

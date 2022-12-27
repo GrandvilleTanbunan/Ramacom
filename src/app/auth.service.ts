@@ -36,8 +36,8 @@ export class AuthService {
 
   authState = new BehaviorSubject(null);
 
-  public _statusChange$ = new Subject<string>();
-  // public loginStatus$ = this._statusChange$.asObservable();
+  private _statusChange$ = new BehaviorSubject<string>('');
+  loginStatus$ = this._statusChange$.asObservable();
   public tmpuser = [];
 
   public terdaftar = false;
@@ -78,7 +78,8 @@ export class AuthService {
    }
 
   async login({ username, password }) {
-
+    this.user = undefined;
+    this.emailku = undefined;
     let idx;
     for (let i = 0; i < this.tmpuser.length; i++) {
       if (this.tmpuser[i].username == username) {
@@ -105,13 +106,14 @@ export class AuthService {
 
   }
 
-  getloggeduser()
-  {
-    return this._statusChange$.asObservable();
+  setloggeduser(username: string) {
+    console.log("Masuk set logged user")
+    this._statusChange$.next(username)
+    console.log(this.loginStatus$);
   }
 
-   logout()
-   {
-     return signOut(this.auth);
-   }
+  logout() {
+    return signOut(this.auth);
+    
+  }
 }

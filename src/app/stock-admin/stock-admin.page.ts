@@ -115,11 +115,12 @@ export class StockAdminPage implements OnInit {
     this.getBrand();
     this.getCabang();
 
-    this.authService.getloggeduser().subscribe(user => {
-      this.loggeduser  = user;
-      console.log("Logged user: ", this.loggeduser);
+    this.authService.loginStatus$.subscribe(user => {
+    this.loggeduser  = user;
+    console.log("Logged user stockadminpage: ", this.loggeduser);
 
-   })
+ });
+
   }
 
   pilihBerdasarkan()
@@ -140,7 +141,7 @@ export class StockAdminPage implements OnInit {
   getCabang()
   {
     this.db.collection('Cabang', ref => ref.orderBy('namacabang'))
-        .valueChanges({ idField: 'CabangID' })
+        .valueChanges({ idField: 'CabangID' }).pipe(take(1))
         .subscribe( data => {
             this.tmpcabang = data;   
             console.log(this.tmpcabang);
@@ -162,7 +163,7 @@ export class StockAdminPage implements OnInit {
     // this.tmpbrand = this.dataService.tmpbrand;
 
     this.db.collection('Brand', ref => ref.orderBy('namabrand'))
-        .valueChanges({ idField: 'BrandID' })
+        .valueChanges({ idField: 'BrandID' }).pipe(take(1))
         .subscribe( data => {
             this.tmpbrand = data;   
             console.log(this.tmpbrand);

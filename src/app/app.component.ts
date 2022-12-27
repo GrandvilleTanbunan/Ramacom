@@ -6,6 +6,7 @@ import { DataService } from './services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { App } from '@capacitor/app';
 import {take , map, switchMap} from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,14 +24,16 @@ export class AppComponent {
   public tmpuser = [];
   public tmpusername;
   
-  constructor(private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(private router: Router,private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
 
     const auth = getAuth();
+    const user = auth.currentUser;
+    console.log("current user: ", user);
 
     //INI SAAT KELUAR APLIKASI TERUS MASUK LAGI
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // console.log(user)
+        console.log(user)
         const email = user.email;
         console.log(email);
         this.db.collection('Users', ref => ref.where('email', '==', `${email}`))
@@ -40,6 +43,8 @@ export class AppComponent {
             console.log(this.tmpusername)
             this.loggeduser = this.tmpusername[0].username;
             console.log(this.loggeduser);
+            // this.authService.setloggeduser(this.loggeduser);
+
             this.cekadmin();
             
           }
@@ -90,8 +95,9 @@ export class AppComponent {
   cekadmin()
   {
     if (this.loggeduser == "admin") {
-      this.authService._statusChange$.next(this.loggeduser);
-      console.log('Ini admin');
+      console.log("Masuk cek admin mau masukkin ke statuschange")
+      this.authService.setloggeduser(this.loggeduser);
+      // console.log('Ini admin');
       this.appPages = [
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
         { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
@@ -106,10 +112,13 @@ export class AppComponent {
       ]
     }
     else {
-      this.authService._statusChange$.next(this.loggeduser);
+      console.log("Masuk cek admin mau masukkin ke statuschange")
+      this.authService.setloggeduser(this.loggeduser);
+
       this.appPages = [
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
         { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
+        { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list.png' },
         { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
         { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
       ];
@@ -122,7 +131,7 @@ export class AppComponent {
 
   async logout()
   {
-       let alert = await this.alertCtrl.create({
+      let alert = await this.alertCtrl.create({
       
       subHeader: 'Anda yakin ingin logout?',
       buttons: [
@@ -138,8 +147,9 @@ export class AppComponent {
           handler: async () => {
           console.log('Mau Logout!');
           await this.authService.logout();
-          // this.router.navigateByUrl('/', {replaceUrl:true});
-          this.navCtrl.navigateRoot('/', {replaceUrl: true});
+
+          this.router.navigateByUrl('/', {replaceUrl:true});
+          // this.navCtrl.navigateRoot('/', {replaceUrl: true});
           // App.exitApp();
 
           }

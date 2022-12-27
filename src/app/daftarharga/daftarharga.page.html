@@ -10,6 +10,10 @@
     <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedKategori" (ionChange)="PilihKategori();">
       <ion-select-option *ngFor="let item of tmpKategori" [value]="item.namakategori" >{{item.namakategori}}</ion-select-option>
     </ion-select>
+
+  </ion-item>
+  <ion-item>
+    {{loggeduser}}
   </ion-item>
 
   <ng-container *ngIf="selectedKategori === 'Handphone' ; else templateName">
