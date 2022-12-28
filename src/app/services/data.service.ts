@@ -149,8 +149,9 @@ export class DataService {
     return deleteDoc(TypeRef);
   }
 
-  async deleteType(BrandID, TypeID, tmpCabang)
+  async deleteType(loggeduser, namabrand, BrandID, namatype, TypeID, tmpCabang)
   {
+    this.addnotif(`${loggeduser} menghapus tipe '${namatype}' pada brand '${namabrand}'`)
     this.deletecoll(BrandID, TypeID, tmpCabang);
     const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}`);
     return deleteDoc(TypeRef);
@@ -203,7 +204,8 @@ export class DataService {
       tanggal: moment().format('l'),
       hari: moment().format('dddd'),  
       waktu: moment().format('LTS'),
-      timestamp: moment().format()
+      timestamp: moment().format(),
+      read: 1
     }
 
     const BrandRef = collection(this.firestore, 'Pemberitahuan');

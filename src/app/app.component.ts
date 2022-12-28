@@ -24,6 +24,8 @@ export class AppComponent {
   public loggeduser;
   public tmpuser = [];
   public tmpusername;
+  public ctrnotif = 0;
+  public tmpnotif = [];
   
   constructor(private modalCtrl: ModalController, private router: Router,private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
 
@@ -56,6 +58,7 @@ export class AppComponent {
       }
     });
 
+    this.getnotif();
   }
 
   cekadmin()
@@ -141,6 +144,26 @@ export class AppComponent {
     console.log("abc")
   }
 
+  getnotif() {
+    // this.ctrnotif;
+    this.db.collection('Pemberitahuan', ref => ref.orderBy('timestamp', "desc"))
+      .valueChanges({ idField: 'NotifID' })
+      .subscribe(data => {
+        this.tmpnotif = data;
+        console.log(this.tmpnotif);
+        this.ctrnotif = 0;
+        for(let i=0; i<this.tmpnotif.length; i++)
+        {
+          if(this.tmpnotif[i].read == "1")
+          {
+            this.ctrnotif++;
+          }
+        }
+        console.log(this.ctrnotif);
+
+      }
+      );
+  }
 
 
 }

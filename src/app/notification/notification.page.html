@@ -1,7 +1,20 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title class="ion-text-center">Pemberitahuan</ion-title>
+    <ion-title class="ion-text-center" style="margin-left: 55px">Pemberitahuan</ion-title>
+    <!-- <ion-icon class="filter-style" slot="end" name="filter"></ion-icon> -->
+
+    <!-- <ion-select interface="popover" placeholder="Filter"  [(ngModel)]="selectedfilter">
+        <ion-select-option>Hari ini</ion-select-option>
+        <ion-select-option>Tanggal</ion-select-option>
+        <ion-select-option>Tampilkan Semua</ion-select-option>
+      </ion-select> -->
+
+      <ion-button slot="end" (click)="ShowNotif()" fill="clear" color="light">
+        <ion-icon name="filter" slot="icon-only"></ion-icon>
+      </ion-button>
+
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content>
@@ -23,16 +36,18 @@
   </ion-list> -->
 
   <ion-list>
+  
     <ion-item *ngFor="let item of tmpnotif">
-
-      <ion-label text-wrap>
+      <ion-icon *ngIf="item.read == 1" class="ion-icon-style" name="ellipse"></ion-icon>
+  
+      <ion-label text-wrap class="text">
         {{item.judul}}
       </ion-label>
       <ion-label slot="end">
         <h6>{{item.hari}}, {{item.tanggal}}</h6>
         <h6 style="text-align: right">Pukul {{item.waktu}}</h6>
       </ion-label>
-      
+  
     </ion-item>
   </ion-list>
 

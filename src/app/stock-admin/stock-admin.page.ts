@@ -39,8 +39,8 @@ export class StockAdminPage implements OnInit {
   selectedbrand_TYPE;
   selectedtype = "";
   selectedbrand_HAPUS;
-  selectedbrand_HAPUSTYPE = "";
-  selectedtype_HAPUS = "";
+  selectedbrand_HAPUSTYPE;
+  selectedtype_HAPUS;
 
   selectedbrand_PindahkanStock = "";
   selectedtype_PindahkanStock;
@@ -297,7 +297,7 @@ export class StockAdminPage implements OnInit {
     //   console.log(this.tmptype);
     // });
 
-    this.db.collection(`Brand/${this.selectedbrand_HAPUSTYPE}/Type`, ref => ref.orderBy('type', 'asc'))
+    this.db.collection(`Brand/${this.selectedbrand_HAPUSTYPE.BrandID}/Type`, ref => ref.orderBy('type', 'asc'))
         .valueChanges({idField: 'TypeID'})
         .subscribe( data => {
             this.tmptypeHAPUS = data;
@@ -665,20 +665,20 @@ export class StockAdminPage implements OnInit {
     console.log(this.selectedbrand_HAPUSTYPE);
     console.log(this.selectedtype_HAPUS);
 
-    if(this.selectedbrand_HAPUSTYPE == "" && this.selectedtype_HAPUS != "")
+    if(this.selectedbrand_HAPUSTYPE == undefined && this.selectedtype_HAPUS != undefined)
     {
       console.log("brand belum terpilih dan tipe sudah");
       this.pilihbrand_hapustipe = true;
       this.pilihtipe_hapustipe = false;
     }
-    else if (this.selectedbrand_HAPUSTYPE != "" && this.selectedtype_HAPUS == "") {
+    else if (this.selectedbrand_HAPUSTYPE != undefined && this.selectedtype_HAPUS == undefined) {
       // console.log(this.tmpTypeBaru);
       console.log("brand sudah terpilih dan tipe belum");
 
       this.pilihbrand_hapustipe = false;
       this.pilihtipe_hapustipe = true;
     }
-    else if(this.selectedbrand_HAPUSTYPE == "" && this.selectedtype_HAPUS == "")
+    else if(this.selectedbrand_HAPUSTYPE == undefined && this.selectedtype_HAPUS == undefined)
     {
       console.log("brand dan tipe belum terpilih");
       this.pilihbrand_hapustipe = true;
@@ -699,7 +699,7 @@ export class StockAdminPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.deleteType(this.selectedbrand_HAPUSTYPE, this.selectedtype_HAPUS, this.tmpcabang);
+              this.dataService.deleteType(this.loggeduser, this.selectedbrand_HAPUSTYPE.namabrand, this.selectedbrand_HAPUSTYPE.BrandID, this.selectedtype_HAPUS.type, this.selectedtype_HAPUS.TypeID, this.tmpcabang);
               this.selectedtype_HAPUS = "";
               this.selectedtype = "";
               // this.selectedbrand_HAPUSTYPE = "";
@@ -741,7 +741,7 @@ export class StockAdminPage implements OnInit {
     this.pilihbrand_hapustipe = false;
     this.pilihtipe_hapustipe = false;
     this.tmpnamabrandbaru = "";
-    this.selectedbrand_TYPE = "";
+    this.selectedbrand_TYPE = undefined;
     this.selectedbrand_HAPUS = undefined;
     this.tmpTypeBaru = "";
     this.tmpHargaBaru = undefined;
