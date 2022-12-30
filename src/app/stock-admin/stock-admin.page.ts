@@ -828,7 +828,7 @@ export class StockAdminPage implements OnInit {
     const res1 = await pindahkandari.update({jumlah: this.stock_DARI_FINAL});
     const res2 = await pindahkanke.update({jumlah: this.stock_KE_FINAL});
 
-    
+    this.dataService.addnotif(`${this.loggeduser} memindahkan stock '${this.selectedtype_PindahkanStock.type}' sebanyak ${this.jumlahyangdipindahkan} unit dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}`)
 
     // const alert = await this.alertCtrl.create({
     //   subHeader: 'Stock berhasil dipindahkan!',
@@ -933,6 +933,7 @@ export class StockAdminPage implements OnInit {
               loading.present();
               console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
               console.log(this.selectedCabang_UpdateStock);
+              this.dataService.addnotif(`${this.loggeduser} menambah stock '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit`)
         
               const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
               
@@ -950,6 +951,8 @@ export class StockAdminPage implements OnInit {
               });
 
               loading.dismiss();
+
+
 
               await toast.present();
               await alert.present();
@@ -983,6 +986,8 @@ export class StockAdminPage implements OnInit {
               });
               console.log("Stock akan menjadi: ", this.tmpjumlahupdate_tambah);
               console.log(this.selectedCabang_UpdateStock);
+              this.dataService.addnotif(`${this.loggeduser} mengupdate stock '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit`)
+
         
               const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
               

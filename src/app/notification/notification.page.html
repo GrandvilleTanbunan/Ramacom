@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-title class="ion-text-center" style="margin-left: 55px">Pemberitahuan</ion-title>
+    <ion-title class="ion-text-center" style="margin-left: 55px">{{tmpfilter}}</ion-title>
+
     <!-- <ion-icon class="filter-style" slot="end" name="filter"></ion-icon> -->
 
     <!-- <ion-select interface="popover" placeholder="Filter"  [(ngModel)]="selectedfilter">
@@ -9,10 +11,34 @@
         <ion-select-option>Tampilkan Semua</ion-select-option>
       </ion-select> -->
 
-      <ion-button slot="end" (click)="ShowNotif()" fill="clear" color="light">
+      <!-- <ion-button slot="end" (click)="presentPopover()" fill="clear" color="light">
         <ion-icon name="filter" slot="icon-only"></ion-icon>
-      </ion-button>
+      </ion-button> -->
 
+        <ion-button slot="end" id="popover-button" fill="clear" color="light">
+            <ion-icon name="filter" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-popover trigger="popover-button" [dismissOnSelect]="true">
+          <ng-template>
+            <ion-content>
+              <ion-list>
+                <ion-item [button]="true" [detail]="false" (click)="setFilter('Hari ini')">Hari ini</ion-item>
+                <ion-item [button]="true" [detail]="false" (click)="setFilter('Bulan ini')">Bulan ini</ion-item>
+                <ion-item [button]="true" [detail]="false" (click)="setFilter('Tahun ini')">Tahun ini</ion-item>
+                <ion-item [button]="true" id="nested-trigger">Pilih Tanggal</ion-item>
+                <ion-popover trigger="nested-trigger" side="end">
+                  <ng-template>
+                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime"
+                      presentation="date">
+                    </ion-datetime>
+                  </ng-template>
+                </ion-popover>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        
   </ion-toolbar>
   
 </ion-header>
@@ -37,7 +63,7 @@
 
   <ion-list>
   
-    <ion-item *ngFor="let item of tmpnotif">
+    <ion-item *ngFor="let item of notiffinal">
       <ion-icon *ngIf="item.read == 1" class="ion-icon-style" name="ellipse"></ion-icon>
   
       <ion-label text-wrap class="text">

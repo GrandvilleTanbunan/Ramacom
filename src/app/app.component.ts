@@ -8,6 +8,7 @@ import { App } from '@capacitor/app';
 import {take , map, switchMap} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { NotificationPage } from './notification/notification.page';
+import * as moment from 'moment';
 
 
 @Component({
@@ -141,7 +142,6 @@ export class AppComponent {
       },
     });
     await modal.present();
-    console.log("abc")
   }
 
   getnotif() {

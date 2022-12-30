@@ -201,7 +201,7 @@ export class DataService {
     moment.locale('id')
     let tmpnotif = {
       judul : isinotif,
-      tanggal: moment().format('l'),
+      tanggal: moment().format('L'),
       hari: moment().format('dddd'),  
       waktu: moment().format('LTS'),
       timestamp: moment().format(),
