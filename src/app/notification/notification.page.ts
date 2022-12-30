@@ -89,18 +89,17 @@ export class NotificationPage implements OnInit {
   {
     this.notiffinal = [];
     moment().locale("id");
-    console.log("Bulan & tahun sekarang: "+this.bulandantahunsekarang);
+    // console.log("Bulan & tahun sekarang: "+this.bulandantahunsekarang);
     this.tmpfilter = filter;
-    console.log(filter)
+    // console.log(filter)
     if(this.tmpfilter == "Hari ini")
     {
       this.notiffinal = this.tmpnotifhariini;
+      // console.log(this.notiffinal)
     }
     else if(this.tmpfilter == "Bulan ini")
     {
       for(let i=0; i<this.tmpallnotif.length; i++){
-        // console.log(this.tmpallnotif[i].tanggal);
-        // this.notifbulanini = moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('MM/YYYY');
         if(this.bulandantahunsekarang == moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('MM/YYYY'))
         {
           this.notiffinal.push(this.tmpallnotif[i]);
@@ -111,8 +110,6 @@ export class NotificationPage implements OnInit {
     else if(this.tmpfilter == "Tahun ini")
     {
       for(let i=0; i<this.tmpallnotif.length; i++){
-        // console.log(this.tmpallnotif[i].tanggal);
-        // this.notifbulanini = moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('MM/YYYY');
         if(this.tahunsekarang == moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('YYYY'))
         {
           this.notiffinal.push(this.tmpallnotif[i]);

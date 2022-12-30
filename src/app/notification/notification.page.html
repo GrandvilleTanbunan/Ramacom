@@ -25,19 +25,38 @@
                 <ion-item [button]="true" [detail]="false" (click)="setFilter('Hari ini')">Hari ini</ion-item>
                 <ion-item [button]="true" [detail]="false" (click)="setFilter('Bulan ini')">Bulan ini</ion-item>
                 <ion-item [button]="true" [detail]="false" (click)="setFilter('Tahun ini')">Tahun ini</ion-item>
+        
+        
                 <ion-item [button]="true" id="nested-trigger">Pilih Tanggal</ion-item>
                 <ion-popover trigger="nested-trigger" side="end">
                   <ng-template>
-                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime"
-                      presentation="date">
+                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="date">
                     </ion-datetime>
                   </ng-template>
                 </ion-popover>
+        
+                <ion-item [button]="true" [detail]="false" id="nested-trigger2">Pilih Bulan</ion-item>
+                <ion-popover trigger="nested-trigger2" side="end">
+                  <ng-template>
+                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year">
+                    </ion-datetime>
+                  </ng-template>
+                </ion-popover>
+
+                <ion-item [button]="true" [detail]="false" id="nested-trigger3">Pilih Tahun</ion-item>
+                <ion-popover trigger="nested-trigger3" side="end">
+                  <ng-template>
+                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year">
+                    </ion-datetime>
+                  </ng-template>
+                </ion-popover>
+
               </ion-list>
             </ion-content>
           </ng-template>
         </ion-popover>
 
+        
         
   </ion-toolbar>
   
