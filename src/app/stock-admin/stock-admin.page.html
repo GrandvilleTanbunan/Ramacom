@@ -84,19 +84,19 @@
       <ion-fab-button color="light" title="Pindahkan Stock" id="open-modal-pindahkanstock" (click)="CleanSelection()">
         <ion-icon name="swap-horizontal"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="loggeduser =='admin'" color="light" title="Update Stock" id="open-modal-updatestock" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Update Stock" id="open-modal-updatestock" (click)="CleanSelection()">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="loggeduser =='admin'" color="light" title="Hapus Tipe" id="open-modal-hapustipe" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Tipe" id="open-modal-hapustipe" (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="loggeduser =='admin'" color="light" title="Hapus Brand" id="open-modal-hapusbrand" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Brand" id="open-modal-hapusbrand" (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="loggeduser =='admin'" color="light" title="Tambah Tipe" id="open-modal-tambahtipe" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Tipe" id="open-modal-tambahtipe" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button *ngIf="loggeduser =='admin'" color="light" title="Tambah Brand" id="open-modal-tambahbrand" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Brand" id="open-modal-tambahbrand" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

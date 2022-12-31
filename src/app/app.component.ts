@@ -31,13 +31,13 @@ export class AppComponent {
   constructor(private modalCtrl: ModalController, private router: Router,private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
 
     const auth = getAuth();
-    const user = auth.currentUser;
-    console.log("current user: ", user);
+    // const user = auth.currentUser;
+    // console.log("current user: ", user);
 
     //INI SAAT KELUAR APLIKASI TERUS MASUK LAGI
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user)
+        // console.log(user)
         const email = user.email;
         console.log(email);
         this.db.collection('Users', ref => ref.where('email', '==', `${email}`))
@@ -47,7 +47,7 @@ export class AppComponent {
             console.log(this.tmpusername)
             this.loggeduser = this.tmpusername[0].username;
             console.log(this.loggeduser);
-            // this.authService.setloggeduser(this.loggeduser);
+            this.authService.setloggeduser(this.loggeduser);
 
             this.cekadmin();
             

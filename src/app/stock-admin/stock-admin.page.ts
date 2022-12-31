@@ -114,13 +114,18 @@ export class StockAdminPage implements OnInit {
   ngOnInit() {
     this.getBrand();
     this.getCabang();
-
     this.authService.loginStatus$.subscribe(user => {
-    this.loggeduser  = user;
-    console.log("Logged user stockadminpage: ", this.loggeduser);
-
- });
-
+      this.loggeduser = user;
+      console.log("logged user: ", this.loggeduser);
+    });
+  }
+  ionViewDidEnter()
+  {
+    this.authService.loginStatus$.subscribe(user => {
+      this.loggeduser = user;
+      console.log("logged user: ", this.loggeduser);
+    });
+    console.log("ionviewdidenter logged user: ", this.loggeduser);
   }
 
   pilihBerdasarkan()
@@ -194,6 +199,8 @@ export class StockAdminPage implements OnInit {
     this.arrjumlahdari = [];
     this.tmpjumlahdari = undefined;
     this.tmpjumlahke = undefined;
+
+    console.log("Cliked")
 
     // console.log(this.selectedtype_PindahkanStock);
   }
@@ -476,7 +483,7 @@ export class StockAdminPage implements OnInit {
     else {
       let alert = await this.alertCtrl.create({
 
-        message: 'Anda yakin ingin menambahkan brand ini?',
+        subHeader: 'Anda yakin ingin menambahkan brand ini?',
         buttons: [
           {
             text: 'Tidak',

@@ -65,17 +65,17 @@ export class AuthService {
     return this.currentUser.role == 0;
    }
 
-   async register ({email, password}){
-     try{
-       this.user = await createUserWithEmailAndPassword(
-         this.auth, email, password
-       );
-       return this.user;
-     } catch (e){
-       console.log(e)
-       return null;
-     }
-   }
+  async register({ email, password }) {
+    try {
+      this.user = await createUserWithEmailAndPassword(
+        this.auth, email, password
+      );
+      return this.user;
+    } catch (e) {
+      console.log(e)
+      return null;
+    }
+  }
 
   async login({ username, password }) {
     this.user = undefined;
@@ -86,7 +86,7 @@ export class AuthService {
         idx = i;
       }
     }
-    if(idx){
+    if (idx) {
       this.emailku = this.tmpuser[idx].email;
       this.loggeduser = username;
       this._statusChange$.next(username);
@@ -94,7 +94,7 @@ export class AuthService {
       console.log(this.loggeduser);
 
     }
-    
+
     try {
       this.user = await signInWithEmailAndPassword(
         this.auth, this.emailku, password
@@ -109,7 +109,6 @@ export class AuthService {
   setloggeduser(username: string) {
     console.log("Masuk set logged user")
     this._statusChange$.next(username)
-    console.log(this.loginStatus$);
   }
 
   logout() {
