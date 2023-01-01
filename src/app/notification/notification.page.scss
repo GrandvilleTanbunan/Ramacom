@@ -18,3 +18,14 @@
       font-size: 25px;
       margin-right: 15px;
   }
+
+.pop-tanggal  {
+    position: fixed !important;
+    // top: 1% !important;
+    // left: 5% !important;
+    --offset-y: -100px !important;
+    // margin-top: -125px !important;
+    // margin-left: -100px !important;
+    // height: 250px !important;
+    // width: 200px !important;
+}

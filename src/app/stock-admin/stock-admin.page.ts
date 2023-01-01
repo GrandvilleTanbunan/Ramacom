@@ -119,14 +119,6 @@ export class StockAdminPage implements OnInit {
       console.log("logged user: ", this.loggeduser);
     });
   }
-  ionViewDidEnter()
-  {
-    this.authService.loginStatus$.subscribe(user => {
-      this.loggeduser = user;
-      console.log("logged user: ", this.loggeduser);
-    });
-    console.log("ionviewdidenter logged user: ", this.loggeduser);
-  }
 
   pilihBerdasarkan()
   {

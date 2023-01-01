@@ -28,17 +28,26 @@
         
         
                 <ion-item [button]="true" id="nested-trigger">Pilih Tanggal</ion-item>
-                <ion-popover trigger="nested-trigger" side="end">
+                <ion-popover trigger="nested-trigger" side="left">
                   <ng-template>
-                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="date">
+                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="date" (ionChange)="PilihTanggal()">
                     </ion-datetime>
                   </ng-template>
                 </ion-popover>
-        
+                
+                <ion-item [button]="true" [detail]="false" id="nested-trigger4">Pilih Banyak Tanggal</ion-item>
+                <ion-popover trigger="nested-trigger4" side="end">
+                  <ng-template>
+                    <!-- <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun()">
+                    </ion-datetime> -->
+                    <ion-datetime [(ngModel)]="tmpselectedRentangTanggal" [showDefaultButtons]="true" presentation="date" [multiple]="true" (ionChange)="PilihRentangTanggal()"></ion-datetime>
+                  </ng-template>
+                </ion-popover>
+
                 <ion-item [button]="true" [detail]="false" id="nested-trigger2">Pilih Bulan</ion-item>
                 <ion-popover trigger="nested-trigger2" side="end">
                   <ng-template>
-                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year">
+                    <ion-datetime [(ngModel)]="tmpselectedMonth" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year" (ionChange)="PilihBulan()">
                     </ion-datetime>
                   </ng-template>
                 </ion-popover>
@@ -46,10 +55,12 @@
                 <ion-item [button]="true" [detail]="false" id="nested-trigger3">Pilih Tahun</ion-item>
                 <ion-popover trigger="nested-trigger3" side="end">
                   <ng-template>
-                    <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year">
+                    <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun()">
                     </ion-datetime>
                   </ng-template>
                 </ion-popover>
+
+               
 
               </ion-list>
             </ion-content>

@@ -14,6 +14,9 @@ export class NotificationPage implements OnInit {
 
   @ViewChild('popover') popover;
   public tmpselectedDate = new Date().toISOString();
+  public tmpselectedMonth = new Date().toISOString();
+  public tmpselectedYear = new Date().toISOString();
+  public tmpselectedRentangTanggal = new Date().toISOString();
   tmpfilter ="Hari ini";
   isOpen = false;
   constructor(private db: AngularFirestore) { }
@@ -23,23 +26,9 @@ export class NotificationPage implements OnInit {
   tahunsekarang = moment().format('YYYY');
   notiffinal = [];
   ngOnInit() {
-    this.getnotifhariini();
     this.getallnotif();
   }
-  getnotifhariini() {
-    moment.locale('id');
-    const tanggalhariini=moment().format('l');
-
-    this.db.collection('Pemberitahuan', ref => ref.where('tanggal','==',`${tanggalhariini}`).orderBy('timestamp', "desc"))
-      .valueChanges({ idField: 'NotifID' }).pipe(take(1))
-      .subscribe(data => {
-        this.tmpnotifhariini = data;
-        this.notiffinal = data;
-        console.log(this.tmpnotifhariini);
-        // this.updateREAD(this.tmpnotifhariini);
-      }
-      );
-  }
+  
 
   getallnotif()
   {
@@ -49,8 +38,20 @@ export class NotificationPage implements OnInit {
         this.tmpallnotif = data;
         console.log(this.tmpallnotif);
         this.updateREAD(this.tmpallnotif);
+        this.getnotifhariini()
       }
       );
+  }
+
+  getnotifhariini() {
+    moment.locale('id');
+      const formateddate = moment().format('L');
+      for (let i = 0; i < this.tmpallnotif.length; i++) {
+        if (formateddate == this.tmpallnotif[i].tanggal) {
+          this.notiffinal.push(this.tmpallnotif[i]);
+          console.log(this.notiffinal);
+        }
+      }
   }
 
   async updateREAD(tmpnotif)
@@ -94,8 +95,7 @@ export class NotificationPage implements OnInit {
     // console.log(filter)
     if(this.tmpfilter == "Hari ini")
     {
-      this.notiffinal = this.tmpnotifhariini;
-      // console.log(this.notiffinal)
+      this.getnotifhariini();
     }
     else if(this.tmpfilter == "Bulan ini")
     {
@@ -120,5 +120,65 @@ export class NotificationPage implements OnInit {
     
   }
 
+  public PilihTanggal(): void {
+    this.notiffinal = [];
+    const formateddate = moment(this.tmpselectedDate).format('DD/MM/YYYY');
+    console
+    for (let i = 0; i < this.tmpallnotif.length; i++) {
+      if (formateddate == this.tmpallnotif[i].tanggal) {
+        this.notiffinal.push(this.tmpallnotif[i]);
+        console.log(this.notiffinal);
+      }
+    }
+  }
+
+  public PilihBulan(): void {
+    this.notiffinal = [];
+
+    const formateddate = moment(this.tmpselectedMonth).format('MM/YYYY')
+    console.log(formateddate);
+    for (let i = 0; i < this.tmpallnotif.length; i++) {
+      if (formateddate == moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('MM/YYYY')) {
+        this.notiffinal.push(this.tmpallnotif[i]);
+        // console.log(this.notiffinal);
+      }
+    }
+  }
+
+  public PilihTahun(): void {
+    this.notiffinal = [];
+
+    const formateddate = moment(this.tmpselectedYear).format('YYYY')
+    console.log(formateddate);
+    for (let i = 0; i < this.tmpallnotif.length; i++) {
+      if (formateddate == moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('YYYY')) {
+        this.notiffinal.push(this.tmpallnotif[i]);
+        // console.log(this.notiffinal);
+      }
+    }
+  }
+
+
+
+
+  public PilihRentangTanggal(): void {
+    this.notiffinal = [];
+    const formateddate = [];
+    if (this.tmpselectedRentangTanggal.length > 0) {
+      for (let i = 0; i < this.tmpselectedRentangTanggal.length; i++) {
+        formateddate.push(moment(this.tmpselectedRentangTanggal[i]).format('DD/MM/YYYY'))
+        console.log(formateddate);
+      }
+      for (let i = 0; i < this.tmpallnotif.length; i++) {
+        // console.log(this.tmpallnotif[i].tanggal)
+        for (let j = 0; j < formateddate.length; j++) {
+          if (formateddate[j] == this.tmpallnotif[i].tanggal) {
+            this.notiffinal.push(this.tmpallnotif[i]);
+            console.log(this.notiffinal);
+          }
+        }
+      }
+    }
+  }
 
 }
