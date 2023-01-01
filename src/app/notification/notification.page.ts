@@ -130,6 +130,8 @@ export class NotificationPage implements OnInit {
         console.log(this.notiffinal);
       }
     }
+    this.tmpfilter = formateddate;
+
   }
 
   public PilihBulan(): void {
@@ -143,6 +145,7 @@ export class NotificationPage implements OnInit {
         // console.log(this.notiffinal);
       }
     }
+    this.tmpfilter = moment(this.tmpselectedMonth).format('MMMM YYYY');
   }
 
   public PilihTahun(): void {
@@ -156,6 +159,8 @@ export class NotificationPage implements OnInit {
         // console.log(this.notiffinal);
       }
     }
+    this.tmpfilter = formateddate;
+
   }
 
 
@@ -167,7 +172,6 @@ export class NotificationPage implements OnInit {
     if (this.tmpselectedRentangTanggal.length > 0) {
       for (let i = 0; i < this.tmpselectedRentangTanggal.length; i++) {
         formateddate.push(moment(this.tmpselectedRentangTanggal[i]).format('DD/MM/YYYY'))
-        console.log(formateddate);
       }
       for (let i = 0; i < this.tmpallnotif.length; i++) {
         // console.log(this.tmpallnotif[i].tanggal)
@@ -179,6 +183,9 @@ export class NotificationPage implements OnInit {
         }
       }
     }
+
+    this.tmpfilter = "Tanggal Pilihan";
+
   }
 
 }
