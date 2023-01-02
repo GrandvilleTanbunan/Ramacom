@@ -1,20 +1,75 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title>Penjualan</ion-title>
+    <ion-title>Laporan Penjualan</ion-title>
+
+    <ion-button slot="end" id="popover-button1" fill="clear" color="light">
+      <ion-icon name="filter" slot="icon-only"></ion-icon>
+  </ion-button>
+  <ion-popover trigger="popover-button1" [dismissOnSelect]="true">
+    <ng-template>
+      <ion-content>
+        <ion-list>
+          <ion-item [button]="true" [detail]="false" (click)="setFilter('Hari ini')">Hari ini</ion-item>
+          <ion-item [button]="true" [detail]="false" (click)="setFilter('Bulan ini')">Bulan ini</ion-item>
+          <ion-item [button]="true" [detail]="false" (click)="setFilter('Tahun ini')">Tahun ini</ion-item>
+  
+  
+          <ion-item [button]="true" id="nested-trigger">Pilih Tanggal</ion-item>
+          <ion-popover trigger="nested-trigger" side="left">
+            <ng-template>
+              <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="date" (ionChange)="PilihTanggal()">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
+          
+          <ion-item [button]="true" [detail]="false" id="nested-trigger4">Pilih Banyak Tanggal</ion-item>
+          <ion-popover trigger="nested-trigger4" side="left">
+            <ng-template>
+              <!-- <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun()">
+              </ion-datetime> -->
+              <ion-datetime [(ngModel)]="tmpselectedRentangTanggal" [showDefaultButtons]="true" presentation="date" [multiple]="true" (ionChange)="PilihRentangTanggal()"></ion-datetime>
+            </ng-template>
+          </ion-popover>
+
+          <ion-item [button]="true" [detail]="false" id="nested-trigger2">Pilih Bulan</ion-item>
+          <ion-popover trigger="nested-trigger2" side="left">
+            <ng-template>
+              <ion-datetime [(ngModel)]="tmpselectedMonth" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year" (ionChange)="PilihBulan()">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
+
+          <ion-item [button]="true" [detail]="false" id="nested-trigger3">Pilih Tahun</ion-item>
+          <ion-popover trigger="nested-trigger3" side="left">
+            <ng-template>
+              <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun()">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
+
+         
+
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
   <ion-fab horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button color="secondary">
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Transaksi Baru" id="open-modal-transaksibaru">
+      <ion-fab-button color="light" title="Transaksi Baru" (click)="OpenModalTransaksi()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
+
+  
 
   <!-- <ion-modal #modalbrand trigger="open-modal-transaksibaru">
       <ng-template>
@@ -50,17 +105,5 @@
       </ng-template>
     </ion-modal> -->
 
-  <ion-item>
-    <ion-label>
-      Pilih Tanggal
-    </ion-label>
-    <ion-datetime-button datetime="datetime"></ion-datetime-button>
-    <ion-popover [keepContentsMounted]="true">
-      <ng-template>
-        <ion-datetime [(ngModel)]="tmpselectedDate" [showDefaultButtons]="true" locale="id-ID" id="datetime"
-          presentation="date" (ionChange)="PilihTanggal()"></ion-datetime>
-      </ng-template>
-    </ion-popover>
-  </ion-item>
 
 </ion-content>

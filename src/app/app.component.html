@@ -8,14 +8,14 @@
       
         <img src="../assets/images/avatar.png" alt="">
         <ion-label>
-          <h1 style="color: white; padding-left: 20px;">{{loggeduser}}</h1>
-          <!-- <p style="color: white; padding-left: 20px;">abcddd</p> -->
+          <h1 style="color: white; padding-left: 20px;">{{loggeduser}}</h1> 
         </ion-label>
         <ion-button slot="end" (click)="ShowNotif()" fill="clear" color="light">
           <ion-icon name="notifications" slot="icon-only"></ion-icon>
           <ion-badge *ngIf="ctrnotif" color="danger">{{ctrnotif}}</ion-badge>
         </ion-button>
       </div>
+
       <ion-list class="menu-items">
         <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
           <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">

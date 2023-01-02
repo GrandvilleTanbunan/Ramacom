@@ -6,7 +6,7 @@ import { DataService } from './services/data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { App } from '@capacitor/app';
 import {take , map, switchMap} from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, RouterEvent } from '@angular/router';
 import { NotificationPage } from './notification/notification.page';
 import * as moment from 'moment';
 
@@ -27,9 +27,9 @@ export class AppComponent {
   public tmpusername;
   public ctrnotif = 0;
   public tmpnotif = [];
+  selectedPath = '';
   
   constructor(private modalCtrl: ModalController, private router: Router,private db: AngularFirestore, private  dataService: DataService, private authService: AuthService, private navCtrl: NavController, public platform: Platform, public alertCtrl: AlertController) {
-
     const auth = getAuth();
     // const user = auth.currentUser;
     // console.log("current user: ", user);
@@ -69,10 +69,11 @@ export class AppComponent {
       this.authService.setloggeduser(this.loggeduser);
       // console.log('Ini admin');
       this.appPages = [
+        { title: 'Transaksi', url: '/transaksi', icon: '/assets/images/sell.png' },
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
         { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
         { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list.png' },
-        { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
+        { title: 'Laporan Penjualan', url: '/penjualan-admin', icon: '/assets/images/transactionreport.png' },
         { title: 'Kategori', url: '/kategori', icon: '/assets/images/categories.png' },
 
         { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
