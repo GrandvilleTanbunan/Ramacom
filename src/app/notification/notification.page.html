@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title class="ion-text-center" style="margin-left: 55px">Pemberitahuan</ion-title>
-    <ion-title class="ion-text-center" style="margin-left: 55px">{{tmpfilter}}</ion-title>
+      <ion-button slot="start" fill="clear" color="light" (click)="dismissmodal()">
+          <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    <ion-title class="ion-text-center">Pemberitahuan</ion-title>
+    <ion-title class="ion-text-center">{{tmpfilter}}</ion-title>
 
     <!-- <ion-icon class="filter-style" slot="end" name="filter"></ion-icon> -->
 
@@ -90,6 +93,18 @@
     </div>
   
   </ion-list> -->
+  
+
+  <div style="margin-top: 17%" *ngIf="notiffinal.length == 0">
+    <ion-img style="width: 210px; height: 210px;" class="center" src="../assets/images/notification.png"></ion-img>
+  </div>
+
+  <ion-item lines="none" *ngIf="notiffinal.length == 0" class="item-no-padding">
+    <ion-label style="color: grey; font-size: 20pt" class="ion-text-center">Belum ada pemberitahuan</ion-label>
+  </ion-item>
+  <ion-item lines="none" *ngIf="notiffinal.length == 0" class="item-no-padding">
+    <ion-label style="color: grey; font-size: 10pt" class="ion-text-center">Anda dapat menggunakan fitur filter untuk mencari pembertahuan</ion-label>
+  </ion-item>
 
   <ion-list>
   

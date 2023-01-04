@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Subject, Observable, BehaviorSubject, from, of } from 'rxjs';   
 import { take } from 'rxjs/operators';
 import * as moment from 'moment';
+import { ModalController } from '@ionic/angular';
 
 
 @Component({
@@ -19,12 +20,17 @@ export class NotificationPage implements OnInit {
   public tmpselectedRentangTanggal = new Date().toISOString();
   tmpfilter ="Hari ini";
   isOpen = false;
-  constructor(private db: AngularFirestore) { }
   tmpnotifhariini;
   tmpallnotif;
   bulandantahunsekarang = moment().format('MM/YYYY');
   tahunsekarang = moment().format('YYYY');
   notiffinal = [];
+
+
+  constructor(private db: AngularFirestore, private modalCtrl: ModalController) { }
+
+  
+  
   ngOnInit() {
     this.getallnotif();
   }
@@ -186,6 +192,11 @@ export class NotificationPage implements OnInit {
 
     this.tmpfilter = "Tanggal Pilihan";
 
+  }
+
+  dismissmodal()
+  {
+    this.modalCtrl.dismiss();
   }
 
 }
