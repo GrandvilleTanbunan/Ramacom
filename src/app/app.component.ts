@@ -69,11 +69,11 @@ export class AppComponent {
       this.authService.setloggeduser(this.loggeduser);
       // console.log('Ini admin');
       this.appPages = [
-        { title: 'Transaksi', url: '/transaksi', icon: '/assets/images/sell.png' },
+        { title: 'Penjualan', url: '/transaksi', icon: '/assets/images/sell.png' },
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
         { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
         { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list.png' },
-        { title: 'Laporan Penjualan', url: '/penjualan-admin', icon: '/assets/images/transactionreport.png' },
+        // { title: 'Laporan Penjualan', url: '/penjualan-admin', icon: '/assets/images/transactionreport.png' },
         { title: 'Kategori', url: '/kategori', icon: '/assets/images/categories.png' },
 
         { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
@@ -87,11 +87,14 @@ export class AppComponent {
       this.authService.setloggeduser(this.loggeduser);
 
       this.appPages = [
+        { title: 'Penjualan', url: '/transaksi', icon: '/assets/images/sell.png' },
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
         { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
         { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list.png' },
-        { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
-        { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
+        // { title: 'Kategori', url: '/kategori', icon: '/assets/images/categories.png' },
+
+        // { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
+        // { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
       ];
       this.setting = [
         { title: 'Logout', url: '/home/Stock', icon: '/assets/images/logout.png' },

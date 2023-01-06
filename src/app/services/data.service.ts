@@ -26,6 +26,7 @@ export class DataService {
   public tmptype: any = [];
   public tmpusername;
   public loggeduser;
+  public tmptransaksiaktif: any = [];
   
 
   constructor(private firestore: Firestore, private db: AngularFirestore) { 
@@ -122,13 +123,12 @@ export class DataService {
 
   }
 
-  addStock(BrandID)
-  {
+  addStock(BrandID) {
     this.db.collection(`Brand/${BrandID}/Type`).doc("LA").set({
       name: "Los Angeles",
       state: "CA",
       country: "USA"
-  })
+    })
   }
 
   async addItem(itemdetail)
@@ -211,4 +211,5 @@ export class DataService {
     const BrandRef = collection(this.firestore, 'Pemberitahuan');
     return addDoc(BrandRef, tmpnotif);
   }
+
 }

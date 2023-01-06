@@ -1,9 +1,51 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title>Transaksi</ion-title>
+      <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title>Penjualan</ion-title>
+    <ion-button slot="end" fill="clear" color="light" (click)="LaporanPenjualan()">
+        <ion-icon name="document-text" slot="icon-only"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!-- <ion-segment [scrollable]="true" value="heart">
+    <ion-segment-button value="home" *ngFor="let i of transaksi">
+      <ion-icon name="home"></ion-icon>
 
+    </ion-segment-button>
+    <ion-segment-button value="heart">
+      <ion-icon name="heart"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="pin">
+      <ion-icon name="pin"></ion-icon>
+    </ion-segment-button> 
+  </ion-segment> -->
+
+  <div padding>
+    <ion-segment [(ngModel)]="transaksi" [scrollable]="true">
+      <ion-segment-button *ngFor="let item of transaksiaktif; let i = index" value={{item.InvoiceID}} (click)="check()">
+        Transaksi {{i}}
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="transaksi">
+    <ion-item *ngSwitchCase=transaksi>
+      <h4>Invoice ID: {{transaksi}}</h4>
+    </ion-item>
+  </div>
+
+
+  <!-- <ion-button (click)="tambahtransaksi()">
+    Tambah Transaksi
+  </ion-button> -->
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="secondary" (click)="tambahtransaksi()">
+      <ion-icon md="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
