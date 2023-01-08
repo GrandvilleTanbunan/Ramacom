@@ -20,9 +20,12 @@ export class TransaksiPage implements OnInit {
   categories: any;
   transaksi : string;
   ctrpelanggan= 1;
+  ctrpelangganterakhir = 0;;
   loggeduser;
   invoicenumber;
   transaksiaktif = [];
+  kategori = [];
+  SelectedTransaksiID;
   constructor(private firestore: Firestore, private dataService:DataService,private db: AngularFirestore, private router: Router, private modalCtrl: ModalController, private invoicegenerator: InvoicegeneratorService, private authService: AuthService) {
     this.categories= [];
     // this.category = "";
@@ -35,17 +38,36 @@ export class TransaksiPage implements OnInit {
    }
   ngOnInit() {
     this.getTransaksiAktif();
+    this.getKategori();
+    this.getAllItem();
   }
 
   getTransaksiAktif() {
 
     this.db.collection(`TransaksiAktif`, ref => ref.orderBy('InvoiceID', 'asc'))
-      .valueChanges()
+      .valueChanges({ idField: 'TransaksiID' })
       .subscribe(data => {
         this.transaksiaktif = data;
         // console.log(this.transaksiaktif)
       }
       );
+  }
+
+  getKategori()
+  {
+    this.db.collection('Kategori')
+      .valueChanges()
+      .subscribe(data => {
+        this.kategori = data;
+        console.log(this.kategori)
+        this.getAllItem();
+      }
+      );
+  }
+
+  getAllItem()
+  {
+    console.log(this.kategori)
   }
 
   async LaporanPenjualan()
@@ -55,11 +77,16 @@ export class TransaksiPage implements OnInit {
 
   async tambahtransaksi()
   {
-    this.categories.push(this.ctrpelanggan);
-    this.ctrpelanggan++;
+    this.ctrpelangganterakhir = 0;
+    this.ctrpelanggan = 0;
+    for(let i=0; i<this.transaksiaktif.length; i++)
+    {
+      this.ctrpelangganterakhir = this.transaksiaktif[i].transaksike;
+    }
+    // console.log("no pelanggan terakhir: ", this.ctrpelangganterakhir);
+    // this.ctrpelanggan = this.ctrpelangganterakhir+1;
+    // console.log("no pelanggan selanjutnya: ", this.ctrpelanggan);
     this.generateinvoice();
-
-    // this.dataService
 
     let datatrans = {
       InvoiceID : this.invoicenumber,
@@ -67,20 +94,32 @@ export class TransaksiPage implements OnInit {
       hari: moment().format('dddd'),  
       waktu: moment().format('LTS'),
       timestamp: moment().format(),
-      cabang: this.loggeduser
+      cabang: this.loggeduser,
+      transaksike: this.ctrpelanggan
     }
+
     const res = await this.db.collection(`TransaksiAktif`).add(datatrans);
+
   }
 
-  check()
+  SelectedTransaksi(Item)
   {
-    console.log(this.transaksi)
+    // console.log(Item);
+    this.SelectedTransaksiID = Item.TransaksiID;  
+    // console.log(this.SelectedTransaksiID);
   }
 
   generateinvoice()
   {
     this.invoicenumber = this.invoicegenerator.generateinvoice();
-    console.log(this.invoicenumber);
+    // console.log(this.invoicenumber);
+  }
+
+  BatalkanTransaksi()
+  {
+    const TypeRef = doc(this.firestore, `TransaksiAktif/${this.SelectedTransaksiID}`);
+    deleteDoc(TypeRef);
+    this.transaksi = "";
   }
 
 }
