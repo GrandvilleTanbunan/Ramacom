@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController, ToastController, AlertController } from '@ionic/angular';
 import { PenjualanAdminPage } from '../penjualan-admin/penjualan-admin.page';
 import { Router } from '@angular/router';
 import { InvoicegeneratorService } from '../invoicegenerator.service';
@@ -26,7 +26,7 @@ export class TransaksiPage implements OnInit {
   transaksiaktif = [];
   kategori = [];
   SelectedTransaksiID;
-  constructor(private firestore: Firestore, private dataService:DataService,private db: AngularFirestore, private router: Router, private modalCtrl: ModalController, private invoicegenerator: InvoicegeneratorService, private authService: AuthService) {
+  constructor(private alertCtrl: AlertController,private toastController: ToastController, private loadingCtrl: LoadingController, private firestore: Firestore, private dataService:DataService,private db: AngularFirestore, private router: Router, private modalCtrl: ModalController, private invoicegenerator: InvoicegeneratorService, private authService: AuthService) {
     this.categories= [];
     // this.category = "";
 
@@ -84,7 +84,7 @@ export class TransaksiPage implements OnInit {
       this.ctrpelangganterakhir = this.transaksiaktif[i].transaksike;
     }
     // console.log("no pelanggan terakhir: ", this.ctrpelangganterakhir);
-    // this.ctrpelanggan = this.ctrpelangganterakhir+1;
+    this.ctrpelanggan = this.ctrpelangganterakhir+1;
     // console.log("no pelanggan selanjutnya: ", this.ctrpelanggan);
     this.generateinvoice();
 
@@ -115,11 +115,63 @@ export class TransaksiPage implements OnInit {
     // console.log(this.invoicenumber);
   }
 
-  BatalkanTransaksi()
+  async BatalkanTransaksi()
   {
-    const TypeRef = doc(this.firestore, `TransaksiAktif/${this.SelectedTransaksiID}`);
-    deleteDoc(TypeRef);
-    this.transaksi = "";
+    
+
+
+
+    if(this.transaksi)
+    {
+      let alert = await this.alertCtrl.create({
+
+        subHeader: 'Batalkan transaksi?',
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
+              });
+          
+              loading.present().then(() => {
+                const TypeRef = doc(this.firestore, `TransaksiAktif/${this.SelectedTransaksiID}`);
+                deleteDoc(TypeRef).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Transaksi Dibatalkan',
+                    duration: 700,
+                    position: 'bottom'
+                  });
+                  await toast.present();
+          
+                });
+                this.transaksi = "";
+              });
+            }
+          }
+        ]
+      });
+      await alert.present();
+
+    }
+    else
+    {
+      const toast = await this.toastController.create({
+        message: 'Pilih Transaksi!',
+        duration: 1500,
+        position: 'bottom'
+      });
+      await toast.present();
+    }
+    
   }
 
 }
