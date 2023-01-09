@@ -39,14 +39,14 @@ export class AppComponent {
       if (user) {
         // console.log(user)
         const email = user.email;
-        console.log(email);
+        // console.log(email);
         this.db.collection('Users', ref => ref.where('email', '==', `${email}`))
           .valueChanges().pipe(take(1))
           .subscribe(data => {
             this.tmpusername = data;
-            console.log(this.tmpusername)
+            // console.log(this.tmpusername)
             this.loggeduser = this.tmpusername[0].username;
-            console.log(this.loggeduser);
+            // console.log(this.loggeduser);
             this.authService.setloggeduser(this.loggeduser);
 
             this.cekadmin();

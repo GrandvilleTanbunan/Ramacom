@@ -1,0 +1,49 @@
+ion-item {
+    --padding-start: 3px;
+    --padding-end: 0;
+    
+    --inner-padding-start: 3px;
+    --inner-padding-end: 0;
+    
+    --min-height: 0;
+  }
+
+
+ion-item ion-label{
+  margin: 2px;
+}
+
+ion-fab-button{
+    height:45px;
+    width: 45px;
+    margin-right: 10px;
+    margin-top: 40px;
+    // ion-icon{
+    //     height: 20px;
+    //     width: 20px;
+    // }
+  }
+
+  .tambahtrans {
+    --background: #009cff;
+  
+    --color: white;
+  
+    // --border-radius: 0;
+    --border-color: black;
+    --border-style: solid;
+    --border-width: 2px;
+    border-left: solid 2px black;  /* Or whatever color your button has. */
+    border-right: solid 2px black;
+  
+    --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+  
+    --ripple-color: #009cff;
+  
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+  }
+
+ion-segment-button{
+  min-height: 32px;
+}

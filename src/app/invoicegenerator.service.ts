@@ -14,7 +14,7 @@ export class InvoicegeneratorService {
     moment.locale('id'); 
     this.authService.loginStatus$.subscribe(user => {
       this.loggeduser = user;
-      console.log("logged user: ", this.loggeduser);
+      // console.log("logged user: ", this.loggeduser);
     });
    }
 
