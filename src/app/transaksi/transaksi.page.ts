@@ -32,6 +32,7 @@ export class TransaksiPage implements OnInit {
   AllHp = [];
   tmpbrand;
   public results = [];
+  public resultsHP = [];
   tmpitem = [];
   input: any;
   constructor(public popoverController: PopoverController, private alertCtrl: AlertController,private toastController: ToastController, private loadingCtrl: LoadingController, private firestore: Firestore, private dataService:DataService,private db: AngularFirestore, private router: Router, private modalCtrl: ModalController, private invoicegenerator: InvoicegeneratorService, private authService: AuthService) {
@@ -229,7 +230,7 @@ export class TransaksiPage implements OnInit {
 
   }
 
-  async CariItem(event : any) {
+  async CariItem(event: any) {
     const val = event.target.value;
     this.results = this.AllItem.filter((item) => {
       return (
@@ -237,6 +238,16 @@ export class TransaksiPage implements OnInit {
         item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
       )
     });
+
+    // console.log(this.AllHp);
+    // const val = event.target.value;
+    this.resultsHP = this.AllHp.filter((item) => {
+      return (
+        item.type.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
+      )
+    });
+
   }
 
   TambahItem(item : any)
