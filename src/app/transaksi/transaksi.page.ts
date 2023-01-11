@@ -35,6 +35,9 @@ export class TransaksiPage implements OnInit {
   public resultsHP = [];
   tmpitem = [];
   input: any;
+  Dtrans;
+  barangkembar = false;
+  // keranjang = [];
   constructor(public popoverController: PopoverController, private alertCtrl: AlertController,private toastController: ToastController, private loadingCtrl: LoadingController, private firestore: Firestore, private dataService:DataService,private db: AngularFirestore, private router: Router, private modalCtrl: ModalController, private invoicegenerator: InvoicegeneratorService, private authService: AuthService) {
     this.categories= [];
     // this.category = "";
@@ -42,22 +45,24 @@ export class TransaksiPage implements OnInit {
     this.authService.loginStatus$.subscribe(user => {
       this.loggeduser = user;
       console.log("logged user: ", this.loggeduser);
+      this.getTransaksiAktif();
+
     });
 
    }
   ngOnInit() {
-    this.getTransaksiAktif();
+    // this.getTransaksiAktif();
     this.getKategori();
     this.getBrand();
   }
 
   getTransaksiAktif() {
-
-    this.db.collection(`TransaksiAktif`, ref => ref.orderBy('transaksike', 'asc'))
+    console.log(this.loggeduser)
+    this.db.collection(`TransaksiAktif`, ref => ref.where('cabang', '==', `${this.loggeduser}`))
       .valueChanges({ idField: 'TransaksiID' })
       .subscribe(data => {
         this.transaksiaktif = data;
-        // console.log(this.transaksiaktif)
+        console.log(this.transaksiaktif)
       }
       );
   }
@@ -152,8 +157,7 @@ export class TransaksiPage implements OnInit {
             this.ctrpelanggan = this.ctrpelangganterakhir+1;
             // console.log("no pelanggan selanjutnya: ", this.ctrpelanggan);
             this.generateinvoice();
-        
-            let datatrans = {
+            this.db.collection(`TransaksiAktif`).doc(`${this.invoicenumber}`).set({
               InvoiceID : this.invoicenumber,
               tanggal: moment().format('L'),
               hari: moment().format('dddd'),  
@@ -161,9 +165,7 @@ export class TransaksiPage implements OnInit {
               timestamp: moment().format(),
               cabang: this.loggeduser,
               transaksike: this.ctrpelanggan
-            }
-        
-            const res = await this.db.collection(`TransaksiAktif`).add(datatrans);
+            })
           }
         }
       ]
@@ -180,6 +182,17 @@ export class TransaksiPage implements OnInit {
     this.SelectedTransaksiID = Item.TransaksiID; 
     this.SelectedTransaksiDetail = Item;
     // console.log(this.SelectedTransaksiID);
+    // console.log(this.SelectedTransaksiDetail.InvoiceID);
+
+    this.db.collection(`TransaksiAktif/${this.SelectedTransaksiID}/Item`, ref => ref.orderBy('timestamp', 'asc'))
+    .valueChanges({ idField: 'DetailID' })
+    .subscribe(data => {
+      this.Dtrans = data;
+      console.log(this.Dtrans)
+    }
+    );
+    this.input = undefined;
+
   }
 
   generateinvoice()
@@ -247,11 +260,99 @@ export class TransaksiPage implements OnInit {
         item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
       )
     });
-
   }
 
-  TambahItem(item : any)
+  async TambahItem(item : any)
+  {
+    for(let i=0; i<this.Dtrans.length; i++)
+    {
+      if(this.Dtrans[i].IDBarang == item.ID)
+      {
+        this.barangkembar = true;
+      }
+    }
+    if(this.barangkembar == true)
+    {
+      console.log("Barang sudah ada");
+      const toast = await this.toastController.create({
+        message: 'Item sudah ada di dalam keranjang!',
+        duration: 1000,
+        position: 'bottom'
+      });
+      await toast.present();
+      this.barangkembar = false;
+
+    }
+    else{
+      let TambahanItem;
+      if(item.nama)
+      {
+        TambahanItem = {
+          IDBarang: item.ID,
+          nama : item.nama,
+          harga: item.harga,
+          jumlah: 1,
+          timestamp: moment().format()
+        }
+      }
+      else
+      {
+        TambahanItem = {
+          IDBarang: item.ID,
+          nama : item.type,
+          harga: item.harga,
+          jumlah: 1,
+          timestamp: moment().format()
+        }
+      }
+      console.log(item);
+      // const ref = collection(this.firestore, `Dtrans/${this.SelectedTransaksiDetail.InvoiceID}`);
+      // return addDoc(ref, keranjang);
+      this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).add(TambahanItem);
+      this.input = undefined;
+    }
+    
+  }
+
+  async HapusItem(item: any)
   {
     console.log(item)
+    // const res = await this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).doc(item.DetailID).delete();
+
+    let alert = await this.alertCtrl.create({
+
+      subHeader: 'Hapus item?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: async () => {
+            const loading = await this.loadingCtrl.create({
+              message: 'Mohon tunggu...',
+            });
+        
+            loading.present().then(async () => {
+              const res = await this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).doc(item.DetailID).delete().then(async ()=>{
+                loading.dismiss();
+                const toast = await this.toastController.create({
+                  message: 'Item berhasil dihapus',
+                  duration: 700,
+                  position: 'bottom'
+                });
+                await toast.present();
+              });
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+
   }
 }
