@@ -291,6 +291,7 @@ export class TransaksiPage implements OnInit {
           IDBarang: item.ID,
           nama : item.nama,
           harga: item.harga,
+          hargatotal: item.harga,
           jumlah: 1,
           timestamp: moment().format()
         }
@@ -301,6 +302,7 @@ export class TransaksiPage implements OnInit {
           IDBarang: item.ID,
           nama : item.type,
           harga: item.harga,
+          hargatotal: item.harga,
           jumlah: 1,
           timestamp: moment().format()
         }
@@ -354,5 +356,42 @@ export class TransaksiPage implements OnInit {
     });
     await alert.present();
 
+  }
+
+  UpdateJumlah(item: any)
+  {
+    console.log(item.jumlah)
+  }
+
+  async decrement(item: any)
+  {
+    let hargabaru = 0;
+    if(item.jumlah<=1) item.jumlah = 1;
+    else
+    {
+      item.jumlah--;
+      hargabaru = item.harga*item.jumlah;
+      console.log(hargabaru);
+    }
+    
+    const UpdateJumlah = this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).doc(`${item.DetailID}`);
+    
+    const res1 = await UpdateJumlah.update({jumlah: item.jumlah, hargatotal: hargabaru});
+  }
+
+  async increment(item: any)
+  {
+    let hargabaru = 0;
+    if(item.jumlah >= 999) item.jumlah = 999;
+    else
+    {
+      item.jumlah++;
+      hargabaru = item.harga*item.jumlah;
+      console.log(hargabaru);
+    }
+
+    const UpdateJumlah = this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).doc(`${item.DetailID}`);
+    
+    const res1 = await UpdateJumlah.update({jumlah: item.jumlah, hargatotal: hargabaru});
   }
 }

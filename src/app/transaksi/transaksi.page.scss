@@ -47,3 +47,25 @@ ion-fab-button{
 ion-segment-button{
   min-height: 40px;
 }
+
+.inputbg{
+  background-color: #FFFFFF;
+  width: 35px;
+  font-size: 10pt;
+  display: inline-block;
+   vertical-align: middle;
+}
+
+.iconincrease {
+  display: inline-block;
+  font-size: 25px;
+  color: #009cff;
+  vertical-align: middle;
+ }
+
+.icondecrease{
+display: inline-block;
+font-size: 25px;
+color: #eb445a;
+vertical-align: middle;
+}
