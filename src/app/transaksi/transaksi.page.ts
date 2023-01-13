@@ -37,6 +37,7 @@ export class TransaksiPage implements OnInit {
   input: any;
   Dtrans;
   barangkembar = false;
+  grandtotal = 0;
   // keranjang = [];
   constructor(public popoverController: PopoverController, private alertCtrl: AlertController,private toastController: ToastController, private loadingCtrl: LoadingController, private firestore: Firestore, private dataService:DataService,private db: AngularFirestore, private router: Router, private modalCtrl: ModalController, private invoicegenerator: InvoicegeneratorService, private authService: AuthService) {
     this.categories= [];
@@ -189,6 +190,7 @@ export class TransaksiPage implements OnInit {
     .subscribe(data => {
       this.Dtrans = data;
       console.log(this.Dtrans)
+      this.hitungGrandTotal();
     }
     );
     this.input = undefined;
@@ -222,6 +224,7 @@ export class TransaksiPage implements OnInit {
               });
           
               loading.present().then(() => {
+                this.deletecoll(this.SelectedTransaksiID);
                 const TypeRef = doc(this.firestore, `TransaksiAktif/${this.SelectedTransaksiID}`);
                 deleteDoc(TypeRef).then(async ()=>{
                   loading.dismiss();
@@ -241,6 +244,19 @@ export class TransaksiPage implements OnInit {
       });
       await alert.present();
 
+  }
+
+  async deletecoll(TransaksiID)
+  {
+    console.log(TransaksiID);
+    for(let i=0; i<this.Dtrans.length; i++)
+    {
+      // const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}/stockdicabang/${tmpCabang[i].namacabang}`);
+      // return deleteDoc(TypeRef);
+
+      const res = await this.db.collection(`TransaksiAktif/${TransaksiID}/Item`).doc(this.Dtrans[i].DetailID).delete();
+    }
+    
   }
 
   async CariItem(event: any) {
@@ -358,20 +374,49 @@ export class TransaksiPage implements OnInit {
 
   }
 
-  UpdateJumlah(item: any)
+  async UpdateJumlah(item: any)
   {
     console.log(item.jumlah)
+    let hargabaru = 0;
+    if(item.jumlah<=1 || item.jumlah < 1) 
+    {
+      item.jumlah = 1;
+      hargabaru = item.harga*item.jumlah;
+      // console.log(hargabaru);
+    }
+    else if(item.jumlah >= 999 || item.jumlah > 999)
+    {
+      item.jumlah = 999;
+      hargabaru = item.harga*item.jumlah;
+      // console.log(hargabaru);
+    }
+    else
+    {
+      hargabaru = item.harga*item.jumlah;
+      // console.log(hargabaru);
+    }
+    
+    const UpdateJumlah = this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).doc(`${item.DetailID}`);
+    
+    const res1 = await UpdateJumlah.update({jumlah: item.jumlah, hargatotal: hargabaru});
+    
   }
 
   async decrement(item: any)
   {
     let hargabaru = 0;
-    if(item.jumlah<=1) item.jumlah = 1;
+    if(item.jumlah<=1) 
+    {
+      item.jumlah = 1;
+      hargabaru = item.harga*item.jumlah;
+      // console.log(hargabaru);
+    }
     else
     {
       item.jumlah--;
       hargabaru = item.harga*item.jumlah;
-      console.log(hargabaru);
+
+      // console.log(hargabaru);
     }
     
     const UpdateJumlah = this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).doc(`${item.DetailID}`);
@@ -382,16 +427,34 @@ export class TransaksiPage implements OnInit {
   async increment(item: any)
   {
     let hargabaru = 0;
-    if(item.jumlah >= 999) item.jumlah = 999;
+    if(item.jumlah >= 999) 
+    {
+      item.jumlah = 999;
+      hargabaru = item.harga*item.jumlah;
+
+      // console.log(hargabaru);
+    }
     else
     {
       item.jumlah++;
       hargabaru = item.harga*item.jumlah;
-      console.log(hargabaru);
+
+      // console.log(hargabaru);
     }
 
     const UpdateJumlah = this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).doc(`${item.DetailID}`);
     
     const res1 = await UpdateJumlah.update({jumlah: item.jumlah, hargatotal: hargabaru});
+  }
+
+  hitungGrandTotal()
+  {
+    this.grandtotal = 0;
+    for(let i=0; i<this.Dtrans.length; i++)
+    {
+      this.grandtotal = this.grandtotal + this.Dtrans[i].hargatotal;
+    }
+    // console.log(this.grandtotal);
+
   }
 }
