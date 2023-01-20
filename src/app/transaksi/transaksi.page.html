@@ -81,10 +81,13 @@
     <ion-list *ngIf="!input">
       <ion-item-sliding *ngFor="let item of Dtrans">
         <ion-item lines="full">
-            <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decrement(item)" style="padding-bottom:10px"></ion-icon>
-            <input disabled [(ngModel)]="item.jumlah" text-center style="text-align:center; margin-bottom: 10px" type="number" class="inputbg" (ionInput)="UpdateJumlah(item)">
-            <ion-icon class="iconincrease" name="add-circle-outline" (click)="increment(item)" style="padding-bottom:10px"></ion-icon>
-
+          <ion-icon class="icondecrease" name="remove-circle-outline" (click)="decrement(item)" style="padding-bottom:10px">
+          </ion-icon>
+          <input disabled [(ngModel)]="item.jumlah" text-center style="text-align:center; margin-bottom: 10px" type="number"
+            class="inputbg" (ionInput)="UpdateJumlah(item)">
+          <ion-icon class="iconincrease" name="add-circle-outline" (click)="increment(item)" style="padding-bottom:10px">
+          </ion-icon>
+        
           <ion-label style="padding-bottom:10px">{{item.nama}}</ion-label>
           <ion-label slot="end" style="padding-bottom:10px">{{item.hargatotal | number}}</ion-label>
         </ion-item>
@@ -130,6 +133,7 @@
       </ion-item-option>
     </ion-item-options>
   </ion-item-sliding> -->
+  
  
 </ion-content>
 <ion-footer class="ion-no-border" style="background-color: white" *ngIf="transaksi">
@@ -149,10 +153,57 @@
         </ion-button>
       </ion-col>
       <ion-col col-6>
-        <ion-button expand="full" color="secondary" (click)="SaveType()">
+        <ion-button expand="full" color="secondary" id="open-modal-checkout">
           CHECKOUT
         </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-modal #modalbrand trigger="open-modal-checkout">
+    <ng-template>
+        <ion-header>
+          <ion-toolbar color="secondary">
+            <ion-title class="ion-text-center">Detail Transaksi</ion-title>
+          </ion-toolbar>
+        </ion-header>
+      <ion-content>
+        
+        <ion-list>
+          <ion-item *ngFor="let item of Dtrans">
+            <ion-label position="fixed" class="label-padding">{{item.jumlah}}x</ion-label>
+            <ion-label style="padding-bottom: 2px;">{{item.nama}}</ion-label>
+            <ion-label slot="end" style="padding-bottom: 2px">{{item.hargatotal | number}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-item>
+          <ion-label slot="start" style="font-size: 18pt">
+            Grand Total
+          </ion-label>
+          <ion-label slot="end" style="font-size: 18pt">
+            Rp {{grandtotal | number}}
+          </ion-label>
+        </ion-item>
+          
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+                BATAL
+              </ion-button>
+            </ion-col>
+            <ion-col col-6>
+              <ion-button expand="full" color="secondary" (click)="CheckOut()">
+                Checkout
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+
 </ion-footer>

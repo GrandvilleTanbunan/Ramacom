@@ -13,6 +13,19 @@ ion-item ion-label{
   margin: 2px;
 }
 
+.label-padding
+{
+    min-width: 10% !important;
+    max-width: 14% !important;
+    padding-bottom: 2px
+}
+
+ion-modal {
+  --height: 70%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
 ion-fab-button{
     height:45px;
     width: 45px;

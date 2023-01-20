@@ -106,7 +106,7 @@ export class TransaksiPage implements OnInit {
           }
         }
         );
-        console.log(this.AllItem);
+        // console.log(this.AllItem);
     }
   }
 
@@ -121,7 +121,7 @@ export class TransaksiPage implements OnInit {
         }
         );
     }
-    console.log(this.AllHp)
+    // console.log(this.AllHp)
   }
 
 
@@ -179,7 +179,7 @@ export class TransaksiPage implements OnInit {
 
   SelectedTransaksi(Item)
   {
-    // console.log(Item);
+    console.log(Item);
     this.SelectedTransaksiID = Item.TransaksiID; 
     this.SelectedTransaksiDetail = Item;
     // console.log(this.SelectedTransaksiID);
@@ -249,12 +249,18 @@ export class TransaksiPage implements OnInit {
   async deletecoll(TransaksiID)
   {
     console.log(TransaksiID);
+    console.log(this.Dtrans.length);
+    let jumlahitem = this.Dtrans.length;
+    let DeletedReadyDetailID = [];
     for(let i=0; i<this.Dtrans.length; i++)
     {
-      // const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}/stockdicabang/${tmpCabang[i].namacabang}`);
-      // return deleteDoc(TypeRef);
+      DeletedReadyDetailID.push(this.Dtrans[i].DetailID)
+    }
+    for(let i=0; i<jumlahitem; i++)
+    {
+      // console.log(i);
 
-      const res = await this.db.collection(`TransaksiAktif/${TransaksiID}/Item`).doc(this.Dtrans[i].DetailID).delete();
+      const res = await this.db.collection(`TransaksiAktif/${TransaksiID}/Item`).doc(DeletedReadyDetailID[i]).delete();
     }
     
   }
@@ -456,5 +462,82 @@ export class TransaksiPage implements OnInit {
     }
     // console.log(this.grandtotal);
 
+  }
+
+  async CheckOut()
+  {
+    // this.modalCtrl.dismiss();    
+    // this.transaksi = "";
+
+    // console.log(this.Dtrans);
+    // this.deletecoll(this.SelectedTransaksiID).then(()=>{
+    //   const TypeRef = doc(this.firestore, `TransaksiAktif/${this.SelectedTransaksiID}`);
+    //   deleteDoc(TypeRef).then(()=>{
+    //     this.db.collection(`Transaksi`).doc(`${this.SelectedTransaksiID}`).set(this.SelectedTransaksiDetail).then(()=>{
+    //       for(let i=0; i<this.Dtrans.length; i++)
+    //       {
+    //         this.db.collection(`Transaksi/${this.SelectedTransaksiID}/Item`).add(this.Dtrans[i]);
+    //       }
+
+    //     })  
+    //   })
+    // });
+
+
+
+    let alert = await this.alertCtrl.create({
+
+      subHeader: 'Checkout Transaksi?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'YA',
+          handler: async () => {
+            const loading = await this.loadingCtrl.create({
+              message: 'Mohon tunggu...',
+            });
+
+            loading.present().then(async () => {
+              this.modalCtrl.dismiss();
+
+              this.transaksi = "";
+
+              console.log(this.Dtrans);
+
+              this.db.collection(`Transaksi`).doc(`${this.SelectedTransaksiID}`).set(this.SelectedTransaksiDetail).then(async () => {
+                for (let i = 0; i < this.Dtrans.length; i++) {
+                  this.db.collection(`Transaksi/${this.SelectedTransaksiID}/Item`).add(this.Dtrans[i]);
+                }
+                this.deletecoll(this.SelectedTransaksiID).then(() => {
+                  const TypeRef = doc(this.firestore, `TransaksiAktif/${this.SelectedTransaksiID}`);
+                  deleteDoc(TypeRef).then(async () => {
+                    loading.dismiss();
+                    const toast = await this.toastController.create({
+                      message: 'Checkout Berhasil!',
+                      duration: 700,
+                      position: 'bottom'
+                    });
+                    await toast.present();
+                  });
+                });
+              });
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+
+
+  }
+
+  Dismissmodal()
+  {
   }
 }
