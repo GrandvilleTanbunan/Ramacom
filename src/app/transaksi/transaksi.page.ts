@@ -30,6 +30,8 @@ export class TransaksiPage implements OnInit {
   SelectedTransaksiDetail;
   AllItem = [];
   AllHp = [];
+  tmpstock = [];
+  tmptype = [];
   tmpbrand;
   public results = [];
   public resultsHP = [];
@@ -81,16 +83,7 @@ export class TransaksiPage implements OnInit {
       );
   }
 
-  getBrand()
-  {
-    this.db.collection('Brand', ref => ref.orderBy('namabrand'))
-        .valueChanges({ idField: 'BrandID' }).pipe(take(1))
-        .subscribe( data => {
-            this.tmpbrand = data;
-            this.getAllType();
-        }
-    );
-  }
+  
 
   getAllItem()
   {
@@ -110,20 +103,46 @@ export class TransaksiPage implements OnInit {
     }
   }
 
-  getAllType() {
-    for (let i = 0; i < this.tmpbrand.length; i++) {
-      this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type`, ref => ref.orderBy('type', 'asc'))
-        .valueChanges({ idField: 'ID' }).pipe(take(1))
-        .subscribe(data => {
-          for (let j = 0; j < data.length; j++) {
-            this.AllHp.push(data[j]);
-          }
+  getBrand()
+  {
+    this.db.collection('Brand', ref => ref.orderBy('namabrand'))
+        .valueChanges({ idField: 'BrandID' }).pipe(take(1))
+        .subscribe( data => {
+            this.tmpbrand = data;
+            this.getAllType();
         }
-        );
-    }
-    // console.log(this.AllHp)
+    );
   }
 
+  getAllType() {
+    for (let i = 0; i < this.tmpbrand.length; i++) {
+      let tmp : any;
+      this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type`, ref => ref.orderBy('type', 'asc'))
+        .valueChanges({ idField: 'ID', type: 'type' }).pipe(take(1))
+        .subscribe(data => {
+          console.log(data);
+          for (let j = 0; j < data.length; j++) {
+            this.AllHp.push(data[j]);
+            this.getStockDicabang(i, data[j]);
+            // tmp = data[j];
+            
+          }
+        });
+        console.log(this.AllHp);
+
+    }
+  }
+
+  getStockDicabang(i, data)
+  {
+    // console.log(data);
+    this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).valueChanges({ idField: 'CabangID' }).pipe(take(1))
+    .subscribe(dataku => {
+      this.tmpstock.push({ type: data.type, dataku });
+    });
+    console.log(this.tmpstock);
+
+  }
 
 
   async LaporanPenjualan()
@@ -466,25 +485,6 @@ export class TransaksiPage implements OnInit {
 
   async CheckOut()
   {
-    // this.modalCtrl.dismiss();    
-    // this.transaksi = "";
-
-    // console.log(this.Dtrans);
-    // this.deletecoll(this.SelectedTransaksiID).then(()=>{
-    //   const TypeRef = doc(this.firestore, `TransaksiAktif/${this.SelectedTransaksiID}`);
-    //   deleteDoc(TypeRef).then(()=>{
-    //     this.db.collection(`Transaksi`).doc(`${this.SelectedTransaksiID}`).set(this.SelectedTransaksiDetail).then(()=>{
-    //       for(let i=0; i<this.Dtrans.length; i++)
-    //       {
-    //         this.db.collection(`Transaksi/${this.SelectedTransaksiID}/Item`).add(this.Dtrans[i]);
-    //       }
-
-    //     })  
-    //   })
-    // });
-
-
-
     let alert = await this.alertCtrl.create({
 
       subHeader: 'Checkout Transaksi?',
@@ -539,5 +539,6 @@ export class TransaksiPage implements OnInit {
 
   Dismissmodal()
   {
+    this.modalCtrl.dismiss();
   }
 }
