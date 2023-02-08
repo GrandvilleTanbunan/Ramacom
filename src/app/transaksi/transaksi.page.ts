@@ -116,7 +116,6 @@ export class TransaksiPage implements OnInit {
 
   getAllType() {
     for (let i = 0; i < this.tmpbrand.length; i++) {
-      let tmp : any;
       this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type`, ref => ref.orderBy('type', 'asc'))
         .valueChanges({ idField: 'ID', type: 'type' }).pipe(take(1))
         .subscribe(data => {
@@ -124,7 +123,6 @@ export class TransaksiPage implements OnInit {
           for (let j = 0; j < data.length; j++) {
             this.AllHp.push(data[j]);
             this.getStockDicabang(i, data[j]);
-            // tmp = data[j];
             
           }
         });
@@ -135,12 +133,19 @@ export class TransaksiPage implements OnInit {
 
   getStockDicabang(i, data)
   {
-    // console.log(data);
-    this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).valueChanges({ idField: 'CabangID' }).pipe(take(1))
+    console.log("logged user getstockdicabang: " + this.loggeduser);
+    this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
     .subscribe(dataku => {
-      this.tmpstock.push({ type: data.type, dataku });
+      this.tmpstock.push({ type: data.type, harga: data.harga, ID: data.ID, dataku });
     });
     console.log(this.tmpstock);
+
+    // console.log("logged user getstockdicabang: " + this.loggeduser);
+    // this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).valueChanges({ idField: 'CabangID' }).pipe(take(1))
+    // .subscribe(dataku => {
+    //   this.tmpstock.push({ type: data.type, dataku });
+    // });
+    // console.log(this.tmpstock);
 
   }
 
@@ -208,7 +213,7 @@ export class TransaksiPage implements OnInit {
     .valueChanges({ idField: 'DetailID' })
     .subscribe(data => {
       this.Dtrans = data;
-      console.log(this.Dtrans)
+      // console.log(this.Dtrans)
       this.hitungGrandTotal();
     }
     );
@@ -295,10 +300,11 @@ export class TransaksiPage implements OnInit {
 
     // console.log(this.AllHp);
     // const val = event.target.value;
-    this.resultsHP = this.AllHp.filter((item) => {
+    this.resultsHP = this.tmpstock.filter((item) => {
       return (
         item.type.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
+        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.dataku.jumlah.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
       )
     });
   }

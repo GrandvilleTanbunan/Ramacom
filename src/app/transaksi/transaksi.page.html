@@ -112,7 +112,8 @@
         </ion-item>
 
         <ion-item *ngFor="let item of resultsHP" (click)="TambahItem(item)">
-          <ion-label>{{item.type}}</ion-label>
+          <ion-label class="label-padding-jumstok">{{item.dataku.jumlah}}x</ion-label>
+          <ion-label style="padding-bottom: 2px;">{{item.type}}</ion-label>
           <ion-label slot="end">Rp {{item.harga | number}}</ion-label>
         </ion-item>
 

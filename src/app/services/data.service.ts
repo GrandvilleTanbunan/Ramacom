@@ -98,7 +98,6 @@ export class DataService {
 
     const BrandRef = collection(this.firestore, 'Brand');
     return addDoc(BrandRef, tmpnamabrand);
-    
   }
 
 

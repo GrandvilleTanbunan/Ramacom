@@ -913,7 +913,7 @@ export class StockAdminPage implements OnInit {
     {
       let alert = await this.alertCtrl.create({
 
-        subHeader: `Anda yakin ingin mengupdate jumlah '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit?`,
+        subHeader: `Anda yakin ingin menambah jumlah '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit?`,
         buttons: [
           {
             text: 'Tidak',
@@ -929,31 +929,27 @@ export class StockAdminPage implements OnInit {
                 message: 'Mohon tunggu...',
               });
           
-              loading.present();
-              console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
-              console.log(this.selectedCabang_UpdateStock);
-              this.dataService.addnotif(`${this.loggeduser} menambah stock '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit`)
-        
-              const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
-              
-              const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah});
-        
-              // const alert = await this.alertCtrl.create({
-              //   subHeader: 'Stock berhasil ditambah!',
-              //   buttons: ['OK'],
-              // });
-              // loading.dismiss();
-              const toast = await this.toastController.create({
-                message: 'Stock berhasil ditambah!',
-                duration: 1500,
-                position: 'bottom'
+              loading.present().then(async ()=>{
+                console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
+                console.log(this.selectedCabang_UpdateStock);
+                this.dataService.addnotif(`${this.loggeduser} menambah stock '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit`)
+          
+                const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+                
+                const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah}).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Stock berhasil ditambah!',
+                    duration: 1500,
+                    position: 'bottom'
+                  });
+    
+                  await toast.present();
+                });
+  
+                
               });
-
-              loading.dismiss();
-
-
-
-              await toast.present();
+              
               await alert.present();
             }
           }
@@ -983,29 +979,29 @@ export class StockAdminPage implements OnInit {
               const loading = await this.loadingCtrl.create({
                 message: 'Mohon tunggu...',
               });
-              console.log("Stock akan menjadi: ", this.tmpjumlahupdate_tambah);
-              console.log(this.selectedCabang_UpdateStock);
-              this.dataService.addnotif(`${this.loggeduser} mengupdate stock '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit`)
-
-        
-              const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
-              
-              const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah});
-        
-              // const alert = await this.alertCtrl.create({
-              //   subHeader: 'Stock berhasil diupdate!',
-              //   buttons: ['OK'],
-              // });
-
-              const toast = await this.toastController.create({
-                message: 'Stock berhasil diupdate!',
-                duration: 1500,
-                position: 'bottom'
+              loading.present().then(async ()=>{
+                console.log("Stock akan menjadi: ", this.tmpjumlahupdate_tambah);
+                console.log(this.selectedCabang_UpdateStock);
+                this.dataService.addnotif(`${this.loggeduser} mengupdate stock '${this.selectedtype_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit`)
+  
+          
+                const update = this.db.collection(`Brand/${this.selectedbrand_UpdateStock}/Type/${this.selectedtype_UpdateStock.TypeID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+                
+                const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah}).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Stock berhasil diupdate!',
+                    duration: 1500,
+                    position: 'bottom'
+                  });
+                  
+    
+                  await toast.present();
+                });
+          
+                
               });
               
-              loading.dismiss();
-
-              await toast.present();
               // await alert.present();
             }
           }
