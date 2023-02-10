@@ -813,34 +813,36 @@ export class StockAdminPage implements OnInit {
       message: 'Mohon tunggu...',
     });
 
-    loading.present();
-    
-    this.stock_DARI_FINAL = this.tmpjumlahdari - this.jumlahyangdipindahkan;
-    this.stock_KE_FINAL = (parseInt(this.tmpjumlahke) + parseInt(this.jumlahyangdipindahkan.toString()));
-    // console.log("Stock dari: ",this.stock_DARI_FINAL);
-    // console.log("Stock ke: ",this.stock_KE_FINAL);
-
-    const pindahkandari = this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`).doc(this.selectedCabang_DARI_PindahkanStock.namacabang);
-    
-    const pindahkanke = this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`).doc(this.selectedCabang_KE_PindahkanStock.namacabang);
-    
-    const res1 = await pindahkandari.update({jumlah: this.stock_DARI_FINAL});
-    const res2 = await pindahkanke.update({jumlah: this.stock_KE_FINAL});
-
-    this.dataService.addnotif(`${this.loggeduser} memindahkan stock '${this.selectedtype_PindahkanStock.type}' sebanyak ${this.jumlahyangdipindahkan} unit dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}`)
-
-    // const alert = await this.alertCtrl.create({
-    //   subHeader: 'Stock berhasil dipindahkan!',
-    //   buttons: ['OK'],
-    // });
-
-    const toast = await this.toastController.create({
-      message: 'Stock berhasil dipindahkan!',
-      duration: 1500,
-      position: 'bottom'
+    loading.present().then(async ()=>{
+      this.stock_DARI_FINAL = this.tmpjumlahdari - this.jumlahyangdipindahkan;
+      this.stock_KE_FINAL = (parseInt(this.tmpjumlahke) + parseInt(this.jumlahyangdipindahkan.toString()));
+      // console.log("Stock dari: ",this.stock_DARI_FINAL);
+      // console.log("Stock ke: ",this.stock_KE_FINAL);
+  
+      const pindahkandari = this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`).doc(this.selectedCabang_DARI_PindahkanStock.namacabang);
+      
+      const pindahkanke = this.db.collection(`Brand/${this.selectedbrand_PindahkanStock}/Type/${this.selectedtype_PindahkanStock.TypeID}/stockdicabang`).doc(this.selectedCabang_KE_PindahkanStock.namacabang);
+      
+      const res1 = await pindahkandari.update({jumlah: this.stock_DARI_FINAL});
+      const res2 = await pindahkanke.update({jumlah: this.stock_KE_FINAL});
+  
+      this.dataService.addnotif(`${this.loggeduser} memindahkan stock '${this.selectedtype_PindahkanStock.type}' sebanyak ${this.jumlahyangdipindahkan} unit dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}`)
+  
+      // const alert = await this.alertCtrl.create({
+      //   subHeader: 'Stock berhasil dipindahkan!',
+      //   buttons: ['OK'],
+      // });
+      loading.dismiss();
+  
+      const toast = await this.toastController.create({
+        message: 'Stock berhasil dipindahkan!',
+        duration: 1500,
+        position: 'bottom'
+      });
+      await toast.present();
     });
-    loading.dismiss();
-    await toast.present();
+    
+    
 
     // await alert.present();
   }

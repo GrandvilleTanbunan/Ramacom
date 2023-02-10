@@ -69,7 +69,7 @@ export class AppComponent {
       this.authService.setloggeduser(this.loggeduser);
       // console.log('Ini admin');
       this.appPages = [
-        { title: 'Penjualan', url: '/transaksi', icon: '/assets/images/sell.png' },
+        { title: 'Penjualan', url: '/penjualan-admin', icon: '/assets/images/sell.png' },
         { title: 'Stock Handphone', url: '/stock-admin', icon: '/assets/images/handphone.png' },
         { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
         { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list.png' },

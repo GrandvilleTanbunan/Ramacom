@@ -1,11 +1,14 @@
 <ion-header>
   <ion-toolbar color="secondary">
-      <ion-buttons slot="start">
+      <!-- <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-    <ion-title>Penjualan</ion-title>
-    <ion-button slot="end" fill="clear" color="light" (click)="LaporanPenjualan()">
-        <ion-icon name="document-text" slot="icon-only"></ion-icon>
+      </ion-buttons> -->
+    <ion-button slot="start" fill="clear" color="light" (click)="LaporanPenjualan()">
+      <ion-icon name="document-text" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-title style="margin-left: 0pt; padding-left:0pt">Penjualan</ion-title>
+    <ion-button slot="end" fill="clear" color="light" (click)="tambahtransaksi()">
+        <ion-icon name="add-circle" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
@@ -23,9 +26,9 @@
       <ion-icon name="pin"></ion-icon>
     </ion-segment-button> 
   </ion-segment> -->
-  <ion-button expand="full" class="tambahtrans" (click)="tambahtransaksi()">
+  <!-- <ion-button expand="full" class="tambahtrans" (click)="tambahtransaksi()">
     + Tambah Transaksi
-  </ion-button>
+  </ion-button> -->
 
   <div padding>
     <ion-segment [(ngModel)]="transaksi" [scrollable]="true">

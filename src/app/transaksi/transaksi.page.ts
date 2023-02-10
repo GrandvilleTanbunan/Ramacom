@@ -23,6 +23,7 @@ export class TransaksiPage implements OnInit {
   ctrpelanggan= 1;
   ctrpelangganterakhir = 0;;
   loggeduser;
+  tmpcabang = [];
   invoicenumber;
   transaksiaktif = [];
   kategori = [];
@@ -58,6 +59,8 @@ export class TransaksiPage implements OnInit {
     this.getKategori();
     this.getBrand();
   }
+
+ 
 
   getTransaksiAktif() {
     console.log(this.loggeduser)
@@ -126,19 +129,19 @@ export class TransaksiPage implements OnInit {
             
           }
         });
-        console.log(this.AllHp);
+        // console.log(this.AllHp);
 
     }
   }
 
   getStockDicabang(i, data)
   {
-    console.log("logged user getstockdicabang: " + this.loggeduser);
+    // console.log("logged user getstockdicabang: " + this.loggeduser);
     this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
     .subscribe(dataku => {
       this.tmpstock.push({ type: data.type, harga: data.harga, ID: data.ID, dataku });
     });
-    console.log(this.tmpstock);
+    // console.log(this.tmpstock);
 
     // console.log("logged user getstockdicabang: " + this.loggeduser);
     // this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).valueChanges({ idField: 'CabangID' }).pipe(take(1))
@@ -516,7 +519,18 @@ export class TransaksiPage implements OnInit {
 
               console.log(this.Dtrans);
 
-              this.db.collection(`Transaksi`).doc(`${this.SelectedTransaksiID}`).set(this.SelectedTransaksiDetail).then(async () => {
+              this.db.collection(`Transaksi`).doc(`${this.SelectedTransaksiID}`).set(
+                {
+                  InvoiceID: this.SelectedTransaksiDetail.InvoiceID, 
+                  TransaksiID: this.SelectedTransaksiDetail.TransaksiID,
+                  cabang: this.SelectedTransaksiDetail.cabang,
+                  hari: this.SelectedTransaksiDetail.hari,
+                  tanggal: this.SelectedTransaksiDetail.tanggal,
+                  timestamp: this.SelectedTransaksiDetail.timestamp,
+                  transaksike: this.SelectedTransaksiDetail.transaksike,
+                  waktu: this.SelectedTransaksiDetail.waktu,
+                  grandtotal: this.grandtotal
+                }).then(async () => {
                 for (let i = 0; i < this.Dtrans.length; i++) {
                   this.db.collection(`Transaksi/${this.SelectedTransaksiID}/Item`).add(this.Dtrans[i]);
                 }
