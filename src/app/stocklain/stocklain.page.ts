@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ModalController, AlertController, ToastController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { EdithargaPage } from '../editharga/editharga.page';
 import { CurrencyPipe } from '@angular/common';
 import { DataService } from '../services/data.service';
@@ -21,9 +21,12 @@ export class StocklainPage implements OnInit {
   masukannamaitem = false;
   masukkanharga = false;
   isSubmitted = false;
+  masukkankategori = false;
+
+  namakategoribaru = "";
   ionicForm: FormGroup;
 
-  constructor(private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
+  constructor(private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
 
   ngOnInit() {
     this.getKategori();
@@ -51,6 +54,58 @@ export class StocklainPage implements OnInit {
 
   get errorControl() {
     return this.ionicForm.controls;
+  }
+
+  async SaveKategori()
+  {
+    if(this.namakategoribaru == "")
+    {
+      this.masukkankategori = true;
+    }
+    else
+    {
+      this.masukkankategori = false;
+      let alert = await this.alertCtrl.create({
+
+        subHeader: `Anda yakin ingin menambahkan kategori ${this.namakategoribaru}?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
+              });
+              loading.present().then(async () => {
+                const res = await this.db.collection(`Kategori`).add({namakategori : this.namakategoribaru}).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Kategori berhasil ditambahkan!',
+                    duration: 1500,
+                    position: 'bottom'
+                  });
+    
+                  await toast.present();
+
+                  this.namakategoribaru = "";
+                });
+              });
+              
+              
+
+
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
   }
 
   async SaveItem()
@@ -106,6 +161,8 @@ export class StocklainPage implements OnInit {
     this.selectedKategori_TambahItem = "";
     this.tmpItemBaru = "";
     this.tmpHargaBaru = undefined;
+    this.namakategoribaru = "";
+    this.masukkankategori = false;
   }
 
 

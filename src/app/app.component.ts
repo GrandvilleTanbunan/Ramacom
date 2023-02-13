@@ -74,7 +74,7 @@ export class AppComponent {
         { title: 'Stock Lain', url: '/stocklain', icon: '/assets/images/stock.png' },
         { title: 'Daftar Harga', url: '/daftarharga', icon: '/assets/images/price-list.png' },
         // { title: 'Laporan Penjualan', url: '/penjualan-admin', icon: '/assets/images/transactionreport.png' },
-        { title: 'Kategori', url: '/kategori', icon: '/assets/images/categories.png' },
+        // { title: 'Kategori', url: '/kategori', icon: '/assets/images/categories.png' },
 
         { title: 'Pengaturan', url: '/pengaturan', icon: '/assets/images/setting1.png' }
       ];

@@ -58,7 +58,7 @@ export class KategoriPage implements OnInit {
     this.modalCtrl.dismiss();
   }
   
-  SaveKategori()
+  async SaveKategori()
   {
     if(this.namakategoribaru == "")
     {
@@ -66,7 +66,13 @@ export class KategoriPage implements OnInit {
     }
     else
     {
+      console.log("Masuk")
+      let tmpkategori = {
+        namakategori : this.namakategoribaru
+      }
       this.masukkankategori = false;
+      const res = await this.db.collection(`Kategori`).add(tmpkategori);
+      
     }
   }
 
