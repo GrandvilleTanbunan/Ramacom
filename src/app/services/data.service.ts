@@ -130,7 +130,7 @@ export class DataService {
     })
   }
 
-  async addItem(itemdetail)
+  async addItem(itemdetail, cabang, kategori)
   {
     console.log(itemdetail);
     let item ={
@@ -138,7 +138,12 @@ export class DataService {
       nama: itemdetail.nama
     }
     const res = await this.db.collection(itemdetail.kategori).add(item);
-
+    for(let i=0; i<cabang.length; i++)
+    {
+      this.db.collection(`${kategori}/${res.id}/stockdicabang`).doc(cabang[i].namacabang).set({
+        jumlah: "0"
+      })
+    }
   }
 
   deleteBrand(loggeduser,BrandID, namabrand)

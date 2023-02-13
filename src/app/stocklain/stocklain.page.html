@@ -49,16 +49,22 @@
   <ion-modal #modalbrand trigger="open-modal-tambahkategori" class="modal_tambahkategori">
     <ng-template>
       <ion-content>
-        <ion-toolbar>
-          <ion-title class="ion-text-center">Tambah Kategori</ion-title>
-        </ion-toolbar>
-        <ion-item>
-          <ion-label>Nama Kategori</ion-label>
-          <ion-input class="ion-text-right" placeholder="Input Nama Kategori" [(ngModel)]="namakategoribaru"></ion-input>
-        </ion-item>
-        <ion-item lines="none" *ngIf="masukkankategori === true">
-          <ion-label style="color: red;" class="ion-text-center">MASUKKAN KATEGORI!</ion-label>
-        </ion-item>
+        <form [formGroup]="ionicForm2" (ngSubmit)="SaveKategori()" novalidate>
+          <ion-toolbar>
+            <ion-title class="ion-text-center">Tambah Kategori</ion-title>
+          </ion-toolbar>
+          <ion-item>
+            <ion-label>Nama Kategori</ion-label>
+            <ion-input formControlName="nama" class="ion-text-right" placeholder="Input Nama Kategori"></ion-input>
+          </ion-item>
+          <ion-note class="error ion-padding" *ngIf="isSubmitted2 && errorControl2.nama.errors?.required">
+            Nama kategori dibutuhkan!
+          </ion-note>
+          <ion-note class="error ion-padding" *ngIf="isSubmitted2 && errorControl2.nama.errors?.minlength">
+            Minimal 2 huruf!
+          </ion-note>
+        </form>
+      
       </ion-content>
 
       <ion-footer class="ion-no-border">
@@ -70,7 +76,7 @@
               </ion-button>
             </ion-col>
             <ion-col col-6>
-              <ion-button expand="full" color="secondary" (click)="SaveKategori()">
+              <ion-button type="submit" expand="full" color="secondary" (click)="SaveKategori()">
                 SIMPAN
               </ion-button>
             </ion-col>
@@ -96,17 +102,17 @@
             </ion-select>
           </ion-item>
           <ion-note  class="error ion-padding" *ngIf="isSubmitted && errorControl.kategori.errors?.required">
-            Kategori dibutuhkan.
+            Kategori dibutuhkan!
           </ion-note >
           <ion-item>
             <ion-label>Item</ion-label>
             <ion-input formControlName="nama" class="ion-text-right" placeholder="Input Item"></ion-input>
           </ion-item>
           <ion-note  class="error ion-padding" *ngIf="isSubmitted && errorControl.nama.errors?.required">
-            Nama item dibutuhkan.
+            Nama item dibutuhkan!
           </ion-note >
           <ion-note  class="error ion-padding" *ngIf="isSubmitted && errorControl.nama.errors?.minlength">
-            Minimal 2 huruf.
+            Minimal 2 huruf!
           </ion-note >
           <ion-item>
             <ion-label>Harga</ion-label>
@@ -114,7 +120,7 @@
             <ion-note slot="helper">Jika harga belum ada, dapat diisi 0. Harga dapat diedit di menu Daftar Harga</ion-note>
           </ion-item>
           <ion-note class="error ion-padding" *ngIf="isSubmitted && errorControl.harga.errors?.required">
-            Harga dibutuhkan.
+            Harga dibutuhkan!
           </ion-note>
 <!-- 
           <ion-grid>

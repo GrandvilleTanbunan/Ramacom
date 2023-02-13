@@ -5,6 +5,7 @@ import { EdithargaPage } from '../editharga/editharga.page';
 import { CurrencyPipe } from '@angular/common';
 import { DataService } from '../services/data.service';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stocklain',
@@ -13,6 +14,8 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 })
 export class StocklainPage implements OnInit {
   tmpKategori = [];
+  tmpcabang = [];
+
   selectedKategori;
   selectedKategori_TambahItem = "";
   tmpItemBaru = "";
@@ -21,21 +24,43 @@ export class StocklainPage implements OnInit {
   masukannamaitem = false;
   masukkanharga = false;
   isSubmitted = false;
+  isSubmitted2 = false;
+
   masukkankategori = false;
 
   namakategoribaru = "";
   ionicForm: FormGroup;
+  ionicForm2: FormGroup;
+
 
   constructor(private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
 
   ngOnInit() {
     this.getKategori();
+    this.getCabang();
+
     this.ionicForm = this.formBuilder.group({
       kategori: ['', [Validators.required]],
       nama: ['', [Validators.required, Validators.minLength(2)]],
       harga:['', [Validators.required]]
     })
+
+    this.ionicForm2 = this.formBuilder.group({
+      nama: ['', [Validators.required, Validators.minLength(2)]]
+    })
   }
+
+  getCabang()
+  {
+    this.db.collection('Cabang', ref => ref.orderBy('namacabang'))
+        .valueChanges({ idField: 'CabangID' }).pipe(take(1))
+        .subscribe( data => {
+            this.tmpcabang = data;   
+            console.log(this.tmpcabang);
+        }
+    );
+  }
+
 
   getKategori()
   {
@@ -56,18 +81,29 @@ export class StocklainPage implements OnInit {
     return this.ionicForm.controls;
   }
 
+  get errorControl2() {
+    return this.ionicForm2.controls;
+  }
+
+
   async SaveKategori()
   {
-    if(this.namakategoribaru == "")
+    this.isSubmitted2 = true;
+    if(!this.ionicForm2.valid)
     {
-      this.masukkankategori = true;
+      console.log('Please provide all the required values!')
+
+      return false;
+
     }
     else
     {
-      this.masukkankategori = false;
+      console.log(this.ionicForm2.value.nama);
+
+      // this.masukkankategori = false;
       let alert = await this.alertCtrl.create({
 
-        subHeader: `Anda yakin ingin menambahkan kategori ${this.namakategoribaru}?`,
+        subHeader: `Anda yakin ingin menambahkan kategori ${this.ionicForm2.value.nama}?`,
         buttons: [
           {
             text: 'Tidak',
@@ -83,17 +119,19 @@ export class StocklainPage implements OnInit {
                 message: 'Mohon tunggu...',
               });
               loading.present().then(async () => {
-                const res = await this.db.collection(`Kategori`).add({namakategori : this.namakategoribaru}).then(async ()=>{
+                const res = await this.db.collection(`Kategori`).add({namakategori : this.ionicForm2.value.nama}).then(async ()=>{
                   loading.dismiss();
                   const toast = await this.toastController.create({
                     message: 'Kategori berhasil ditambahkan!',
                     duration: 1500,
                     position: 'bottom'
                   });
+                  this.isSubmitted2 = false;
     
                   await toast.present();
+                  this.ionicForm2.reset();
 
-                  this.namakategoribaru = "";
+                  // this.namakategoribaru = "";
                 });
               });
               
@@ -131,16 +169,26 @@ export class StocklainPage implements OnInit {
           {
             text: 'YA',
             handler: async () => {
-              this.dataService.addItem(this.ionicForm.value)
-
-              const toast = await this.toastController.create({
-                message: 'Item berhasil ditambahkan!',
-                duration: 1500,
-                position: 'bottom'
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
               });
+              loading.present().then(async () => {
+                this.dataService.addItem(this.ionicForm.value, this.tmpcabang, this.ionicForm.value.kategori).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Item berhasil ditambahkan!',
+                    duration: 1500,
+                    position: 'bottom'
+                  });
+                  this.isSubmitted = false;
+    
+                  await toast.present();
+                  this.ionicForm.reset();
+                });
 
-              await toast.present();
-              this.ionicForm.reset();
+                
+              });
+              
 
 
             }
@@ -156,7 +204,11 @@ export class StocklainPage implements OnInit {
   {
     console.log("masuk sini")
     this.isSubmitted = false;
+    this.isSubmitted2 = false;
+
     this.ionicForm.reset();
+    this.ionicForm2.reset();
+
     this.modalCtrl.dismiss();
     this.selectedKategori_TambahItem = "";
     this.tmpItemBaru = "";
