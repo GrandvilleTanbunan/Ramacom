@@ -46,13 +46,13 @@
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Update Stock" id="open-modal-updatestock_stocklain">
+      <ion-fab-button color="light" title="Update Stock" id="open-modal-updatestock_stocklain" (click)="CleanSelection()">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Item" id="open-modal-tambahitem">
+      <ion-fab-button color="light" title="Tambah Item" id="open-modal-tambahitem" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Kategori" id="open-modal-tambahkategori">
+      <ion-fab-button color="light" title="Tambah Kategori" id="open-modal-tambahkategori" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
       <!--<ion-fab-button color="light" title="Hapus Tipe" id="open-modal-hapustipe" (click)="CleanSelection()">

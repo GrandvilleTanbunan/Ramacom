@@ -16,7 +16,7 @@ export class StocklainPage implements OnInit {
   tmpKategori = [];
   tmpcabang = [];
   tmpstock = [];
-  selectedKategori;
+  selectedKategori = "";
   selectedKategori_TambahItem = "";
   tmpItemBaru = "";
   tmpitem = [];
@@ -205,7 +205,7 @@ export class StocklainPage implements OnInit {
   {
     console.log(this.selectedKategori);
     this.db.collection(`${this.selectedKategori}`, ref => ref.orderBy('nama', 'asc'))
-        .valueChanges({ idField: 'TypeID' })
+        .valueChanges({ idField: 'TypeID' }).pipe(take(1))
         .subscribe( data => {
             this.tmpitem = data;
             // console.log(this.tmpitem)
@@ -260,6 +260,12 @@ export class StocklainPage implements OnInit {
       }
     }
     
+  }
+
+  CleanSelection()
+  {
+    this.selectedKategori = "";
+    this.tmpitem = [];
   }
 
   Dismissmodal()
