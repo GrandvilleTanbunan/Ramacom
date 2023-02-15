@@ -15,10 +15,11 @@ import { take } from 'rxjs/operators';
 export class StocklainPage implements OnInit {
   tmpKategori = [];
   tmpcabang = [];
-
+  tmpstock = [];
   selectedKategori;
   selectedKategori_TambahItem = "";
   tmpItemBaru = "";
+  tmpitem = [];
   tmpHargaBaru;
   pilikategoritambahtipe = false;
   masukannamaitem = false;
@@ -198,6 +199,67 @@ export class StocklainPage implements OnInit {
       await alert.present();
     }
 
+  }
+
+  getType()
+  {
+    console.log(this.selectedKategori);
+    this.db.collection(`${this.selectedKategori}`, ref => ref.orderBy('nama', 'asc'))
+        .valueChanges({ idField: 'TypeID' })
+        .subscribe( data => {
+            this.tmpitem = data;
+            // console.log(this.tmpitem)
+            // return of(this.tmptype);
+            this.getstockdicabang();
+        }
+        
+    );
+  }
+
+  public async getstockdicabang()
+  {
+
+    this.tmpstock = [];
+    // this.tmpstockfinal = [];
+    // console.log(this.tmpcabang);
+    console.log(this.tmpitem);
+
+    if(this.tmpitem.length == 0)
+    {
+      let alert = await this.alertCtrl.create({
+      
+        subHeader: 'Belum ada item pada kategori ini, silahkan tambahkan item pada menu Tambah Item!',
+        buttons: [
+          {
+            text: 'OK'
+          }
+        ]
+      });
+      await alert.present();
+    }
+    else
+    {
+      const loading = await this.loadingCtrl.create({
+        message: 'Mohon tunggu...',
+      });
+  
+      loading.present();
+  
+      for (let i = 0; i < this.tmpitem.length; i++) {
+        // console.log(this.tmpitem[i].TypeID);
+        this.db.collection(`${this.selectedKategori}/${this.tmpitem[i].TypeID}/stockdicabang`)
+          .valueChanges({ idField: 'CabangID' })
+          .pipe(take(1))
+          .subscribe(data => {
+            this.tmpstock.push({ nama: this.tmpitem[i].nama, data });
+            console.log(this.tmpstock)
+            loading.dismiss();
+          }
+  
+          );
+      }
+    }
+    
   }
 
   Dismissmodal()

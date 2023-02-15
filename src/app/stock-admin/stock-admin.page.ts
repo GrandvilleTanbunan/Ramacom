@@ -245,10 +245,6 @@ export class StockAdminPage implements OnInit {
       }
     }
     
-    
-
-
-    
   }
 
   public stockfinal(type, data)

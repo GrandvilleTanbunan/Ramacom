@@ -58,3 +58,46 @@ ion-fab-button[title] {
   .error{
       color: red;
   }
+
+  
+  .isi-row{
+    border-right:2px solid #000;
+    border-bottom:2px solid #000;
+    // font-size: 1em;
+
+  }
+
+  .isi-row-tipe{
+    border-right:2px solid #000;
+    border-bottom:2px solid #000;
+    border-top:2px solid #000;
+    border-left:2px solid #000;
+    background-color: #009cff;
+    color: white;
+  
+  }
+
+  .isi-row-cabang{
+    border-right:2px solid #000;
+    border-bottom:2px solid #000;
+    border-top:2px solid #000;
+    background-color: #009cff;
+    color: white;
+  
+  }
+
+  .isi-row-tipe-hp{
+    border-right:2px solid #000;
+    border-bottom:2px solid #000;
+    border-left:2px solid #000;
+  
+  }
+  
+  
+  .isi-row-header{
+  
+    border-right:2px solid #000;
+    border-bottom:2px solid #000;
+    border-left:2px solid #000;
+    border-top:2px solid #000;
+  }
