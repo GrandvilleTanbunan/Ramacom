@@ -32,6 +32,7 @@ export class TransaksiPage implements OnInit {
   AllItem = [];
   AllHp = [];
   tmpstock = [];
+  tmpstockItem = [];
   tmptype = [];
   tmpbrand;
   public results = [];
@@ -99,11 +100,21 @@ export class TransaksiPage implements OnInit {
           for(let j=0; j<data.length; j++)
           {
             this.AllItem.push(data[j]);
+            this.getStockItemDicabang(i, data[j])
           }
         }
         );
         // console.log(this.AllItem);
     }
+  }
+
+  getStockItemDicabang(i, data)
+  {
+    this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
+    .subscribe(dataku => {
+      this.tmpstockItem.push({ nama: data.nama, harga: data.harga, ID: data.ID, dataku });
+    });
+    // console.log(this.tmpstockItem);
   }
 
   getBrand()
@@ -122,7 +133,7 @@ export class TransaksiPage implements OnInit {
       this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type`, ref => ref.orderBy('type', 'asc'))
         .valueChanges({ idField: 'ID', type: 'type' }).pipe(take(1))
         .subscribe(data => {
-          console.log(data);
+          // console.log(data);
           for (let j = 0; j < data.length; j++) {
             this.AllHp.push(data[j]);
             this.getStockDicabang(i, data[j]);
@@ -141,14 +152,6 @@ export class TransaksiPage implements OnInit {
     .subscribe(dataku => {
       this.tmpstock.push({ type: data.type, harga: data.harga, ID: data.ID, dataku });
     });
-    // console.log(this.tmpstock);
-
-    // console.log("logged user getstockdicabang: " + this.loggeduser);
-    // this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).valueChanges({ idField: 'CabangID' }).pipe(take(1))
-    // .subscribe(dataku => {
-    //   this.tmpstock.push({ type: data.type, dataku });
-    // });
-    // console.log(this.tmpstock);
 
   }
 
@@ -294,10 +297,11 @@ export class TransaksiPage implements OnInit {
 
   async CariItem(event: any) {
     const val = event.target.value;
-    this.results = this.AllItem.filter((item) => {
+    this.results = this.tmpstockItem.filter((item) => {
       return (
         item.nama.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
+        item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.dataku.jumlah.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
       )
     });
 
