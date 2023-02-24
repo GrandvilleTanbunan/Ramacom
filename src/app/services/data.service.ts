@@ -200,6 +200,13 @@ export class DataService {
     
   }
 
+  HapusKategori(data)
+  {
+    console.log(data)
+    const TypeRef = doc(this.firestore, `Kategori/${data.CategoryID}`);
+    return deleteDoc(TypeRef);
+  }
+
   addnotif(isinotif: string)
   {
     moment.locale('id')

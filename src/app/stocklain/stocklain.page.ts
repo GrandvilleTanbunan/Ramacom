@@ -6,6 +6,7 @@ import { CurrencyPipe } from '@angular/common';
 import { DataService } from '../services/data.service';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { take } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-stocklain',
@@ -17,7 +18,9 @@ export class StocklainPage implements OnInit {
   tmpcabang = [];
   tmpstock = [];
   selectedKategori = "";
+  selectedkategori_HAPUS = "";
   selectedKategori_TambahItem = "";
+
   tmpItemBaru = "";
   tmpitem = [];
   tmpHargaBaru;
@@ -32,11 +35,18 @@ export class StocklainPage implements OnInit {
   namakategoribaru = "";
   ionicForm: FormGroup;
   ionicForm2: FormGroup;
+  ionicFormHapusKategori: FormGroup;
 
+  loggeduser;
 
-  constructor(private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
+  constructor(private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
 
   ngOnInit() {
+    this.authService.loginStatus$.subscribe(user => {
+      this.loggeduser = user;
+      console.log("logged user: ", this.loggeduser);
+    });
+
     this.getKategori();
     this.getCabang();
 
@@ -49,6 +59,11 @@ export class StocklainPage implements OnInit {
     this.ionicForm2 = this.formBuilder.group({
       nama: ['', [Validators.required, Validators.minLength(2)]]
     })
+
+    this.ionicFormHapusKategori = this.formBuilder.group({
+      namakategori: ['', [Validators.required]]
+    })
+    
   }
 
   getCabang()
@@ -84,6 +99,10 @@ export class StocklainPage implements OnInit {
 
   get errorControl2() {
     return this.ionicForm2.controls;
+  }
+
+  get errorControlHapusKategori() {
+    return this.ionicFormHapusKategori.controls;
   }
 
 
@@ -262,6 +281,63 @@ export class StocklainPage implements OnInit {
     
   }
 
+  async HapusKategori()
+  {
+    this.isSubmitted = true;
+    if (!this.ionicFormHapusKategori.valid) {
+      console.log('Please provide all the required values!')
+      return false;
+    }
+    else
+    {
+      this.isSubmitted = false;
+      console.log(this.ionicFormHapusKategori.value.namakategori);
+      let alert = await this.alertCtrl.create({
+
+        subHeader: `Anda yakin ingin menghapus kategori ${this.ionicFormHapusKategori.value.namakategori.namakategori}?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
+              });
+              loading.present().then(async () => {
+                this.dataService.HapusKategori(this.ionicFormHapusKategori.value.namakategori).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Kategori berhasil dihapus!',
+                    duration: 1500,
+                    position: 'bottom'
+                  });
+                  this.isSubmitted = false;
+    
+                  await toast.present();
+                  this.ionicFormHapusKategori.reset();
+
+                });
+
+                
+              });
+              
+
+
+            }
+          }
+        ]
+      });
+      await alert.present();
+
+    }
+  }
+
   CleanSelection()
   {
     this.selectedKategori = "";
@@ -276,6 +352,8 @@ export class StocklainPage implements OnInit {
 
     this.ionicForm.reset();
     this.ionicForm2.reset();
+    this.ionicFormHapusKategori.reset();
+
 
     this.modalCtrl.dismiss();
     this.selectedKategori_TambahItem = "";

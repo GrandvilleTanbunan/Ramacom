@@ -46,27 +46,29 @@
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Update Stock" id="open-modal-updatestock_stocklain" (click)="CleanSelection()">
+      <ion-fab-button color="light" title="Pindahkan Stock" id="open-modal-tambahtipe" (click)="CleanSelection()">
+        <ion-icon name="swap-horizontal"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Update Stock"
+        id="open-modal-updatestock_stocklain" (click)="CleanSelection()">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Item" id="open-modal-tambahitem" (click)="CleanSelection()">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Kategori" id="open-modal-tambahkategori" (click)="CleanSelection()">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-      <!--<ion-fab-button color="light" title="Hapus Tipe" id="open-modal-hapustipe" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Item" id="open-modal-hapustipe"
+        (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Hapus Brand" id="open-modal-hapusbrand" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Kategori" id="open-modal-hapuskategori"
+        (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Tipe" id="open-modal-tambahtipe" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Item" id="open-modal-tambahitem"
+        (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" title="Tambah Brand" id="open-modal-tambahbrand" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Kategori" id="open-modal-tambahkategori"
+        (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
-      </ion-fab-button> -->
+      </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
 
@@ -146,21 +148,7 @@
           <ion-note class="error ion-padding" *ngIf="isSubmitted && errorControl.harga.errors?.required">
             Harga dibutuhkan!
           </ion-note>
-<!-- 
-          <ion-grid>
-              <ion-row>
-                <ion-col col-6>
-                  <ion-button expand="full" color="danger" (click)="Dismissmodal()">
-                    BATAL
-                  </ion-button>
-                </ion-col>
-                <ion-col col-6>
-                  <ion-button type="submit" expand="full" color="secondary">
-                    SIMPAN
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid> -->
+
         </form>
   
         </ion-content>
@@ -184,6 +172,46 @@
   
     </ng-template>
   
+  </ion-modal>
+
+  <ion-modal #modaltipe trigger="open-modal-hapuskategori" class="modal_tambahkategori">
+    <ng-template>
+      <ion-content>
+        <form [formGroup]="ionicFormHapusKategori" (ngSubmit)="HapusKategori()" novalidate>
+      
+          <ion-toolbar>
+            <ion-title class="ion-text-center">Hapus Kategori</ion-title>
+          </ion-toolbar>
+          <ion-item>
+            <ion-label>Pilih Kategori</ion-label>
+            <ion-select interface="popover" placeholder="" formControlName="namakategori">
+              <ion-select-option *ngFor="let item of tmpKategori" [value]="item">{{item.namakategori}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-note class="error ion-padding" *ngIf="isSubmitted && errorControlHapusKategori.namakategori.errors?.required">
+            Kategori dibutuhkan!
+          </ion-note>
+      
+        </form>
+      </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+                BATAL
+              </ion-button>
+            </ion-col>
+            <ion-col col-6>
+              <ion-button type="submit" expand="full" color="secondary" (click)="HapusKategori()">
+                HAPUS
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-footer>
+    </ng-template>
   </ion-modal>
 
 </ion-content>

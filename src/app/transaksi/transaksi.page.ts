@@ -339,33 +339,46 @@ export class TransaksiPage implements OnInit {
     }
     else{
       let TambahanItem;
-      if(item.nama)
+      if(item.dataku.jumlah == "0")
       {
-        TambahanItem = {
-          IDBarang: item.ID,
-          nama : item.nama,
-          harga: item.harga,
-          hargatotal: item.harga,
-          jumlah: 1,
-          timestamp: moment().format()
-        }
+        console.log("Stock tidak tersedia di cabang ini!")
+        const toast = await this.toastController.create({
+          message: 'Stock tidak tersedia di cabang ini!',
+          duration: 1000,
+          position: 'bottom'
+        });
+        await toast.present();
       }
-      else
-      {
-        TambahanItem = {
-          IDBarang: item.ID,
-          nama : item.type,
-          harga: item.harga,
-          hargatotal: item.harga,
-          jumlah: 1,
-          timestamp: moment().format()
+      else{
+        if(item.nama)
+        {
+          TambahanItem = {
+            IDBarang: item.ID,
+            nama : item.nama,
+            harga: item.harga,
+            hargatotal: item.harga,
+            jumlah: 1,
+            timestamp: moment().format()
+          }
         }
+        else
+        {
+          TambahanItem = {
+            IDBarang: item.ID,
+            nama : item.type,
+            harga: item.harga,
+            hargatotal: item.harga,
+            jumlah: 1,
+            timestamp: moment().format()
+          }
+        }
+        console.log(item);
+        // const ref = collection(this.firestore, `Dtrans/${this.SelectedTransaksiDetail.InvoiceID}`);
+        // return addDoc(ref, keranjang);
+        this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).add(TambahanItem);
+        this.input = undefined;
       }
-      console.log(item);
-      // const ref = collection(this.firestore, `Dtrans/${this.SelectedTransaksiDetail.InvoiceID}`);
-      // return addDoc(ref, keranjang);
-      this.db.collection(`TransaksiAktif/${this.SelectedTransaksiDetail.InvoiceID}/Item`).add(TambahanItem);
-      this.input = undefined;
+      
     }
     
   }
