@@ -110,7 +110,7 @@ export class TransaksiPage implements OnInit {
 
   getStockItemDicabang(i, data)
   {
-    this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
+    this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges()
     .subscribe(dataku => {
       this.tmpstockItem.push({kategori: data.kategori, nama: data.nama, harga: data.harga, ID: data.ID, dataku });
     });
@@ -485,7 +485,7 @@ export class TransaksiPage implements OnInit {
   async increment(item: any)
   {
     let hargabaru = 0;
-    console.log(item);
+    // console.log(item);
     if(item.stockdicabang>item.jumlah)
     {
       // console.log("masuk if")
@@ -533,6 +533,9 @@ export class TransaksiPage implements OnInit {
 
   async CheckOut()
   {
+    console.log(this.SelectedTransaksiDetail);
+    console.log(this.Dtrans);
+
     let alert = await this.alertCtrl.create({
 
       subHeader: 'Checkout Transaksi?',
@@ -572,6 +575,22 @@ export class TransaksiPage implements OnInit {
                 }).then(async () => {
                 for (let i = 0; i < this.Dtrans.length; i++) {
                   this.db.collection(`Transaksi/${this.SelectedTransaksiID}/Item`).add(this.Dtrans[i]);
+                  if(this.Dtrans[i].kategori == "brand")
+                  {
+
+                  }
+                  else
+                  {
+                    this.db.doc(`${this.Dtrans[i].kategori}/${this.Dtrans[i].IDBarang}/stockdicabang/${this.loggeduser}`).update({jumlah: this.Dtrans[i].stockdicabang - this.Dtrans[i].jumlah}).then(async ()=>{
+                      const toast = await this.toastController.create({
+                        message: 'Stock berhasil diupdate!',
+                        duration: 1000,
+                        position: 'bottom'
+                      });
+                      await toast.present();
+                    })
+                  }
+                  
                 }
                 //hapus collection di 
                 this.deletecoll(this.SelectedTransaksiID).then(() => {
@@ -588,7 +607,7 @@ export class TransaksiPage implements OnInit {
                 });
 
                 //update stock
-
+                // for(let i=0; i<)
 
               });
             });
