@@ -135,8 +135,9 @@ export class DataService {
     console.log(itemdetail);
     let item ={
       harga: itemdetail.harga,
-      nama: itemdetail.nama
-    }
+      nama: itemdetail.nama,
+      kategori: kategori
+    } 
     const res = await this.db.collection(itemdetail.kategori).add(item);
     for(let i=0; i<cabang.length; i++)
     {
