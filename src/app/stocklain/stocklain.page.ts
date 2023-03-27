@@ -7,6 +7,15 @@ import { DataService } from '../services/data.service';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { take } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
+import { getDatabase, ref, child, get, onValue  } from "firebase/database";
+import { collectionData, collection, addDoc, Firestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
+export interface Note {
+  id?: string;
+  title: string;
+  text: string;
+}
 
 @Component({
   selector: 'app-stocklain',
@@ -20,7 +29,7 @@ export class StocklainPage implements OnInit {
   selectedKategori = "";
   selectedkategori_HAPUS = "";
   selectedKategori_TambahItem = "";
-
+  public progress = 0;
   tmpItemBaru = "";
   tmpitem = [];
   tmpHargaBaru;
@@ -39,14 +48,17 @@ export class StocklainPage implements OnInit {
 
   loggeduser;
 
-  constructor(private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
+  showLoader = false;
+
+
+
+  constructor(private firestore: Firestore, private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
 
   ngOnInit() {
     this.authService.loginStatus$.subscribe(user => {
       this.loggeduser = user;
       console.log("logged user: ", this.loggeduser);
     });
-
     this.getKategori();
     this.getCabang();
 
@@ -227,7 +239,7 @@ export class StocklainPage implements OnInit {
         .valueChanges({ idField: 'TypeID' }).pipe(take(1))
         .subscribe( data => {
             this.tmpitem = data;
-            // console.log(this.tmpitem)
+            console.log(this.tmpitem)
             // return of(this.tmptype);
             this.getstockdicabang();
         }
@@ -237,7 +249,7 @@ export class StocklainPage implements OnInit {
 
   public async getstockdicabang()
   {
-
+    this.progress = 0;
     this.tmpstock = [];
     // this.tmpstockfinal = [];
     // console.log(this.tmpcabang);
@@ -258,28 +270,35 @@ export class StocklainPage implements OnInit {
     }
     else
     {
+      this.showLoader = true;
+
       const loading = await this.loadingCtrl.create({
         message: 'Mohon tunggu...',
       });
+
   
-      loading.present();
-  
+      // loading.present();
+      // const dbRef = ref(getDatabase());
+      // const db = getDatabase();
+
+
       for (let i = 0; i < this.tmpitem.length; i++) {
-        // console.log(this.tmpitem[i].TypeID);
+        console.log(this.tmpitem[i].TypeID);
         this.db.collection(`${this.selectedKategori}/${this.tmpitem[i].TypeID}/stockdicabang`)
           .valueChanges({ idField: 'CabangID' })
-          .pipe(take(1))
+          // .pipe(take(1))
           .subscribe(data => {
             this.tmpstock.push({ nama: this.tmpitem[i].nama, data });
             console.log(this.tmpstock)
-            loading.dismiss();
-          }
-  
-          );
+            this.showLoader = false;
+            // loading.dismiss();
+          });
       }
     }
     
   }
+
+
 
   async HapusKategori()
   {

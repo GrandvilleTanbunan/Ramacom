@@ -577,7 +577,7 @@ export class TransaksiPage implements OnInit {
                   this.db.collection(`Transaksi/${this.SelectedTransaksiID}/Item`).add(this.Dtrans[i]);
                   if(this.Dtrans[i].kategori == "brand")
                   {
-
+                    
                   }
                   else
                   {
