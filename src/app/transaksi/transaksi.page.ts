@@ -136,7 +136,7 @@ export class TransaksiPage implements OnInit {
           // console.log(data);
           for (let j = 0; j < data.length; j++) {
             this.AllHp.push(data[j]);
-            this.getStockDicabang(i, data[j]);
+            this.getStockDicabang(i, data[j], this.tmpbrand[i].BrandID);
             
           }
         });
@@ -145,12 +145,12 @@ export class TransaksiPage implements OnInit {
     }
   }
 
-  getStockDicabang(i, data)
+  getStockDicabang(i, data, BrandID)
   {
     // console.log("logged user getstockdicabang: " + this.loggeduser);
     this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
     .subscribe(dataku => {
-      this.tmpstock.push({kategori:"Brand", type: data.type, harga: data.harga, ID: data.ID, dataku });
+      this.tmpstock.push({kategori:"Brand", type: data.type, harga: data.harga, ID: data.ID, BrandID: BrandID, dataku });
     });
     // console.log(this.tmpstock)
   }
@@ -313,13 +313,15 @@ export class TransaksiPage implements OnInit {
         item.type.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
         item.harga.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
         item.kategori.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
-        item.dataku.jumlah.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
+        item.dataku.jumlah.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
+        item.BrandID.toString().toLowerCase().indexOf(val.toLowerCase()) > -1
       )
     });
   }
 
   async TambahItem(item : any)
   {
+    console.log(item)
     for(let i=0; i<this.Dtrans.length; i++)
     {
       if(this.Dtrans[i].IDBarang == item.ID)
@@ -362,7 +364,7 @@ export class TransaksiPage implements OnInit {
             jumlah: 1,
             kategori: item.kategori,
             stockdicabang: item.dataku.jumlah,
-            timestamp: moment().format()
+            timestamp: moment().format(),
           }
         }
         else
@@ -375,7 +377,9 @@ export class TransaksiPage implements OnInit {
             jumlah: 1,
             kategori: item.kategori,
             stockdicabang: item.dataku.jumlah,
-            timestamp: moment().format()
+            timestamp: moment().format(),
+            BrandID: item.BrandID
+
           }
         }
         // console.log(item);
@@ -575,9 +579,17 @@ export class TransaksiPage implements OnInit {
                 }).then(async () => {
                 for (let i = 0; i < this.Dtrans.length; i++) {
                   this.db.collection(`Transaksi/${this.SelectedTransaksiID}/Item`).add(this.Dtrans[i]);
-                  if(this.Dtrans[i].kategori == "brand")
+                  console.log(this.Dtrans)
+                  if(this.Dtrans[i].kategori == "Brand")
                   {
-                    
+                    this.db.doc(`Brand/${this.Dtrans[i].BrandID}/Type/${this.Dtrans[i].IDBarang}/stockdicabang/${this.loggeduser}`).update({jumlah: this.Dtrans[i].stockdicabang - this.Dtrans[i].jumlah}).then(async ()=>{
+                      const toast = await this.toastController.create({
+                        message: 'Stock berhasil diupdate!',
+                        duration: 1000,
+                        position: 'bottom'
+                      });
+                      await toast.present();
+                    })
                   }
                   else
                   {

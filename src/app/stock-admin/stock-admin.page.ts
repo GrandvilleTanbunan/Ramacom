@@ -92,7 +92,7 @@ export class StockAdminPage implements OnInit {
   togglevalue_UpdateStock= false;
 
   tmpusername;
- 
+  showLoader = false;
 
   customPopoverOptions = {
     header: 'Pilih Kategori',
@@ -170,6 +170,7 @@ export class StockAdminPage implements OnInit {
 
   
   public getType() {
+    this.showLoader = true;
     
     this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
     .subscribe(data => {
@@ -224,21 +225,22 @@ export class StockAdminPage implements OnInit {
         message: 'Mohon tunggu...',
       });
   
-      loading.present();
+      // loading.present();
   
       for (let i = 0; i < this.tmptype.length; i++) {
-        console.log(this.tmptype[i].TypeID);
+        // console.log(this.tmptype[i].TypeID);
         this.db.collection(`Brand/${this.selectedbrand}/Type/${this.tmptype[i].TypeID}/stockdicabang`)
           .valueChanges({ idField: 'CabangID' })
-          .pipe(take(1))
+          // .pipe(take(1))
           .subscribe(data => {
             this.tmpstock.push({ type: this.tmptype[i].type, data });
             // console.log(data);
             // this.tmpstock = [{type: this.tmptype[i].type, data}];
-            console.log(this.tmpstock)
+            // console.log(this.tmpstock)
   
             // this.stockfinal(this.tmptype[i].type, data)
-            loading.dismiss();
+            // loading.dismiss();
+            this.showLoader = false;
           }
   
           );

@@ -240,6 +240,7 @@ export class StocklainPage implements OnInit {
         .subscribe( data => {
             this.tmpitem = data;
             console.log(this.tmpitem)
+            this.showLoader = true;
             // return of(this.tmptype);
             this.getstockdicabang();
         }
@@ -270,7 +271,6 @@ export class StocklainPage implements OnInit {
     }
     else
     {
-      this.showLoader = true;
 
       const loading = await this.loadingCtrl.create({
         message: 'Mohon tunggu...',
@@ -289,7 +289,7 @@ export class StocklainPage implements OnInit {
           // .pipe(take(1))
           .subscribe(data => {
             this.tmpstock.push({ nama: this.tmpitem[i].nama, data });
-            console.log(this.tmpstock)
+            console.log(this.tmpstock)  
             this.showLoader = false;
             // loading.dismiss();
           });
