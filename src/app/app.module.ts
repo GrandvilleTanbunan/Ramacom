@@ -27,6 +27,7 @@ import { CurrencyPipe } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule  } from "@angular/forms";
 
+
 import localeId from '@angular/common/locales/id'; 
 registerLocaleData(localeId, 'id'); 
 

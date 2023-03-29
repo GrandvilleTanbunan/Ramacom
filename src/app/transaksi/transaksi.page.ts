@@ -104,13 +104,14 @@ export class TransaksiPage implements OnInit {
           }
         }
         );
-        console.log(this.AllItem);
+        // console.log(this.AllItem);
     }
   }
 
   getStockItemDicabang(i, data)
   {
-    this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges()
+    this.tmpstockItem = [];
+    this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
     .subscribe(dataku => {
       this.tmpstockItem.push({kategori: data.kategori, nama: data.nama, harga: data.harga, ID: data.ID, dataku });
     });
@@ -147,6 +148,7 @@ export class TransaksiPage implements OnInit {
 
   getStockDicabang(i, data, BrandID)
   {
+    this.tmpstock = [];
     // console.log("logged user getstockdicabang: " + this.loggeduser);
     this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
     .subscribe(dataku => {
@@ -618,6 +620,9 @@ export class TransaksiPage implements OnInit {
                   });
                 });
 
+                // this.getAllItem();
+                this.getKategori();
+                this.getBrand();
                 //update stock
                 // for(let i=0; i<)
 

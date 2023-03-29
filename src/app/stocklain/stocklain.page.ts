@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { EdithargaPage } from '../editharga/editharga.page';
 import { CurrencyPipe } from '@angular/common';
 import { DataService } from '../services/data.service';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { take } from 'rxjs/operators';
+import { take, takeWhile, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { getDatabase, ref, child, get, onValue  } from "firebase/database";
 import { collectionData, collection, addDoc, Firestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-
+import { Observable, Subscription, Subject } from 'rxjs';
+// const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+import * as firebase from 'firebase/app';
 export interface Note {
   id?: string;
   title: string;
@@ -22,7 +23,8 @@ export interface Note {
   templateUrl: './stocklain.page.html',
   styleUrls: ['./stocklain.page.scss'],
 })
-export class StocklainPage implements OnInit {
+export class StocklainPage implements OnInit, OnDestroy {
+  private ngUnsubscribe = new Subject<void>();
   tmpKategori = [];
   tmpcabang = [];
   tmpstock = [];
@@ -38,6 +40,8 @@ export class StocklainPage implements OnInit {
   masukkanharga = false;
   isSubmitted = false;
   isSubmitted2 = false;
+  unsubscribe : any;
+  private subscription: Subscription;
 
   masukkankategori = false;
 
@@ -50,9 +54,11 @@ export class StocklainPage implements OnInit {
 
   showLoader = false;
 
+  // tmpstock: { nama: string; data: [] }[];
 
+  constructor(private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) {
 
-  constructor(private firestore: Firestore, private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) { }
+   }
 
   ngOnInit() {
     this.authService.loginStatus$.subscribe(user => {
@@ -94,6 +100,7 @@ export class StocklainPage implements OnInit {
   {
     this.db.collection('Kategori', ref => ref.orderBy('namakategori'))
       .valueChanges({ idField: 'CategoryID' })
+      .pipe(take(1))
       .subscribe(data => {
         this.tmpKategori = data;
         console.log(this.tmpKategori);
@@ -234,6 +241,7 @@ export class StocklainPage implements OnInit {
 
   getType()
   {
+    this.tmpitem = [];
     console.log(this.selectedKategori);
     this.db.collection(`${this.selectedKategori}`, ref => ref.orderBy('nama', 'asc'))
         .valueChanges({ idField: 'TypeID' }).pipe(take(1))
@@ -242,16 +250,16 @@ export class StocklainPage implements OnInit {
             console.log(this.tmpitem)
             this.showLoader = true;
             // return of(this.tmptype);
-            this.getstockdicabang();
+            this.getstockdicabang(this.tmpitem);
         }
         
     );
   }
 
-  public async getstockdicabang()
+  public async getstockdicabang(tmpitem)
   {
     this.progress = 0;
-    this.tmpstock = [];
+    this.tmpstock.length = 0;
     // this.tmpstockfinal = [];
     // console.log(this.tmpcabang);
     console.log(this.tmpitem);
@@ -271,33 +279,50 @@ export class StocklainPage implements OnInit {
     }
     else
     {
-
+      // this.tmpstock = [];
       const loading = await this.loadingCtrl.create({
         message: 'Mohon tunggu...',
       });
-
-  
-      // loading.present();
-      // const dbRef = ref(getDatabase());
-      // const db = getDatabase();
-
-
-      for (let i = 0; i < this.tmpitem.length; i++) {
-        console.log(this.tmpitem[i].TypeID);
-        this.db.collection(`${this.selectedKategori}/${this.tmpitem[i].TypeID}/stockdicabang`)
+      
+      for (let i = 0; i < tmpitem.length; i++) {
+        console.log(tmpitem[i].TypeID);
+        this.db.collection(`${this.selectedKategori}/${tmpitem[i].TypeID}/stockdicabang`)
           .valueChanges({ idField: 'CabangID' })
+          // .pipe(takeUntil(this.ngUnsubscribe))
           // .pipe(take(1))
+
           .subscribe(data => {
-            this.tmpstock.push({ nama: this.tmpitem[i].nama, data });
-            console.log(this.tmpstock)  
-            this.showLoader = false;
+            console.log(data)
+            if(data.length > 1)
+            {
+              this.tmpstock.push({ nama: tmpitem[i].nama, data });
+              this.showLoader = false;
+            }
+            
             // loading.dismiss();
           });
+        console.log(this.tmpstock)
       }
     }
+    // this.subscription.unsubscribe();
+
+
     
   }
 
+  ngOnDestroy() {
+    // this.unsubscribe.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    // this.subscription.unsubscribe();
+    // this.tmpstock = [];
+  }
+
+  ionViewDidLeave(){
+    // this.subscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    }
 
 
   async HapusKategori()
