@@ -289,7 +289,7 @@ export class StocklainPage implements OnInit, OnDestroy {
         this.db.collection(`${this.selectedKategori}/${tmpitem[i].TypeID}/stockdicabang`)
           .valueChanges({ idField: 'CabangID' })
           // .pipe(takeUntil(this.ngUnsubscribe))
-          // .pipe(take(1))
+          .pipe(take(1))
 
           .subscribe(data => {
             console.log(data)
