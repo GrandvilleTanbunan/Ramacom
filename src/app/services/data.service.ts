@@ -163,6 +163,14 @@ export class DataService {
     
   }
 
+  async deleteItem(kategori, ItemID, tmpCabang)
+  {
+    // this.addnotif(`${loggeduser} menghapus tipe '${namatype}' pada brand '${namabrand}'`)
+    this.deletecollKategori(kategori, ItemID, tmpCabang);
+    const TypeRef = doc(this.firestore, `${kategori}/${ItemID}`);
+    return deleteDoc(TypeRef);
+  }
+
   async deletecoll(BrandID, TypeID, tmpCabang)
   {
     console.log(tmpCabang);
@@ -172,6 +180,19 @@ export class DataService {
       // return deleteDoc(TypeRef);
 
       const res = await this.db.collection(`Brand/${BrandID}/Type/${TypeID}/stockdicabang`).doc(tmpCabang[i].namacabang).delete();
+    }
+    
+  }
+
+  async deletecollKategori(kategori, ItemID, tmpCabang)
+  {
+    console.log(tmpCabang);
+    for(let i=0; i<tmpCabang.length; i++)
+    {
+      // const TypeRef = doc(this.firestore, `Brand/${BrandID}/Type/${TypeID}/stockdicabang/${tmpCabang[i].namacabang}`);
+      // return deleteDoc(TypeRef);
+
+      const res = await this.db.collection(`${kategori}/${ItemID}/stockdicabang`).doc(tmpCabang[i].namacabang).delete();
     }
     
   }

@@ -54,6 +54,11 @@ export class StocklainPage implements OnInit, OnDestroy {
 
   showLoader = false;
 
+  selectedkategori_HAPUSITEM;
+  selecteditem_HAPUSITEM;
+  tmpitemHAPUS = [];
+  pilihkategori_HAPUSITEM = false;
+  pilihitem_HAPUSITEM = false;
   // tmpstock: { nama: string; data: [] }[];
 
   constructor(private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) {
@@ -384,10 +389,98 @@ export class StocklainPage implements OnInit, OnDestroy {
     }
   }
 
+  optionsKategori_HAPUSITEM() {
+    console.log(this.selectedkategori_HAPUSITEM);
+    this.tmpitemHAPUS = [];
+    this.selecteditem_HAPUSITEM  = undefined;
+    this.db.collection(`${this.selectedkategori_HAPUSITEM}`)
+      .valueChanges({ idField: 'ItemID' }).pipe(take(1))
+      .subscribe(data => {
+        this.tmpitemHAPUS = data;
+        console.log(this.tmpitemHAPUS)
+        // return of(this.tmptype);
+      });
+      this.pilihkategori_HAPUSITEM = false;
+  }
+  OptionItem_HAPUSITEM()
+  {
+    console.log(this.selecteditem_HAPUSITEM)
+    this.pilihitem_HAPUSITEM = false;
+  }
+
+  async HapusItem()
+  {
+    console.log(this.selectedkategori_HAPUSITEM);
+    console.log(this.selecteditem_HAPUSITEM);
+    if(this.selectedkategori_HAPUSITEM == "") this.selectedkategori_HAPUSITEM = undefined;
+    if(this.selecteditem_HAPUSITEM == "") this.selecteditem_HAPUSITEM = undefined;
+
+
+    if(this.selectedkategori_HAPUSITEM == undefined && this.selecteditem_HAPUSITEM != undefined)
+    {
+      console.log("brand belum terpilih dan tipe sudah");
+      this.pilihkategori_HAPUSITEM = true;
+      this.pilihitem_HAPUSITEM = false;
+    }
+    else if (this.selectedkategori_HAPUSITEM != undefined && this.selecteditem_HAPUSITEM == undefined) {
+      // console.log(this.tmpTypeBaru);
+      console.log("brand sudah terpilih dan tipe belum");
+
+      this.pilihkategori_HAPUSITEM = false;
+      this.pilihitem_HAPUSITEM = true;
+    }
+    else if(this.selectedkategori_HAPUSITEM == undefined && this.selecteditem_HAPUSITEM == undefined)
+    {
+      console.log("brand dan tipe belum terpilih");
+      this.pilihkategori_HAPUSITEM = true;
+      this.pilihitem_HAPUSITEM = true;
+    }
+    else {
+      let alert = await this.alertCtrl.create({
+
+        subHeader: 'Anda yakin ingin menghapus tipe ini?',
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.dataService.deleteItem(this.selectedkategori_HAPUSITEM, this.selecteditem_HAPUSITEM.ItemID, this.tmpcabang);
+              this.CleanSelection();
+
+              const toast = await this.toastController.create({
+                message: 'Item berhasil dihapus!',
+                duration: 1500,
+                position: 'bottom'
+              });
+
+              await toast.present();
+
+              this.pilihkategori_HAPUSITEM = false;
+              this.pilihitem_HAPUSITEM = false;
+
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
+  }
+
   CleanSelection()
   {
     this.selectedKategori = "";
     this.tmpitem = [];
+    this.tmpitemHAPUS = [];
+    this.selecteditem_HAPUSITEM  = "";
+    this.selectedkategori_HAPUSITEM = "";
+    this.pilihkategori_HAPUSITEM = false;
+      this.pilihitem_HAPUSITEM = false;
   }
 
   Dismissmodal()
