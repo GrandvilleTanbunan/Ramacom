@@ -85,29 +85,29 @@
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Pindahkan Stock" id="open-modal-pindahkanstock" (click)="CleanSelection()">
+      <ion-fab-button color="light" title="Pindahkan Stock" id="open-modal-pindahkanstock">
         <ion-icon name="swap-horizontal"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Update Stock" id="open-modal-updatestock" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Update Stock" id="open-modal-updatestock">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Tipe" id="open-modal-hapustipe" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Tipe" id="open-modal-hapustipe">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Brand" id="open-modal-hapusbrand" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Brand" id="open-modal-hapusbrand">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Tipe" id="open-modal-tambahtipe" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Tipe" id="open-modal-tambahtipe">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Brand" id="open-modal-tambahbrand" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Brand" id="open-modal-tambahbrand">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
 
 
-  <ion-modal #modalbrand trigger="open-modal-tambahbrand">
+  <ion-modal #modaltambahbrand  trigger="open-modal-tambahbrand"  (willDismiss)="CleanSelection()">
     <ng-template>
       <ion-content>
         <ion-toolbar>
@@ -142,12 +142,13 @@
   </ion-modal>
 
 
-  <ion-modal #modaltipe trigger="open-modal-tambahtipe" class="modal_tambahtype">
+  <ion-modal #modaltambahtipe trigger="open-modal-tambahtipe" class="modal_tambahtype" (willDismiss)="CleanSelection()">
     <ng-template>
-      <ion-content>
         <ion-toolbar>
           <ion-title class="ion-text-center">Tambah Tipe</ion-title>
         </ion-toolbar>
+      <ion-content>
+
         <ion-item>
           <ion-label>Pilih Brand</ion-label>
           <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_TYPE" (ionChange)="optionsBrand_TAMBAHTIPE();">
@@ -196,7 +197,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #modaltipe trigger="open-modal-hapusbrand">
+  <ion-modal #modaltipe trigger="open-modal-hapusbrand" (willDismiss)="CleanSelection()">
     <ng-template>
       <ion-content>
         <ion-toolbar>
@@ -232,7 +233,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #modaltipe trigger="open-modal-hapustipe">
+  <ion-modal #modaltipe trigger="open-modal-hapustipe" (willDismiss)="CleanSelection()">
     <ng-template>
       <ion-content>
         <ion-toolbar>
@@ -278,7 +279,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #modaltipe trigger="open-modal-pindahkanstock" class="modal_pindahstock">
+  <ion-modal #modaltipe trigger="open-modal-pindahkanstock" class="modal_pindahstock" (willDismiss)="CleanSelection()">
     <ng-template>
       <ion-content>
         <ion-toolbar>
@@ -364,7 +365,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #modaltipe trigger="open-modal-updatestock" class="modal_pindahstock">
+  <ion-modal #modaltipe trigger="open-modal-updatestock" class="modal_pindahstock" (willDismiss)="CleanSelection()">
     <ng-template>
       <ion-content>
         <ion-toolbar>

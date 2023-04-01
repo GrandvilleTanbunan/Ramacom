@@ -169,6 +169,7 @@ export class StocklainPage implements OnInit, OnDestroy {
     
                   await toast.present();
                   this.ionicForm2.reset();
+                  this.getKategori();
 
                   // this.namakategoribaru = "";
                 });
@@ -362,9 +363,10 @@ export class StocklainPage implements OnInit, OnDestroy {
                     position: 'bottom'
                   });
                   this.isSubmitted = false;
-    
+                  
                   await toast.present();
                   this.ionicFormHapusKategori.reset();
+                  this.getKategori();
 
                 });
 

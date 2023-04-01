@@ -192,7 +192,7 @@ export class StockAdminPage implements OnInit {
     this.arrjumlahdari = [];
     this.tmpjumlahdari = undefined;
     this.tmpjumlahke = undefined;
-
+    this.showLoader = false;
     console.log("Cliked")
 
     // console.log(this.selectedtype_PindahkanStock);

@@ -50,27 +50,23 @@
       <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Pindahkan Stock" id="open-modal-tambahtipe" (click)="CleanSelection()">
+
+      <ion-fab-button color="light" title="Pindahkan Stock" id="open-modal-pindahkanstock_stocklain" (click)="CleanSelection()">
         <ion-icon name="swap-horizontal"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Update Stock"
-        id="open-modal-updatestock_stocklain" (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Update Stock" id="open-modal-updatestock_stocklain" (click)="CleanSelection()">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Item" id="open-modal-hapustipe"
-        (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Item" id="open-modal-hapusitem" (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Kategori" id="open-modal-hapuskategori"
-        (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Hapus Kategori" id="open-modal-hapuskategori" (click)="CleanSelection()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Item" id="open-modal-tambahitem"
-        (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Item" id="open-modal-tambahitem" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Kategori" id="open-modal-tambahkategori"
-        (click)="CleanSelection()">
+      <ion-fab-button [hidden]="loggeduser != 'admin'" color="light" title="Tambah Kategori" id="open-modal-tambahkategori" (click)="CleanSelection()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
@@ -210,6 +206,226 @@
             <ion-col col-6>
               <ion-button type="submit" expand="full" color="secondary" (click)="HapusKategori()">
                 HAPUS
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal trigger="open-modal-hapusitem">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title class="ion-text-center">Hapus Item</ion-title>
+        </ion-toolbar>
+        <ion-item>
+          <ion-label>Pilih Kategori</ion-label>
+          <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_HAPUSTYPE" (ionChange)="optionsBrand_HAPUSTIPE();">
+            <ion-select-option *ngFor="let item of tmpbrand" [value]="item">{{item.namabrand}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pilih Item</ion-label>
+          <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype_HAPUS" (ionChange)="OptionType_HAPUSTIPE();">
+            <ion-select-option *ngFor="let item of tmptypeHAPUS" [value]="item">{{item.type}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none" *ngIf="pilihbrand_hapustipe === true">
+          <ion-label style="color: red;" class="ion-text-center">PILIH BRAND!</ion-label>
+        </ion-item>
+        <ion-item lines="none" *ngIf="pilihtipe_hapustipe === true">
+          <ion-label style="color: red;" class="ion-text-center">PILIH TIPE!</ion-label>
+        </ion-item>
+        
+      </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+                BATAL
+              </ion-button>
+            </ion-col>
+            <ion-col col-6>
+              <ion-button expand="full" color="secondary" (click)="HapusType()">
+                HAPUS
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #modaltipe trigger="open-modal-updatestock_stocklain" class="modal_pindahstock" (willDismiss)="CleanSelection()">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title class="ion-text-center">Update Stock</ion-title>
+        </ion-toolbar>
+        <ion-item>
+          <ion-label>Pilih Brand</ion-label>
+          <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_UpdateStock" (ionChange)="optionsBrand_UpdateStock();">
+            <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID">{{item.namabrand}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pilih Tipe</ion-label>
+          <ion-select interface="popover" placeholder="" [(ngModel)]="selectedtype_UpdateStock" (ionChange)="optionsType_UpdateStock();">
+            <ion-select-option *ngFor="let item of tmptype_UpdateStock" [value]="{TypeID: item.TypeID, type: item.type}">{{item.type}}</ion-select-option>
+
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pilih Cabang</ion-label>
+          <ion-select interface="popover" placeholder="" [(ngModel)]="selectedCabang_UpdateStock" (ionChange)="optionCabang_UpdateStock();">
+            <ion-select-option *ngFor="let cabang of tmpcabang" [value]="{CabangID: cabang.CabangID, namacabang: cabang.namacabang}">{{cabang.namacabang}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- <ion-toggle></ion-toggle> -->
+        <!-- <ion-toggle></ion-toggle> -->
+        <ion-item class="ion-text-center" lines="none">
+          <div class="d-flex align-items-center">
+            <span>Update Stock</span>
+            <ion-toggle slot="end" [(ngModel)]="togglevalue_UpdateStock" (ionChange)="toggle_UpdateStock()"></ion-toggle>
+            <span class="ml-10">Tambah Stock</span>
+          </div>
+        </ion-item>
+
+        <ion-item class="ion-text-center" lines="none" style="font-size:15pt ;" *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock">
+          <ion-label>Jumlah stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} = {{tmpjumlahstocksaatini}}</ion-label>
+        </ion-item>
+        
+        <ion-item *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock && tmpupdate_tambah == 'UPDATE'" lines="none">
+          <ion-label primary style="text-align: center; font-size: 15pt;" item-text-wrap>Update stock menjadi</ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock && tmpupdate_tambah == 'TAMBAH'" lines="none">
+          <ion-label primary style="text-align: center; font-size: 15pt;" item-text-wrap>Tambah stock sebanyak</ion-label>
+        </ion-item>
+
+        <div class="ion-text-center" *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock">
+          <ion-list>
+            <ion-icon class="icondecrease" name="remove-circle" (click)="decrement_Tambah()"></ion-icon>
+            <input [(ngModel)]="tmpjumlahupdate_tambah" text-center style="text-align:center;" type="number" class="inputbg" (ngModelChange)="hitungupdate()">
+            <ion-icon class="iconincrease" name="add-circle" (click)="increment_Tambah()"></ion-icon>
+          </ion-list>
+        </div>
+
+        <ion-item class="ion-text-center" lines="none" style="font-size:15pt ;" *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock && tmpupdate_tambah == 'TAMBAH' ">
+          <ion-label>Total stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} menjadi = {{tmpjumlahstocksetelahdijumlah}}</ion-label>
+        </ion-item>
+
+        <!-- <ion-item lines="none" *ngIf="stocktidakcukup === true">
+          <ion-label style="color: red; font-size: 15pt;" class="ion-text-center" >Stock tidak cukup!</ion-label>
+        </ion-item>
+        <ion-item lines="none" *ngIf="cabangsama === true">
+          <ion-label style="color: red; font-size: 15pt;" class="ion-text-center" >Cabang tidak boleh sama!</ion-label>
+        </ion-item>
+         -->
+      </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+                BATAL
+              </ion-button>
+            </ion-col>
+            <ion-col col-6>
+              <ion-button expand="full" color="secondary" (click)="UpdateStock()">
+                {{tmpupdate_tambah}}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #modalpindahstock trigger="open-modal-pindahkanstock_stocklain" class="modal_pindahstock">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title class="ion-text-center">Pindahkan Stock</ion-title>
+        </ion-toolbar>
+        <ion-item>
+          <ion-label>Pilih Brand</ion-label>
+          <ion-select interface="popover" placeholder="" [(ngModel)]="selectedbrand_PindahkanStock" (ionChange)="optionsBrand_PindahkanStock();">
+            <ion-select-option *ngFor="let item of tmpbrand" [value]="item.BrandID">{{item.namabrand}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pilih Tipe</ion-label>
+          <ion-select interface="popover" placeholder=""  [(ngModel)]="selectedtype_PindahkanStock" (ionChange)="optionsType_PindahkanStock();">
+            <ion-select-option *ngFor="let item of tmptype_PindahkanStock" [value]="{TypeID: item.TypeID, type: item.type}">{{item.type}}</ion-select-option>
+
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Dipindahkan dari</ion-label>
+          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_DARI_PindahkanStock" (ionChange)="OptionTCabang_DARI_DAN_KE_PindahkanStock();">
+            <ion-select-option *ngFor="let cabang of tmpcabang" [value]="{CabangID: cabang.CabangID, namacabang: cabang.namacabang}">{{cabang.namacabang}}</ion-select-option>
+
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Dipindahkan ke</ion-label>
+          <ion-select interface="popover" placeholder="Pilih Cabang"  [(ngModel)]="selectedCabang_KE_PindahkanStock" (ionChange)="OptionTCabang_DARI_DAN_KE_PindahkanStock();">
+            <ion-select-option *ngFor="let cabang of tmpcabang" [value]="{CabangID: cabang.CabangID, namacabang: cabang.namacabang}">{{cabang.namacabang}}</ion-select-option>
+
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="selectedCabang_DARI_PindahkanStock && selectedtype_PindahkanStock && selectedCabang_KE_PindahkanStock && cabangsama === false" class="ion-text-center" lines="none" style="font-size:15pt ;">
+          <ion-label>Stock {{selectedtype_PindahkanStock.type}} di {{selectedCabang_DARI_PindahkanStock.namacabang}} = {{tmpjumlahdari}}</ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="selectedCabang_KE_PindahkanStock && selectedtype_PindahkanStock && selectedCabang_DARI_PindahkanStock && cabangsama === false" class="ion-text-center" lines="none" style="font-size:15pt ;">
+          <ion-label>Stock {{selectedtype_PindahkanStock.type}} di {{selectedCabang_KE_PindahkanStock.namacabang}} = {{tmpjumlahke}}</ion-label>
+
+        </ion-item>
+
+        <ion-item *ngIf="selectedCabang_DARI_PindahkanStock && selectedtype_PindahkanStock && selectedCabang_KE_PindahkanStock && cabangsama === false" lines="none">
+          <ion-label primary style="text-align: center; font-size: 15pt;" item-text-wrap>Jumlah yang ingin dipindahkan:</ion-label>
+          <!-- <ion-input [(ngModel)]="jumlahyangdipindahkan" class="jumlahpindah" type="number" placeholder="1"maxlength="10"></ion-input> -->
+        </ion-item>
+
+        <div class="ion-text-center" *ngIf="selectedCabang_DARI_PindahkanStock && selectedtype_PindahkanStock && selectedCabang_KE_PindahkanStock && cabangsama === false">
+          <ion-list>
+            <ion-icon class="icondecrease" name="remove-circle" (click)="decrement()"></ion-icon>
+            <input [(ngModel)]="jumlahyangdipindahkan" text-center style="text-align:center;" type="number" class="inputbg">
+            <ion-icon class="iconincrease" name="add-circle" (click)="increment()"></ion-icon>
+          </ion-list>
+        </div>
+      
+
+        <ion-item lines="none" *ngIf="stocktidakcukup === true">
+          <ion-label style="color: red; font-size: 15pt;" class="ion-text-center" >Stock tidak cukup!</ion-label>
+        </ion-item>
+        <ion-item lines="none" *ngIf="cabangsama === true">
+          <ion-label style="color: red; font-size: 15pt;" class="ion-text-center" >Cabang tidak boleh sama!</ion-label>
+        </ion-item>
+        
+      </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+                BATAL
+              </ion-button>
+            </ion-col>
+            <ion-col col-6>
+              <ion-button expand="full" color="secondary" (click)="PindahkanStock()">
+                PINDAHKAN
               </ion-button>
             </ion-col>
           </ion-row>
