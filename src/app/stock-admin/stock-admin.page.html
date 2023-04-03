@@ -402,7 +402,7 @@
         </ion-item>
 
         <ion-item class="ion-text-center" lines="none" style="font-size:15pt ;" *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock">
-          <ion-label>Jumlah stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} = {{tmpjumlahstocksaatini}}</ion-label>
+          <ion-label text-wrap>Jumlah stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} = {{tmpjumlahstocksaatini}}</ion-label>
         </ion-item>
         
         <ion-item *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock && tmpupdate_tambah == 'UPDATE'" lines="none">
@@ -422,7 +422,7 @@
         </div>
 
         <ion-item class="ion-text-center" lines="none" style="font-size:15pt ;" *ngIf="selectedtype_UpdateStock && selectedCabang_UpdateStock && tmpupdate_tambah == 'TAMBAH' ">
-          <ion-label>Total stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} menjadi = {{tmpjumlahstocksetelahdijumlah}}</ion-label>
+          <ion-label text-wrap>Total stock {{selectedtype_UpdateStock.type}} di {{selectedCabang_UpdateStock.namacabang}} menjadi = {{tmpjumlahstocksetelahdijumlah}}</ion-label>
         </ion-item>
 
         <!-- <ion-item lines="none" *ngIf="stocktidakcukup === true">

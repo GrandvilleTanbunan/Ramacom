@@ -59,6 +59,21 @@ export class StocklainPage implements OnInit, OnDestroy {
   tmpitemHAPUS = [];
   pilihkategori_HAPUSITEM = false;
   pilihitem_HAPUSITEM = false;
+
+  togglevalue_UpdateStock= false;
+
+
+  selectedkategori_UpdateStock;
+  selecteditem_UpdateStock;
+  tmpitemUPDATE = [];
+  arrjumlahstock_UpdateStock = [];
+  selectedCabang_UpdateStock;
+  tmpjumlahstocksaatini;
+  tmpjumlahstocksetelahdijumlah;
+  tmpjumlahupdate_tambah = 1;
+  jumlahyangdipindahkan = 1;
+
+  tmpupdate_tambah = "UPDATE";
   // tmpstock: { nama: string; data: [] }[];
 
   constructor(private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) {
@@ -472,6 +487,205 @@ export class StocklainPage implements OnInit, OnDestroy {
     }
   }
 
+  optionsKategori_UpdateStock()
+  {
+    console.log(this.selectedkategori_UpdateStock)
+    // console.log(this.selectedkategori_HAPUSITEM);
+    // this.tmpitemHAPUS = [];
+    // this.selecteditem_HAPUSITEM  = undefined;
+    this.db.collection(`${this.selectedkategori_UpdateStock}`)
+      .valueChanges({ idField: 'ItemID' }).pipe(take(1))
+      .subscribe(data => {
+        this.tmpitemUPDATE = data;
+        console.log(this.tmpitemUPDATE)
+        // return of(this.tmptype);
+      });
+      this.selecteditem_UpdateStock = "";
+      this.selectedCabang_UpdateStock = "";
+  }
+
+  optionsItem_UpdateStock()
+  {
+    this.selectedCabang_UpdateStock = "";
+    console.log(this.selecteditem_UpdateStock)
+  }
+
+  public optionCabang_UpdateStock(): void{
+    this.db.collection(`${this.selectedkategori_UpdateStock}/${this.selecteditem_UpdateStock.ItemID}/stockdicabang`)
+    .valueChanges({idField: "namacabang"})
+    // .pipe(take(1))
+    .subscribe(data => {
+      this.arrjumlahstock_UpdateStock = data;
+      console.log(this.arrjumlahstock_UpdateStock);
+      for(let i=0; i<this.arrjumlahstock_UpdateStock.length; i++)
+      {
+        if(this.selectedCabang_UpdateStock.namacabang == this.arrjumlahstock_UpdateStock[i].namacabang)
+        {
+          this.tmpjumlahstocksaatini = this.arrjumlahstock_UpdateStock[i].jumlah;
+          console.log(this.tmpjumlahstocksaatini);
+          this.hitungupdate();
+        }
+      }
+    });
+  }
+
+  increment () {
+    if(this.jumlahyangdipindahkan >= 999) this.jumlahyangdipindahkan = 999;
+    else this.jumlahyangdipindahkan++;
+    
+  }
+  
+  decrement () {
+    if(this.jumlahyangdipindahkan<=1) this.jumlahyangdipindahkan = 1;
+    else this.jumlahyangdipindahkan--;
+  }
+
+  increment_Tambah () {
+    
+    if(this.tmpjumlahupdate_tambah >= 999) this.tmpjumlahupdate_tambah = 999;
+    else{
+      this.tmpjumlahupdate_tambah++;
+      this.hitungupdate();
+    }
+    
+  }
+  
+  decrement_Tambah() {
+    
+    if (this.tmpjumlahupdate_tambah <= 1) this.tmpjumlahupdate_tambah = 1;
+    else 
+    {
+      this.tmpjumlahupdate_tambah--;
+      this.hitungupdate();
+    }
+  
+  }
+
+
+  hitungupdate()
+  {
+    console.log("Hitung")
+    this.tmpjumlahstocksetelahdijumlah = parseInt(this.tmpjumlahupdate_tambah.toString())+parseInt(this.tmpjumlahstocksaatini.toString());
+  }
+
+  public toggle_UpdateStock(): void{
+    console.log(this.togglevalue_UpdateStock);
+    if(this.togglevalue_UpdateStock == false)
+    {
+      this.tmpupdate_tambah = "UPDATE";
+    }
+    else
+    {
+      this.tmpupdate_tambah = "TAMBAH";
+    }
+  }
+
+  public async UpdateStock(): Promise<void>{
+
+    if(this.togglevalue_UpdateStock == true)
+    {
+      let alert = await this.alertCtrl.create({
+
+        subHeader: `Anda yakin ingin menambah jumlah '${this.selecteditem_UpdateStock.nama}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
+              });
+          
+              loading.present().then(async ()=>{
+                console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
+                console.log(this.selectedCabang_UpdateStock);
+                this.dataService.addnotif(`${this.loggeduser} menambah stock '${this.selecteditem_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit`)
+          
+                const update = this.db.collection(`${this.selectedkategori_UpdateStock}/${this.selecteditem_UpdateStock.ItemID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+                
+                const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah}).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Stock berhasil ditambah!',
+                    duration: 1500,
+                    position: 'bottom'
+                  });
+    
+                  await toast.present();
+                });
+  
+                
+              });
+              
+              await alert.present();
+            }
+          }
+        ]
+      });
+      await alert.present();
+
+     
+    }
+    else
+    {
+
+      let alert = await this.alertCtrl.create({
+
+        subHeader: `Anda yakin ingin mengupdate jumlah '${this.selecteditem_UpdateStock.nama}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              const loading = await this.loadingCtrl.create({
+                message: 'Mohon tunggu...',
+              });
+              loading.present().then(async ()=>{
+                console.log("Stock akan menjadi: ", this.tmpjumlahupdate_tambah);
+                console.log(this.selectedCabang_UpdateStock);
+                this.dataService.addnotif(`${this.loggeduser} mengupdate stock '${this.selecteditem_UpdateStock.nama}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahupdate_tambah} unit`)
+  
+          
+                const update = this.db.collection(`${this.selectedkategori_UpdateStock}/${this.selecteditem_UpdateStock.ItemID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
+                
+                const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah}).then(async ()=>{
+                  loading.dismiss();
+                  const toast = await this.toastController.create({
+                    message: 'Stock berhasil diupdate!',
+                    duration: 1500,
+                    position: 'bottom'
+                  });
+                  
+    
+                  await toast.present();
+                });
+          
+                
+              });
+              
+              // await alert.present();
+            }
+          }
+        ]
+      });
+      await alert.present();
+
+      
+    }
+  }
+
   CleanSelection()
   {
     this.selectedKategori = "";
@@ -481,6 +695,13 @@ export class StocklainPage implements OnInit, OnDestroy {
     this.selectedkategori_HAPUSITEM = "";
     this.pilihkategori_HAPUSITEM = false;
     this.pilihitem_HAPUSITEM = false;
+
+    this.selecteditem_UpdateStock = undefined;
+    this.selectedkategori_UpdateStock = undefined;
+    this.tmpitemUPDATE = [];
+    this.tmpjumlahupdate_tambah = 1;
+    this.jumlahyangdipindahkan = 1;
+
   }
 
   Dismissmodal()
@@ -500,6 +721,8 @@ export class StocklainPage implements OnInit, OnDestroy {
     this.tmpHargaBaru = undefined;
     this.namakategoribaru = "";
     this.masukkankategori = false;
+    this.tmpjumlahupdate_tambah = 1;
+    this.jumlahyangdipindahkan = 1;
   }
 
 
