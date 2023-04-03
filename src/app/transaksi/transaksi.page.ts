@@ -111,7 +111,8 @@ export class TransaksiPage implements OnInit {
   getStockItemDicabang(i, data)
   {
     this.tmpstockItem = [];
-    this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
+    this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges()
+    .pipe(take(1))
     .subscribe(dataku => {
       this.tmpstockItem.push({kategori: data.kategori, nama: data.nama, harga: data.harga, ID: data.ID, dataku });
     });
@@ -150,7 +151,8 @@ export class TransaksiPage implements OnInit {
   {
     this.tmpstock = [];
     // console.log("logged user getstockdicabang: " + this.loggeduser);
-    this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges().pipe(take(1))
+    this.db.collection(`Brand/${this.tmpbrand[i].BrandID}/Type/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges()
+    // .pipe(take(1))
     .subscribe(dataku => {
       this.tmpstock.push({kategori:"Brand", type: data.type, harga: data.harga, ID: data.ID, BrandID: BrandID, dataku });
     });

@@ -834,7 +834,7 @@ export class StocklainPage implements OnInit, OnDestroy {
       const res1 = await pindahkandari.update({jumlah: this.stock_DARI_FINAL});
       const res2 = await pindahkanke.update({jumlah: this.stock_KE_FINAL});
   
-      this.dataService.addnotif(`${this.loggeduser} memindahkan stock '${this.selectedItem_PindahkanStock.type}' sebanyak ${this.jumlahyangdipindahkan} unit dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}`)
+      this.dataService.addnotif(`${this.loggeduser} memindahkan stock '${this.selectedItem_PindahkanStock.nama}' sebanyak ${this.jumlahyangdipindahkan} unit dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}`)
   
       // const alert = await this.alertCtrl.create({
       //   subHeader: 'Stock berhasil dipindahkan!',
