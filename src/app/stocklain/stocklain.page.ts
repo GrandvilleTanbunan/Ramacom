@@ -480,7 +480,7 @@ export class StocklainPage implements OnInit, OnDestroy {
     this.selecteditem_HAPUSITEM  = "";
     this.selectedkategori_HAPUSITEM = "";
     this.pilihkategori_HAPUSITEM = false;
-      this.pilihitem_HAPUSITEM = false;
+    this.pilihitem_HAPUSITEM = false;
   }
 
   Dismissmodal()

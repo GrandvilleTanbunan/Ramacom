@@ -170,12 +170,13 @@ export class StockAdminPage implements OnInit {
 
   
   public getType() {
-    this.showLoader = true;
     
     this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
     .subscribe(data => {
       this.tmptype = data;
       console.log(this.tmptype)
+      this.showLoader = true;
+
       this.getstockdicabang();
     });
     
@@ -194,7 +195,6 @@ export class StockAdminPage implements OnInit {
     this.tmpjumlahke = undefined;
     this.showLoader = false;
     console.log("Cliked")
-
     // console.log(this.selectedtype_PindahkanStock);
   }
 
@@ -762,7 +762,7 @@ export class StockAdminPage implements OnInit {
     console.log(this.selectedtype_PindahkanStock)
 
     this.tmptypeHAPUS = [];
-
+    this.showLoader = false;
 
   }
 
