@@ -136,6 +136,8 @@ export class AppComponent {
 
   async ShowNotif()
   {
+    // this.ctrnotif = 0;
+
     const modal = await this.modalCtrl.create({
       component: NotificationPage,
       cssClass:'large-modal',

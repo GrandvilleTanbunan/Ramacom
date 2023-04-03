@@ -42,7 +42,7 @@ export class NotificationPage implements OnInit {
       .valueChanges({ idField: 'NotifID' }).pipe(take(1))
       .subscribe(data => {
         this.tmpallnotif = data;
-        console.log(this.tmpallnotif);
+        // console.log(this.tmpallnotif);
         this.updateREAD(this.tmpallnotif);
         this.getnotifhariini()
       }
@@ -55,7 +55,7 @@ export class NotificationPage implements OnInit {
       for (let i = 0; i < this.tmpallnotif.length; i++) {
         if (formateddate == this.tmpallnotif[i].tanggal) {
           this.notiffinal.push(this.tmpallnotif[i]);
-          console.log(this.notiffinal);
+          // console.log(this.notiffinal);  
         }
       }
   }
@@ -70,11 +70,11 @@ export class NotificationPage implements OnInit {
         tmpNotifID.push(this.tmpallnotif[i].NotifID);
       }
     }
-    console.log(tmpNotifID);
+    // console.log(tmpNotifID);
 
     if(tmpNotifID.length>0)
     {
-      console.log("Masuk di tmpnotifid");
+      // console.log("Masuk di tmpnotifid");
 
       for(let i=0; i<tmpNotifID.length; i++)
       {

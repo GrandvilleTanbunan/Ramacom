@@ -74,6 +74,19 @@ export class StocklainPage implements OnInit, OnDestroy {
   jumlahyangdipindahkan = 1;
 
   tmpupdate_tambah = "UPDATE";
+
+  selectedKategori_PindahkanStock;
+  selectedItem_PindahkanStock;
+  stocktidakcukup = false
+  tmpItem_PindahkanStock = [];
+  selectedCabang_DARI_PindahkanStock;
+  selectedCabang_KE_PindahkanStock;
+  cabangsama = false;
+  arrjumlahdari = [];
+  tmpjumlahdari;
+  tmpjumlahke;
+  stock_DARI_FINAL = 0;
+  stock_KE_FINAL = 0;
   // tmpstock: { nama: string; data: [] }[];
 
   constructor(private authService: AuthService, private loadingCtrl: LoadingController,private currencyPipe: CurrencyPipe, private toastController: ToastController,private alertCtrl: AlertController,private dataService: DataService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private db: AngularFirestore, ) {
@@ -605,7 +618,7 @@ export class StocklainPage implements OnInit, OnDestroy {
               loading.present().then(async ()=>{
                 console.log("Stock akan menjadi: ", this.tmpjumlahstocksetelahdijumlah);
                 console.log(this.selectedCabang_UpdateStock);
-                this.dataService.addnotif(`${this.loggeduser} menambah stock '${this.selecteditem_UpdateStock.type}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit`)
+                this.dataService.addnotif(`${this.loggeduser} menambah stock '${this.selecteditem_UpdateStock.nama}' pada ${this.selectedCabang_UpdateStock.namacabang} menjadi ${this.tmpjumlahstocksetelahdijumlah} unit`)
           
                 const update = this.db.collection(`${this.selectedkategori_UpdateStock}/${this.selecteditem_UpdateStock.ItemID}/stockdicabang`).doc(this.selectedCabang_UpdateStock.namacabang);
                 
@@ -686,6 +699,162 @@ export class StocklainPage implements OnInit, OnDestroy {
     }
   }
 
+  public optionsKategori_PindahkanStock(): void {
+    // this.pilihbrand = false;
+    this.selectedItem_PindahkanStock = "";
+    this.stocktidakcukup = false;
+    this.jumlahyangdipindahkan =1;
+    console.log(this.selectedKategori_PindahkanStock)
+
+    this.db.collection(`${this.selectedKategori_PindahkanStock}`)
+        .valueChanges({idField: 'ItemID'}).pipe(take(1))
+        .subscribe( data => {
+            this.tmpItem_PindahkanStock = data;
+            console.log(this.tmpItem_PindahkanStock)
+            // return of(this.tmptype);
+        }
+        
+    );
+  }
+
+  optionsItem_PindahkanStock()
+  {
+    console.log(this.selectedItem_PindahkanStock)
+    this.selectedCabang_DARI_PindahkanStock = undefined;
+    this.selectedCabang_KE_PindahkanStock = undefined;
+
+    this.arrjumlahdari = [];
+    this.tmpjumlahdari = undefined;
+    this.tmpjumlahke = undefined;
+  }
+
+  public OptionTCabang_DARI_DAN_KE_PindahkanStock(): void {
+    // this.pilihbrand = false;
+    console.log(this.selectedCabang_DARI_PindahkanStock)
+    console.log(this.selectedCabang_KE_PindahkanStock)
+
+    if(this.selectedCabang_DARI_PindahkanStock.CabangID == this.selectedCabang_KE_PindahkanStock.CabangID)
+    {
+      this.cabangsama = true;
+    }
+    else
+    {
+      this.cabangsama = false;
+
+      this.arrjumlahdari = [];
+      this.tmpjumlahdari = undefined;
+      this.tmpjumlahke = undefined;
+  
+      this.db.collection(`${this.selectedKategori_PindahkanStock}/${this.selectedItem_PindahkanStock.ItemID}/stockdicabang`)
+          .valueChanges({idField: "namacabang"})
+          // .pipe(take(1))
+          .subscribe(data => {
+            this.arrjumlahdari = data;
+            console.log(this.arrjumlahdari);
+            for(let i=0; i<this.arrjumlahdari.length; i++)
+            {
+              if(this.selectedCabang_DARI_PindahkanStock!=undefined && this.selectedCabang_DARI_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
+              {
+                this.tmpjumlahdari = this.arrjumlahdari[i].jumlah;
+                console.log(this.tmpjumlahdari);
+              }
+  
+              if(this.selectedCabang_KE_PindahkanStock !=undefined && this.selectedCabang_KE_PindahkanStock.namacabang == this.arrjumlahdari[i].namacabang)
+              {
+                this.tmpjumlahke = this.arrjumlahdari[i].jumlah;
+                console.log(this.tmpjumlahke);
+              }
+             
+            }
+          }
+  
+          );
+    }
+
+    
+
+  }
+
+  async PindahkanStock()
+  {
+    console.log("dari:",  this.selectedCabang_DARI_PindahkanStock);
+    console.log("ke:",  this.selectedCabang_KE_PindahkanStock);
+
+    if(this.tmpjumlahdari < this.jumlahyangdipindahkan)
+    {
+      this.stocktidakcukup = true;
+    }
+    else if(this.selectedCabang_DARI_PindahkanStock.CabangID == this.selectedCabang_KE_PindahkanStock.CabangID)
+    {
+      this.cabangsama = true;
+    }
+    else{
+      console.log(this.jumlahyangdipindahkan);
+      this.stocktidakcukup = false;
+      this.cabangsama = false;
+      let alert = await this.alertCtrl.create({
+
+        subHeader: `Anda yakin ingin memindahkan ${this.jumlahyangdipindahkan} unit '${this.selectedItem_PindahkanStock.nama}' dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}?`,
+        buttons: [
+          {
+            text: 'Tidak',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'YA',
+            handler: async () => {
+              this.prosespindahkan();
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
+  }
+
+  public async prosespindahkan()
+  {
+    const loading = await this.loadingCtrl.create({
+      message: 'Mohon tunggu...',
+    });
+
+    loading.present().then(async ()=>{
+      this.stock_DARI_FINAL = this.tmpjumlahdari - this.jumlahyangdipindahkan;
+      this.stock_KE_FINAL = (parseInt(this.tmpjumlahke) + parseInt(this.jumlahyangdipindahkan.toString()));
+      // console.log("Stock dari: ",this.stock_DARI_FINAL);
+      // console.log("Stock ke: ",this.stock_KE_FINAL);
+  
+      const pindahkandari = this.db.collection(`${this.selectedKategori_PindahkanStock}/${this.selectedItem_PindahkanStock.ItemID}/stockdicabang`).doc(this.selectedCabang_DARI_PindahkanStock.namacabang);
+      
+      const pindahkanke = this.db.collection(`${this.selectedKategori_PindahkanStock}/${this.selectedItem_PindahkanStock.ItemID}/stockdicabang`).doc(this.selectedCabang_KE_PindahkanStock.namacabang);
+      
+      const res1 = await pindahkandari.update({jumlah: this.stock_DARI_FINAL});
+      const res2 = await pindahkanke.update({jumlah: this.stock_KE_FINAL});
+  
+      this.dataService.addnotif(`${this.loggeduser} memindahkan stock '${this.selectedItem_PindahkanStock.type}' sebanyak ${this.jumlahyangdipindahkan} unit dari ${this.selectedCabang_DARI_PindahkanStock.namacabang} ke ${this.selectedCabang_KE_PindahkanStock.namacabang}`)
+  
+      // const alert = await this.alertCtrl.create({
+      //   subHeader: 'Stock berhasil dipindahkan!',
+      //   buttons: ['OK'],
+      // });
+      loading.dismiss();
+  
+      const toast = await this.toastController.create({
+        message: 'Stock berhasil dipindahkan!',
+        duration: 1500,
+        position: 'bottom'
+      });
+      await toast.present();
+    });
+    
+    
+
+    // await alert.present();
+  }
+
   CleanSelection()
   {
     this.selectedKategori = "";
@@ -701,6 +870,19 @@ export class StocklainPage implements OnInit, OnDestroy {
     this.tmpitemUPDATE = [];
     this.tmpjumlahupdate_tambah = 1;
     this.jumlahyangdipindahkan = 1;
+
+    this.selectedKategori_PindahkanStock = undefined;
+    this.selectedItem_PindahkanStock= undefined;
+    this.stocktidakcukup = false
+    this.tmpItem_PindahkanStock = [];
+    this.selectedCabang_DARI_PindahkanStock= undefined;
+    this.selectedCabang_KE_PindahkanStock= undefined;
+    this.cabangsama = false;
+    this.arrjumlahdari = [];
+    this.tmpjumlahdari= undefined;
+    this.tmpjumlahke= undefined;
+    this.stock_DARI_FINAL = 0;
+    this.stock_KE_FINAL = 0;
 
   }
 
