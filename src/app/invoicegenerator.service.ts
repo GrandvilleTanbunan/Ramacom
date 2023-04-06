@@ -21,7 +21,7 @@ export class InvoicegeneratorService {
   generateinvoice()
   {
     this.ctrinvoice++;
-    const today = moment().format('DDMMYY');
+    const today = moment().format('YYMMDD');
     const waktu = moment().format('LTSMS')
     this.finalinvoice = this.loggeduser+ - + today + "." + waktu;
     return this.finalinvoice;

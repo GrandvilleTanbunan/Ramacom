@@ -46,7 +46,7 @@ export class TransaksiPage implements OnInit {
   constructor(public popoverController: PopoverController, private alertCtrl: AlertController,private toastController: ToastController, private loadingCtrl: LoadingController, private firestore: Firestore, private dataService:DataService,private db: AngularFirestore, private router: Router, private modalCtrl: ModalController, private invoicegenerator: InvoicegeneratorService, private authService: AuthService) {
     this.categories= [];
     // this.category = "";
-
+    moment.locale('id');
     this.authService.loginStatus$.subscribe(user => {
       this.loggeduser = user;
       console.log("logged user: ", this.loggeduser);

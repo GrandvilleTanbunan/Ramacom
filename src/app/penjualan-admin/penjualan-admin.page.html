@@ -3,7 +3,7 @@
       <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
       </ion-buttons>
-    <ion-title>Laporan Penjualan</ion-title>
+    <ion-title text-wrap>Laporan Penjualan {{filter}} {{keteranganwaktu}} </ion-title>
 
     <ion-button slot="end" id="popover-button1" fill="clear" color="light">
       <ion-icon name="filter" slot="icon-only"></ion-icon>
@@ -12,9 +12,9 @@
     <ng-template>
       <ion-content>
         <ion-list>
-          <ion-item [button]="true" [detail]="false" (click)="setFilter('Hari ini')">Hari ini</ion-item>
-          <ion-item [button]="true" [detail]="false" (click)="setFilter('Bulan ini')">Bulan ini</ion-item>
-          <ion-item [button]="true" [detail]="false" (click)="setFilter('Tahun ini')">Tahun ini</ion-item>
+          <ion-item [button]="true" [detail]="false" (click)="setFilter('Hari Ini')">Hari ini</ion-item>
+          <ion-item [button]="true" [detail]="false" (click)="setFilter('Bulan Ini')">Bulan ini</ion-item>
+          <ion-item [button]="true" [detail]="false" (click)="setFilter('Tahun Ini')">Tahun ini</ion-item>
   
   
           <ion-item [button]="true" id="nested-trigger">Pilih Tanggal</ion-item>
@@ -60,53 +60,18 @@
 </ion-header>
 
 <ion-content>
+    <ion-list *ngFor="let item of transaksi" style="padding-bottom: 5px;" >
+      <ion-item detail style="padding-left: 15px; padding-right:15px;" class="ion-item-style" (click)="pilihtransaksi(item)">
+        <ion-label>
+          <h1>Rp {{item.grandtotal| number}}</h1>
+          <!-- <p *ngIf="selectedtimeline == 'Bulan Ini' || selectedtimeline == 'Pilih Bulan' ">Tanggal: {{item.tanggal}} </p>
+          <p *ngIf="selectedtimeline == 'Tahun Ini' || selectedtimeline == 'Pilih Tahun' ">Bulan: {{item.tanggal}} </p> -->
 
-  <!-- <ion-fab horizontal="end" vertical="bottom" slot="fixed">
-    <ion-fab-button color="secondary">
-      <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button color="light" title="Transaksi Baru" (click)="OpenModalTransaksi()">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab> -->
+          <p>ID: {{item.TransaksiID}} </p>
+          <p>Waktu: {{item.waktu}} </p>
 
   
-
-  <!-- <ion-modal #modalbrand trigger="open-modal-transaksibaru">
-      <ng-template>
-        <ion-content>
-          <ion-toolbar>
-            <ion-title class="ion-text-center">Transaksi Baru</ion-title>
-          </ion-toolbar>
-          <ion-item>
-            <ion-label>Nama Brand</ion-label>
-            <ion-input class="ion-text-right" placeholder="Input Nama Brand"></ion-input>
-          </ion-item>
-          <ion-item lines="none" *ngIf="masukannamabrand === true">
-            <ion-label style="color: red;" class="ion-text-center">MASUKKAN BRAND!</ion-label>
-          </ion-item>
-        </ion-content>
-  
-        <ion-footer class="ion-no-border">
-          <ion-grid>
-            <ion-row>
-              <ion-col col-6>
-                <ion-button expand="full" color="danger" (click)="Dismissmodal()">
-                  BATAL
-                </ion-button>
-              </ion-col>
-              <ion-col col-6>
-                <ion-button expand="full" color="secondary" (click)="SaveBrand()">
-                  SIMPAN
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-footer>
-      </ng-template>
-    </ion-modal> -->
-
-
+        </ion-label>
+      </ion-item>
+    </ion-list>
 </ion-content>

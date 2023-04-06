@@ -12,6 +12,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {of} from 'rxjs'
 import { take } from 'rxjs/operators';
 import { TransaksiComponentComponent } from '../transaksi-component/transaksi-component.component';
+import { DetailtransaksiPage } from '../detailtransaksi/detailtransaksi.page';
+
 
 
 
@@ -26,11 +28,16 @@ export class PenjualanAdminPage implements OnInit {
   public selectedDate;
   public transaksi = [];
   public tmpfilter;
+  transaksihariini = [];
+  filter =  "Hari Ini";
+  keteranganwaktu;
   constructor(private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     
    }
 
   ngOnInit() {
+    moment.locale('id');
+    this.getPenjualanHariini();
   }
 
   public PilihTanggal(): void {
@@ -55,41 +62,44 @@ export class PenjualanAdminPage implements OnInit {
 
   getPenjualanHariini()
   {
-
+    // const formateddate = moment().format('L');
+    this.keteranganwaktu = moment().format('L');
+      this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${this.keteranganwaktu}`))
+        .valueChanges()
+        .subscribe( data => {
+            this.transaksi = data;
+            this.transaksi = this.transaksi.reverse();
+            console.log(this.transaksihariini);
+        });
   }
 
   setFilter(filter: string)
   {
+    this.filter = filter;
+    
     this.transaksi = [];
     moment().locale("id");
     // console.log("Bulan & tahun sekarang: "+this.bulandantahunsekarang);
     this.tmpfilter = filter;
-    // console.log(filter)
-    if(this.tmpfilter == "Hari ini")
+    if(this.tmpfilter == "Hari Ini")
     {
+      this.keteranganwaktu = moment().format('L');
       this.getPenjualanHariini();
     }
-    // else if(this.tmpfilter == "Bulan ini")
-    // {
-    //   for(let i=0; i<this.tmpallnotif.length; i++){
-    //     if(this.bulandantahunsekarang == moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('MM/YYYY'))
-    //     {
-    //       this.notiffinal.push(this.tmpallnotif[i]);
-    //       // console.log(this.notiffinal);
-    //     }
-    //   }
-    // }
-    // else if(this.tmpfilter == "Tahun ini")
-    // {
-    //   for(let i=0; i<this.tmpallnotif.length; i++){
-    //     if(this.tahunsekarang == moment(this.tmpallnotif[i].tanggal, 'dd/MM/YYYY').format('YYYY'))
-    //     {
-    //       this.notiffinal.push(this.tmpallnotif[i]);
-    //       // console.log(this.notiffinal);
-    //     }
-    //   }
-    // }
-    
+  }
+
+  async pilihtransaksi(item)
+  {
+    // console.log(item);
+    let modal = await this.modalCtrl.create({
+      component: DetailtransaksiPage,
+      componentProps: {
+        item: item,
+        keteranganwaktu: this.keteranganwaktu
+      },
+      cssClass: 'cart-modal'
+    });
+    modal.present();
   }
 
   Dismissmodal()
