@@ -6,7 +6,7 @@ import { Platform, IonRouterOutlet, AlertController, ToastController, ModalContr
 import { AddTypeModalComponent } from '../add-type-modal/add-type-modal.component';
 import { App } from '@capacitor/app';
 import { DataService } from './../services/data.service';
-import { collection } from '@firebase/firestore';
+import { collection, where } from '@firebase/firestore';
 import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {of} from 'rxjs'
@@ -30,21 +30,24 @@ export class PenjualanAdminPage implements OnInit {
   public tmpfilter;
   transaksihariini = [];
   filter =  "Hari Ini";
+  tanggalhariini;
   keteranganwaktu;
+  keteranganwaktubulan;
+  keteranganwaktutahun;
+  public tmpselectedRentangTanggal = new Date().toISOString();
+
+
   constructor(private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     
    }
 
   ngOnInit() {
     moment.locale('id');
+    this.tanggalhariini = moment().format("L");
     this.getPenjualanHariini();
   }
 
-  public PilihTanggal(): void {
-    this.selectedDate = moment(this.tmpselectedDate).format('DD/MM/YYYY')
-    console.log(this.selectedDate);
-    
-  }
+  
 
   async OpenModalTransaksi()
   {
@@ -60,17 +63,83 @@ export class PenjualanAdminPage implements OnInit {
     await modal.present();
   }
 
-  getPenjualanHariini()
-  {
+  getPenjualanHariini() {
     // const formateddate = moment().format('L');
     this.keteranganwaktu = moment().format('L');
-      this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${this.keteranganwaktu}`))
+    this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${this.keteranganwaktu}`))
+      .valueChanges()
+      .subscribe(data => {
+        this.transaksi = data;
+        this.transaksi = this.transaksi.reverse();
+        console.log(this.transaksihariini);
+      });
+  }
+
+  getPenjualanBulanIni() {
+    this.keteranganwaktu = moment(this.tanggalhariini, "DD/MM/YYYY").format('MMMM YYYY');    
+    this.db.collection('Transaksi', ref => ref.where('bulan', '==', `${this.keteranganwaktubulan}`).where('tahun', '==', `${this.keteranganwaktutahun}`))
+      .valueChanges()
+      .subscribe(data => {
+        this.transaksi = data;
+        this.transaksi = this.transaksi.reverse();
+      });
+  }
+  getPenjualanTahunIni()
+  {
+    this.keteranganwaktu = moment(this.tanggalhariini, "DD/MM/YYYY").format('YYYY');    
+    this.db.collection('Transaksi', ref => ref.where('tahun', '==', `${this.keteranganwaktutahun}`))
+      .valueChanges()
+      .subscribe(data => {
+        this.transaksi = data;
+        this.transaksi = this.transaksi.reverse();
+      });
+  }
+
+  public PilihTanggal(): void {
+    this.selectedDate = moment(this.tmpselectedDate).format('DD/MM/YYYY');
+    this.keteranganwaktu = this.selectedDate;
+    this.filter = "Tanggal";
+    console.log(this.selectedDate);
+
+    this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${this.selectedDate}`))
+      .valueChanges()
+      .subscribe(data => {
+        this.transaksi = data;
+        this.transaksi = this.transaksi.reverse();
+        console.log(this.transaksihariini);
+      });
+  }
+
+  public PilihRentangTanggal(): void {
+    // this.notiffinal = [];
+    const formateddate = [];
+    this.transaksi = [];
+    if (this.tmpselectedRentangTanggal.length > 0) {
+      for (let i = 0; i < this.tmpselectedRentangTanggal.length; i++) {
+        formateddate.push(moment(this.tmpselectedRentangTanggal[i]).format('DD/MM/YYYY'))
+      }
+
+      // console.log(formateddate)
+
+      for(let i=0; i<formateddate.length; i++)
+      {
+        this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${formateddate[i]}`))
         .valueChanges()
-        .subscribe( data => {
-            this.transaksi = data;
-            this.transaksi = this.transaksi.reverse();
-            console.log(this.transaksihariini);
+        .subscribe(data => {
+          data = data.reverse();
+          if(data.length > 0)
+          {
+            for(let j=0; j<data.length; j++)
+            {
+              this.transaksi.push(data[j]);
+            }
+          }
+          // this.transaksi = this.transaksi.reverse();
+          console.log(this.transaksi);
         });
+      }
+    }
+
   }
 
   setFilter(filter: string)
@@ -86,6 +155,20 @@ export class PenjualanAdminPage implements OnInit {
       this.keteranganwaktu = moment().format('L');
       this.getPenjualanHariini();
     }
+    else if(this.tmpfilter == "Bulan Ini")
+    {
+      this.filter = "Bulan";
+      this.keteranganwaktubulan = moment(this.tanggalhariini, "DD/MM/YYYY").format('MM')
+      this.keteranganwaktutahun = moment(this.tanggalhariini, "DD/MM/YYYY").format('YYYY')
+      this.getPenjualanBulanIni();
+    }
+    else if(this.tmpfilter == "Tahun Ini")
+    {
+      this.filter = "Tahun";
+      this.keteranganwaktutahun = moment(this.tanggalhariini, "DD/MM/YYYY").format('YYYY')
+      this.getPenjualanTahunIni();
+    }
+    
   }
 
   async pilihtransaksi(item)

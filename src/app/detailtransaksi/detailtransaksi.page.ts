@@ -10,6 +10,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class DetailtransaksiPage implements OnInit {
   item;
   detailitem;
+  banyakitem = 0;;
   constructor(private modalCtrl: ModalController, private db: AngularFirestore) { }
 
   ngOnInit() {
@@ -24,7 +25,18 @@ export class DetailtransaksiPage implements OnInit {
     .subscribe((data:any) => {
         this.detailitem = data;
         console.log(this.detailitem)
+        this.hitungitem(this.detailitem)
     });
+  }
+
+  hitungitem(detailitem)
+  {
+    for(let i=0; i<detailitem.length; i++)
+    {
+      this.banyakitem = this.banyakitem + this.detailitem[i].jumlah;
+    }
+    // this.banyakitem = this.detailitem.length;
+
   }
 
   close()
