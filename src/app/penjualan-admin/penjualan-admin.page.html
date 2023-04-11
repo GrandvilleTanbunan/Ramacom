@@ -8,7 +8,7 @@
           Daftar Penjualan {{filter}} {{keteranganwaktu}} 
       </div>
       <div class="ion-text-wrap" *ngIf="rentangtanggalselected == true;">
-          Daftar Penjualan Tanggal
+          Daftar Penjualan Tanggal Pilihan
       </div>
   </ion-title>
 
@@ -46,15 +46,19 @@
           <ion-item [button]="true" [detail]="false" id="nested-trigger2">Pilih Bulan</ion-item>
           <ion-popover trigger="nested-trigger2" side="left">
             <ng-template>
-              <ion-datetime [(ngModel)]="tmpselectedMonth" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year" (ionChange)="PilihBulan()">
-              </ion-datetime>
+              <!-- <ion-datetime #bulan [(ngModel)]="tmpselectedMonth" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year" (ionChange)="PilihBulan(bulan.value)"></ion-datetime> -->
+              
+              <ion-datetime #bulan [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="month-year" (ionChange)="PilihBulan(bulan.value)"></ion-datetime>
             </ng-template>
           </ion-popover>
 
           <ion-item [button]="true" [detail]="false" id="nested-trigger3">Pilih Tahun</ion-item>
           <ion-popover trigger="nested-trigger3" side="left">
             <ng-template>
-              <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun()">
+              <!-- <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun()">
+              </ion-datetime> -->
+
+              <ion-datetime #tahun [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun(tahun.value)">
               </ion-datetime>
             </ng-template>
           </ion-popover>

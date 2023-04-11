@@ -115,23 +115,9 @@ export class PenjualanAdminPage implements OnInit {
   }
 
   public PilihRentangTanggal(date): void {
-    // this.notiffinal = [];
-    // this.tmpselectedRentangTanggal = this.tanggalhariini;
-    // console.log(this.tmpselectedRentangTanggal)
     console.log(date);
     this.rentangtanggalselected = true;
-    const formateddate = [];
     this.transaksi = [];
-    // console.log(this.tmpselectedRentangTanggal)
-    // console.log(this.tmpselectedRentangTanggal.length)
-
-    // if (this.tmpselectedRentangTanggal.length > 0) {
-      // for (let i = 0; i < date.length; i++) {
-      //   formateddate.push(moment(date[i]).format('DD/MM/YYYY'))
-        
-      // }
-      // console.log(formateddate)
-
       for(let i=0; i<date.length; i++)
       {
         this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${moment(date[i], "YYYY-MM-DD").format('DD/MM/YYYY')}`))
@@ -152,6 +138,37 @@ export class PenjualanAdminPage implements OnInit {
       }
     // }
 
+  }
+
+  PilihBulan(bulan)
+  {
+    this.keteranganwaktubulan = moment(bulan).format('MM')
+    this.keteranganwaktutahun = moment(bulan).format('YYYY')
+    this.filter = "Bulan"
+    this.rentangtanggalselected = false;
+    this.keteranganwaktu = moment(this.keteranganwaktubulan).format('MMMM') + " " + this.keteranganwaktutahun;    
+    this.db.collection('Transaksi', ref => ref.where('bulan', '==', `${this.keteranganwaktubulan}`).where('tahun', '==', `${this.keteranganwaktutahun}`))
+      .valueChanges()
+      .subscribe(data => {
+        this.transaksi = data;
+        this.transaksi = this.transaksi.reverse();
+      });
+    console.log(bulan)
+    console.log(moment(bulan).format('MM/YYYY'))
+  }
+
+  PilihTahun(tahun)
+  {
+    this.keteranganwaktutahun = moment(tahun).format('YYYY')
+    this.rentangtanggalselected = false;
+    this.keteranganwaktu = this.keteranganwaktutahun;  
+    this.filter = "Tahun"  
+    this.db.collection('Transaksi', ref => ref.where('tahun', '==', `${this.keteranganwaktutahun}`))
+      .valueChanges()
+      .subscribe(data => {
+        this.transaksi = data;
+        this.transaksi = this.transaksi.reverse();
+      });
   }
 
   setFilter(filter: string)
