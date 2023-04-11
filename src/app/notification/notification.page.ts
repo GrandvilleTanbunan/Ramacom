@@ -172,23 +172,26 @@ export class NotificationPage implements OnInit {
 
 
 
-  public PilihRentangTanggal(): void {
+  public PilihRentangTanggal(date): void {
     this.notiffinal = [];
     const formateddate = [];
-    if (this.tmpselectedRentangTanggal.length > 0) {
-      for (let i = 0; i < this.tmpselectedRentangTanggal.length; i++) {
-        formateddate.push(moment(this.tmpselectedRentangTanggal[i]).format('DD/MM/YYYY'))
-      }
-      for (let i = 0; i < this.tmpallnotif.length; i++) {
-        // console.log(this.tmpallnotif[i].tanggal)
-        for (let j = 0; j < formateddate.length; j++) {
-          if (formateddate[j] == this.tmpallnotif[i].tanggal) {
-            this.notiffinal.push(this.tmpallnotif[i]);
-            console.log(this.notiffinal);
-          }
+    console.log(this.tmpselectedRentangTanggal)
+    console.log(this.tmpselectedRentangTanggal.length)
+
+    // if (this.date.length > 0) {
+    for (let i = 0; i < date.length; i++) {
+      formateddate.push(moment(date[i], "YYYY-MM-DD").format('DD/MM/YYYY'))
+    }
+    for (let i = 0; i < this.tmpallnotif.length; i++) {
+      // console.log(this.tmpallnotif[i].tanggal)
+      for (let j = 0; j < formateddate.length; j++) {
+        if (formateddate[j] == this.tmpallnotif[i].tanggal) {
+          this.notiffinal.push(this.tmpallnotif[i]);
+          console.log(this.notiffinal);
         }
       }
     }
+    // }
 
     this.tmpfilter = "Tanggal Pilihan";
 

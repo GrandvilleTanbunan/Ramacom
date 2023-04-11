@@ -43,7 +43,9 @@
                   <ng-template>
                     <!-- <ion-datetime [(ngModel)]="tmpselectedYear" [showDefaultButtons]="true" locale="id-ID" id="datetime" presentation="year" (ionChange)="PilihTahun()">
                     </ion-datetime> -->
-                    <ion-datetime [(ngModel)]="tmpselectedRentangTanggal" [showDefaultButtons]="true" presentation="date" [multiple]="true" (ionChange)="PilihRentangTanggal()"></ion-datetime>
+                    <!-- <ion-datetime [(ngModel)]="tmpselectedRentangTanggal" [showDefaultButtons]="true" presentation="date" [multiple]="true" (ionChange)="PilihRentangTanggal()"></ion-datetime> -->
+                  <ion-datetime #datetime [showDefaultButtons]="true" presentation="date" preferWheel="false" [multiple]="true" (ionChange)="PilihRentangTanggal(datetime.value)"></ion-datetime>
+                    
                   </ng-template>
                 </ion-popover>
 
