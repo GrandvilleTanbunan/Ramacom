@@ -13,6 +13,7 @@ import {of} from 'rxjs'
 import { take } from 'rxjs/operators';
 import { TransaksiComponentComponent } from '../transaksi-component/transaksi-component.component';
 import { DetailtransaksiPage } from '../detailtransaksi/detailtransaksi.page';
+import { AuthService } from '../auth.service';
 
 
 
@@ -38,7 +39,9 @@ export class PenjualanAdminPage implements OnInit {
   rentangtanggalselected = false;
   grandtotal = 0;
 
-  constructor(private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
+  loggeduser;
+
+  constructor(private authService: AuthService, private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     
    }
 
@@ -46,6 +49,11 @@ export class PenjualanAdminPage implements OnInit {
     moment.locale('id');
     this.tanggalhariini = moment().format("L");
     this.getPenjualanHariini();
+
+    this.authService.loginStatus$.subscribe(user => {
+      this.loggeduser = user;
+      console.log("logged user: ", this.loggeduser);
+    });
   }
 
   
