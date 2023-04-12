@@ -84,9 +84,15 @@ ion-fab-button[title] {
   // .dynamicfontsize {font-size: 50px}
 
   // }
-@media (min-width:320px)  { .dynamicfontsize {font-size: 20px} /* smartphones, iPhone, portrait 480x320 phones */ }
-@media (min-width:481px)  { .dynamicfontsize {font-size: 20px} /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
-@media (min-width:641px)  { .dynamicfontsize {font-size: 25px} /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
-@media (min-width:961px)  { .dynamicfontsize {font-size: 25px} /* tablet, landscape iPad, lo-res laptops ands desktops */ }
-@media (min-width:1025px) { .dynamicfontsize {font-size: 30px} /* big landscape tablets, laptops, and desktops */ }
-@media (min-width:1281px) { .dynamicfontsize {font-size: 30px} /* hi-res laptops and desktops */ }
+
+//   .fixedLabelgt{
+//     max-width: 130px;
+//     width: 130px;
+// }
+
+@media (min-width:320px)  { .dynamicfontsize {font-size: 16px} .fixedLabelgt{max-width: 130px; width: 130px; font-size: 16px}/* smartphones, iPhone, portrait 480x320 phones */ }
+@media (min-width:481px)  { .dynamicfontsize {font-size: 20px} .fixedLabelgt{max-width: 130px; width: 130px; font-size: 20px}/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px)  { .dynamicfontsize {font-size: 25px} .fixedLabelgt{max-width: 200px; width: 200px; font-size: 25px}/* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
+@media (min-width:961px)  { .dynamicfontsize {font-size: 25px} .fixedLabelgt{max-width: 250px; width: 250px; font-size: 25px} /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media (min-width:1025px) { .dynamicfontsize {font-size: 30px} .fixedLabelgt{max-width: 250px; width: 150px; font-size: 30px}/* big landscape tablets, laptops, and desktops */ }
+@media (min-width:1281px) { .dynamicfontsize {font-size: 30px} .fixedLabelgt{max-width: 250px; width: 150px; font-size: 30px}/* hi-res laptops and desktops */ }
