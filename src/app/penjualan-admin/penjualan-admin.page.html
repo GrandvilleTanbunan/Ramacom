@@ -74,7 +74,7 @@
 
 <ion-content>
     <ion-list *ngFor="let item of transaksi" style="padding-bottom: 5px;" >
-      <ion-item detail style="padding-left: 15px; padding-right:15px;" class="ion-item-style" (click)="pilihtransaksi(item)">
+      <ion-item detail class="ion-item-style" (click)="pilihtransaksi(item)">
         <ion-label>
           <h1>Rp {{item.grandtotal| number}}</h1>
           <!-- <p *ngIf="selectedtimeline == 'Bulan Ini' || selectedtimeline == 'Pilih Bulan' ">Tanggal: {{item.tanggal}} </p>
@@ -88,3 +88,14 @@
       </ion-item>
     </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-item lines="none">
+    <ion-label slot="start" class="dynamicfontsize">
+      Grand Total
+    </ion-label>
+    <ion-label slot="end" lines="none" class="dynamicfontsize" >
+      Rp {{grandtotal| number}}
+    </ion-label>
+  </ion-item>
+</ion-footer>

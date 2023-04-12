@@ -36,7 +36,7 @@ export class PenjualanAdminPage implements OnInit {
   keteranganwaktutahun;
   public tmpselectedRentangTanggal = new Date().toISOString();
   rentangtanggalselected = false;
-
+  grandtotal = 0;
 
   constructor(private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     
@@ -73,6 +73,7 @@ export class PenjualanAdminPage implements OnInit {
         this.transaksi = data;
         this.transaksi = this.transaksi.reverse();
         console.log(this.transaksihariini);
+        this.hitunggrandtotal(this.transaksi);
       });
   }
 
@@ -84,6 +85,7 @@ export class PenjualanAdminPage implements OnInit {
       .subscribe(data => {
         this.transaksi = data;
         this.transaksi = this.transaksi.reverse();
+        this.hitunggrandtotal(this.transaksi);
       });
   }
   getPenjualanTahunIni()
@@ -95,6 +97,7 @@ export class PenjualanAdminPage implements OnInit {
       .subscribe(data => {
         this.transaksi = data;
         this.transaksi = this.transaksi.reverse();
+        this.hitunggrandtotal(this.transaksi);
       });
   }
 
@@ -111,6 +114,7 @@ export class PenjualanAdminPage implements OnInit {
         this.transaksi = data;
         this.transaksi = this.transaksi.reverse();
         console.log(this.transaksihariini);
+        this.hitunggrandtotal(this.transaksi);
       });
   }
 
@@ -118,24 +122,28 @@ export class PenjualanAdminPage implements OnInit {
     console.log(date);
     this.rentangtanggalselected = true;
     this.transaksi = [];
-      for(let i=0; i<date.length; i++)
-      {
-        this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${moment(date[i], "YYYY-MM-DD").format('DD/MM/YYYY')}`))
+    this.grandtotal = 0;
+    for (let i = 0; i < date.length; i++) {
+      this.db.collection('Transaksi', ref => ref.where('tanggal', '==', `${moment(date[i], "YYYY-MM-DD").format('DD/MM/YYYY')}`))
         .valueChanges()
         .subscribe(data => {
           data = data.reverse();
-          console.log(data)
-          if(data.length > 0)
-          {
-            for(let j=0; j<data.length; j++)
-            {
+          // console.log(data)
+          if (data.length > 0) {
+            for (let j = 0; j < data.length; j++) {
               this.transaksi.push(data[j]);
             }
           }
           // this.transaksi = this.transaksi.reverse();
           console.log(this.transaksi);
+          this.hitunggrandtotal(this.transaksi);
+
         });
-      }
+
+    }
+
+
+
     // }
 
   }
@@ -152,6 +160,8 @@ export class PenjualanAdminPage implements OnInit {
       .subscribe(data => {
         this.transaksi = data;
         this.transaksi = this.transaksi.reverse();
+        this.hitunggrandtotal(this.transaksi);
+
       });
     console.log(bulan)
     console.log(moment(bulan).format('MM/YYYY'))
@@ -168,6 +178,8 @@ export class PenjualanAdminPage implements OnInit {
       .subscribe(data => {
         this.transaksi = data;
         this.transaksi = this.transaksi.reverse();
+        this.hitunggrandtotal(this.transaksi);
+
       });
   }
 
@@ -212,6 +224,17 @@ export class PenjualanAdminPage implements OnInit {
       cssClass: 'cart-modal'
     });
     modal.present();
+  }
+
+  hitunggrandtotal(transaksi)
+  {
+    this.grandtotal = 0;
+    console.log(transaksi)
+    for(let i=0; i<transaksi.length; i++)
+    {
+      this.grandtotal = this.grandtotal + parseInt(transaksi[i].grandtotal);
+      // console.log(this.grandtotal)
+    }
   }
 
   Dismissmodal()
