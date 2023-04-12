@@ -92,9 +92,17 @@
 <ion-footer>
   <ion-item lines="none">
     <ion-label slot="start" class="fixedLabelgt">
+      Jumlah Transaksi
+    </ion-label>
+    <ion-label slot="end" lines="none" class="dynamicfontsize">
+      {{transaksi.length}}
+    </ion-label>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label slot="start" class="fixedLabelgt">
       Grand Total
     </ion-label>
-    <ion-label slot="end" lines="none" class="dynamicfontsize" >
+    <ion-label slot="end" lines="none" class="dynamicfontsize">
       Rp {{grandtotal| number}}
     </ion-label>
   </ion-item>
