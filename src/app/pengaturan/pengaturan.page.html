@@ -8,5 +8,63 @@
 </ion-header>
 
 <ion-content>
+  <ion-item detail lines="full" class="ion-item-style" id="open-modal-gantipassword">
+    <ion-label style="font-size: 14pt">
+      Ganti Password
+    </ion-label>
+  </ion-item>
 
+  <ion-modal #modaltambahbrand  trigger="open-modal-gantipassword" class="modal_gantipassword" >
+    <ng-template>
+      <ion-content>
+        <ion-toolbar color="secondary">
+          <ion-title class="ion-text-center">Ganti Password</ion-title>
+        </ion-toolbar>
+      
+        <div class="container">
+          <div style="margin-top:5%"> </div>
+      
+      
+          <!--   <ion-item>
+                <ion-label>Password Baru</ion-label>
+                <ion-input class="ion-text-right" placeholder="Input Password Baru" [(ngModel)]="tmpnamabrandbaru"></ion-input>
+              </ion-item>
+              <ion-item lines="none" *ngIf="masukkanpassword === true">
+                <ion-label style="color: red;" class="ion-text-center">MASUKKAN PASSWORD BARU!</ion-label>
+              </ion-item> -->
+      
+          <form [formGroup]="credentials" (ngSubmit)="gantiPassword()">
+            <ion-item class="ion-margin-bottom" fill="outline">
+              <ion-label position="floating" style="color: grey">Password Baru</ion-label>
+              <ion-input type="password" formControlName="password1" class="inputStyle"></ion-input>
+              <!-- <ion-note slot="error" *ngIf="harga?.errors?.['required'] && submitted == true">Masukan harga</ion-note> -->
+            </ion-item>
+      
+            <ion-item class="ion-margin-bottom" fill="outline">
+              <ion-label position="floating" style="color: grey">Ulangi Password</ion-label>
+              <ion-input type="password" formControlName="password2" class="inputStyle"></ion-input>
+              <!-- <ion-note slot="error" *ngIf="harga?.errors?.['required'] && submitted == true">Masukan harga</ion-note> -->
+            </ion-item>
+          </form>
+        </div>
+      </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-button expand="full" color="danger" (click)="Dismissmodal()">
+                BATAL
+              </ion-button>
+            </ion-col>
+            <ion-col col-6>
+              <ion-button expand="full" color="secondary" type="submit" (click)="gantiPassword()" [disabled]="!credentials.valid">
+                SIMPAN
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
 </ion-content>
