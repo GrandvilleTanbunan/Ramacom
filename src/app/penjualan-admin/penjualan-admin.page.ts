@@ -110,6 +110,8 @@ export class PenjualanAdminPage implements OnInit {
   }
 
   public PilihTanggal(): void {
+    this.tmpfilter = "Pilih Tanggal";
+
     this.rentangtanggalselected = false;
     this.selectedDate = moment(this.tmpselectedDate).format('DD/MM/YYYY');
     this.keteranganwaktu = this.selectedDate;
@@ -127,6 +129,7 @@ export class PenjualanAdminPage implements OnInit {
   }
 
   public PilihRentangTanggal(date): void {
+    this.tmpfilter = "Pilih Banyak Tanggal";
     console.log(date);
     this.rentangtanggalselected = true;
     this.transaksi = [];
@@ -158,6 +161,7 @@ export class PenjualanAdminPage implements OnInit {
 
   PilihBulan(bulan)
   {
+    this.tmpfilter = "Pilih Bulan";
     this.keteranganwaktubulan = moment(bulan).format('MM')
     this.keteranganwaktutahun = moment(bulan).format('YYYY')
     this.filter = "Bulan"
@@ -177,6 +181,7 @@ export class PenjualanAdminPage implements OnInit {
 
   PilihTahun(tahun)
   {
+    this.tmpfilter = "Pilih Tahun"
     this.keteranganwaktutahun = moment(tahun).format('YYYY')
     this.rentangtanggalselected = false;
     this.keteranganwaktu = this.keteranganwaktutahun;  

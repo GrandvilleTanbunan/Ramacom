@@ -91,6 +91,31 @@
         </ion-label>
       </ion-item>
     </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" translucent="true" *ngIf="tmpfilter" slot="fixed">
+      <ion-fab-button color="secondary">
+        <ion-icon name="download" class="cart-icon-kecil"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button (click)="openExport()" title="Export ke PDF Detail"
+          *ngIf="tmpfilter == 'Hari Ini' || tmpfilter == 'Bulan Ini' || tmpfilter == 'Pilih Bulan' || tmpfilter == 'Pilih Banyak Tanggal' || tmpfilter == 'Pilih Tanggal'">
+          <img style="width: 32px" src="../assets/images/pdf.png">
+        </ion-fab-button>
+        <ion-fab-button (click)="openXLS()" title="Export ke Excel Detail"
+          *ngIf="tmpfilter == 'Hari Ini' || tmpfilter == 'Bulan Ini' || tmpfilter == 'Pilih Bulan' || tmpfilter == 'Pilih Banyak Tanggal' || tmpfilter == 'Pilih Tanggal'">
+    
+          <img style="width: 28px" src="../assets/images/excel.png">
+        </ion-fab-button>
+        <ion-fab-button (click)="openExport()" title="Export ke PDF">
+    
+          <img style="width: 32px" src="../assets/images/pdf.png">
+        </ion-fab-button>
+        <ion-fab-button (click)="openXLS()" title="Export ke Excel">
+    
+          <img style="width: 28px" src="../assets/images/excel.png">
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
 </ion-content>
 
 <ion-footer>

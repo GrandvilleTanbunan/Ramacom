@@ -39,8 +39,8 @@ export class StockAdminPage implements OnInit {
   selectedbrand_TYPE;
   selectedtype = "";
   selectedbrand_HAPUS;
-  selectedbrand_HAPUSTYPE;
-  selectedtype_HAPUS;
+  selectedbrand_HAPUSTYPE: any;
+  selectedtype_HAPUS: any;
 
   selectedbrand_PindahkanStock = "";
   selectedtype_PindahkanStock;
@@ -743,8 +743,8 @@ export class StockAdminPage implements OnInit {
     this.selectedbrand_HAPUS = undefined;
     this.tmpTypeBaru = "";
     this.tmpHargaBaru = undefined;
-    this.selectedtype_HAPUS = "";
-    this.selectedbrand_HAPUSTYPE = "";
+    this.selectedtype_HAPUS = undefined;
+    this.selectedbrand_HAPUSTYPE = undefined;
 
     this.selectedbrand_PindahkanStock = undefined;
     this.selectedtype_PindahkanStock = undefined;
