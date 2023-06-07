@@ -129,7 +129,7 @@
     </ion-fab>
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="filter != 'Tahun'">
   <ion-item lines="none">
     <ion-label slot="start" class="fixedLabelgt">
       Jumlah Transaksi
