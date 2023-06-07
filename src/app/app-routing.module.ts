@@ -69,6 +69,10 @@ const routes: Routes = [
   {
     path: 'detailtransaksi',
     loadChildren: () => import('./detailtransaksi/detailtransaksi.module').then( m => m.DetailtransaksiPageModule)
+  },
+  {
+    path: 'tahunini',
+    loadChildren: () => import('./tahunini/tahunini.module').then( m => m.TahuniniPageModule)
   }
 
 

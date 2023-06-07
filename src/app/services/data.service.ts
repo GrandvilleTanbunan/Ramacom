@@ -6,6 +6,7 @@ import { collectionData, docData, Firestore, doc, addDoc, deleteDoc} from '@angu
 import { collection, orderBy, where} from '@firebase/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as moment from 'moment';
+import { take, takeWhile, takeUntil } from 'rxjs/operators';
 
 export interface Users {
   id?: string;
@@ -27,6 +28,9 @@ export class DataService {
   public tmpusername;
   public loggeduser;
   public tmptransaksiaktif: any = [];
+  public tmpstock = [];
+  isAlive: boolean = true;
+  stockkembar = false;
   
 
   constructor(private firestore: Firestore, private db: AngularFirestore) { 
@@ -243,6 +247,64 @@ export class DataService {
 
     const BrandRef = collection(this.firestore, 'Pemberitahuan');
     return addDoc(BrandRef, tmpnotif);
+  }
+
+  getstockdicabang(selectedbrand, tmptype)
+  {
+    this.tmpstock = [];
+    // this.stockkembar = false;
+    for (let i = 0; i < tmptype.length; i++) {
+      console.log(tmptype[i].type);
+      let sub = this.db.collection(`Brand/${selectedbrand}/Type/${tmptype[i].TypeID}/stockdicabang`)
+        .valueChanges({ idField: 'CabangID' })
+        // .pipe(take(1))
+        .subscribe(data => {
+          console.log(data)
+          console.log(this.tmpstock)
+            if(this.tmpstock.length == 0)
+            {
+              console.log("masuk if")
+              this.tmpstock.push({ type: tmptype[i].type, data });
+            }
+            else
+            {
+              console.log("masuk else");
+              for(let j=0; j<this.tmpstock.length; j++)
+              {
+                // console.log(this.tmpstock[j].type)
+                // console.log(tmptype[i].type)
+
+                if(tmptype[i].type == this.tmpstock[j].type)
+                {
+                  console.log("Masuk if stock kembar")
+                  this.stockkembar == true
+                  console.log(this.stockkembar)
+
+                }
+              }
+              console.log(this.stockkembar)
+              if(this.stockkembar == false)
+              {
+                console.log("Masuk if stock TIDAK kembar")
+
+                this.tmpstock.push({ type: tmptype[i].type, data });
+              }
+              else
+              {
+                console.log("masuk if stock KEMBAR ELSE")
+              }
+            }
+          
+        });
+      console.log(this.tmpstock);
+
+      if(this.tmptype.length == i+1)
+      {
+        // masukstock = false;
+        sub.unsubscribe();
+      }
+    }
+    return this.tmpstock;
   }
 
 }

@@ -335,7 +335,7 @@ export class StocklainPage implements OnInit, OnDestroy {
             
             // loading.dismiss();
           });
-        console.log(this.tmpstock)
+        console.log(this.tmpstock) 
       }
     }
     // this.subscription.unsubscribe();

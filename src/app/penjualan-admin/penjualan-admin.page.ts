@@ -14,6 +14,7 @@ import { take } from 'rxjs/operators';
 import { TransaksiComponentComponent } from '../transaksi-component/transaksi-component.component';
 import { DetailtransaksiPage } from '../detailtransaksi/detailtransaksi.page';
 import { AuthService } from '../auth.service';
+import { TahuniniPage } from '../tahunini/tahunini.page';
 
 
 
@@ -40,6 +41,7 @@ export class PenjualanAdminPage implements OnInit {
   grandtotal = 0;
 
   loggeduser;
+  namabulan = ['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER']
 
   constructor(private authService: AuthService, private loadingCtrl: LoadingController, private db: AngularFirestore, private modalCtrl: ModalController, private firestore: Firestore, private toastCtrl: ToastController, private dataService: DataService, public platform: Platform, private routerOutlet: IonRouterOutlet, public alertCtrl: AlertController) {
     
@@ -194,6 +196,19 @@ export class PenjualanAdminPage implements OnInit {
         this.hitunggrandtotal(this.transaksi);
 
       });
+  }
+
+  async selectbulan(bulan)
+  {
+    console.log(bulan);
+    let modal = await this.modalCtrl.create({
+      component: TahuniniPage,
+      componentProps: {
+        bulan: bulan,
+      },
+      cssClass: 'cart-modal'
+    });
+    modal.present();
   }
 
   setFilter(filter: string)

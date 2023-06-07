@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="secondary" mode="ios">
+    <ion-title>{{bulan}}</ion-title>
+    <ion-button slot="start" fill="clear" color="light" (click)="close()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let item of transaksi" style="padding-bottom: 5px;">
+      <ion-item detail class="ion-item-style" (click)="pilihtransaksi(item)">
+        <ion-label>
+          <h1>Rp {{item.grandtotal| number}}</h1>
+          <!-- <p *ngIf="selectedtimeline == 'Bulan Ini' || selectedtimeline == 'Pilih Bulan' ">Tanggal: {{item.tanggal}} </p>
+                  <p *ngIf="selectedtimeline == 'Tahun Ini' || selectedtimeline == 'Pilih Tahun' ">Bulan: {{item.tanggal}} </p> -->
+  
+          <p>ID: {{item.TransaksiID}} </p>
+          <p>Tanggal: {{item.tanggal}}</p>
+          <p>Waktu: {{item.waktu}} </p>
+  
+        </ion-label>
+      </ion-item>
+    </ion-list>
+</ion-content>

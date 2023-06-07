@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Platform, IonRouterOutlet, AlertController, ToastController, ModalController, LoadingController, NavController   } from '@ionic/angular';
 // import { ModalExampleComponent } from './modal-example.component';
 import { AddTypeModalComponent } from '../add-type-modal/add-type-modal.component';
@@ -8,7 +8,7 @@ import { collection } from '@firebase/firestore';
 import { collectionData, docData, Firestore, doc, addDoc } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {of} from 'rxjs'
-import { take } from 'rxjs/operators';
+import { take, takeWhile } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
@@ -21,15 +21,18 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 })
 
 
-export class StockAdminPage implements OnInit {
+export class StockAdminPage implements OnInit, OnDestroy {
   brand: Array<string>;
   tmpbrand = [];
   public tmptype = [];
   tmptypeHAPUS = [];
   tmpcabang = [];
-  tmpstock = [];
+  // tmpstock = [];
+  tmpstock;
+  tahanupdate = false;
+  tmpstockku;
   tmpstockfinal= [];
-
+  isAlive: boolean = true;
   opsitampilkansemua = "0";
 
 
@@ -168,20 +171,6 @@ export class StockAdminPage implements OnInit {
     );
   }
 
-  
-  public getType() {
-    
-    this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
-    .subscribe(data => {
-      this.tmptype = data;
-      console.log(this.tmptype)
-      this.showLoader = true;
-
-      this.getstockdicabang();
-    });
-    
-  }
-
   public CleanSelection()
   {
     this.selectedbrand = "";
@@ -198,13 +187,30 @@ export class StockAdminPage implements OnInit {
     // console.log(this.selectedtype_PindahkanStock);
   }
 
-  public async getstockdicabang()
+  
+  public getType() {
+    this.tahanupdate = false;
+    this.db.collection(`Brand/${this.selectedbrand}/Type`, ref => ref.orderBy('type', 'asc')).valueChanges({ idField: 'TypeID' }).pipe(take(1))
+    .subscribe(data => {
+      this.tmptype = data;
+      console.log(this.tmptype)
+      this.showLoader = true;
+
+      this.getstockdicabang(this.tmptype);
+    });
+    
+  }
+
+  
+
+  public async getstockdicabang(tmptype)
   {
 
     this.tmpstock = [];
     this.tmpstockfinal = [];
     console.log(this.tmpcabang);
-    console.log(this.tmptype);
+    console.log(tmptype);
+    let completedCount = 0;
 
     if(this.tmptype.length == 0)
     {
@@ -227,28 +233,86 @@ export class StockAdminPage implements OnInit {
   
       // loading.present();
   
-      for (let i = 0; i < this.tmptype.length; i++) {
-        // console.log(this.tmptype[i].TypeID);
-        this.db.collection(`Brand/${this.selectedbrand}/Type/${this.tmptype[i].TypeID}/stockdicabang`)
-          .valueChanges({ idField: 'CabangID' })
-          .pipe(take(1))
-          .subscribe(data => {
-            this.tmpstock.push({ type: this.tmptype[i].type, data });
-            // console.log(data);
-            // this.tmpstock = [{type: this.tmptype[i].type, data}];
-            // console.log(this.tmpstock)
-  
-            // this.stockfinal(this.tmptype[i].type, data)
-            // loading.dismiss();
-            this.showLoader = false;
-          }
-  
-          );
-      }
+      // for (let i = 0; i < this.tmptype.length; i++) {
+      //   console.log(this.tmptype[i].TypeID);
+      //   this.db.collection(`Brand/${this.selectedbrand}/Type/${this.tmptype[i].TypeID}/stockdicabang`)
+      //     .valueChanges({ idField: 'CabangID' })
+      //     // .pipe(take(1))
+      //     .subscribe(data => {
+      //       console.log(data)
+      //       // if(data.length > 1)
+      //       // {
+      //         this.tmpstock.push({ type: this.tmptype[i].type, data });
+      //         this.showLoader = false;
+      //       // }
+            
+      //     });
+      //   console.log(this.tmpstock);
+      // }
 
+      // for (let i = 0; i < tmptype.length; i++) {
+      //   console.log(tmptype[i].TypeID);
+      //   this.db.collection(`Brand/${this.selectedbrand}/Type/${tmptype[i].TypeID}/stockdicabang`)
+      //     .valueChanges({ idField: 'CabangID' })
+      //     // .pipe(take(1))
+      //     .subscribe(data => {
+      //       console.log(data)
+      //       // if(data.length > 1)
+      //       // {
+      //         this.masukkanketmpstock(data, i)
+      //         // this.tmpstock.push({ type: tmptype[i].type, data });
+      //         // this.showLoader = false;
+      //       // }
+      //     });
+      //   console.log(this.tmpstock) 
+      // }
+
+      // for (let i = 0; i < tmptype.length; i++) {
+        // this.tmpstock = this.dataService.getstockdicabang(this.selectedbrand, tmptype)
+        // console.log(this.tmpstock)
+        // if(this.tmpstock) this.showLoader = false;
+      // }
+
+      this.tmptype.forEach(tmptmptype => {
+          this.db.collection(`Brand/${this.selectedbrand}/Type/${tmptmptype.TypeID}/stockdicabang`)
+          .valueChanges({ idField: 'CabangID' })
+          // .pipe(take(1))
+          .subscribe(data => {
+            console.log(data)
+            // if(data.length > 1)
+            // {
+              completedCount ++;
+
+              if(this.tahanupdate == false)
+              {
+                this.tmpstock.push({ type: tmptmptype.type, data });
+                this.showLoader = false;
+                if(completedCount == this.tmptype.length)
+                {
+                  this.tahanupdate = true;
+                }
+              }
+              
+            // }
+            
+          });
+        console.log(this.tmpstock);
+      });
     }
     
   }
+
+  masukkanketmpstock(data, i)
+  {
+    this.tmpstock.push({ type: this.tmptype[i].type, data });
+    this.showLoader = false;
+  }
+
+  ngOnDestroy(): void {
+    this.isAlive = false;
+  }
+
+  
 
   public stockfinal(type, data)
   {
