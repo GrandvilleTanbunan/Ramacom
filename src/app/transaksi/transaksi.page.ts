@@ -77,7 +77,8 @@ export class TransaksiPage implements OnInit {
   getKategori()
   {
     this.db.collection('Kategori')
-      .valueChanges().pipe(take(1))
+      .valueChanges()
+      .pipe(take(1))
       .subscribe(data => {
         this.kategori = data;
         console.log(this.kategori)
@@ -95,7 +96,8 @@ export class TransaksiPage implements OnInit {
 
     for (let i = 0; i < this.kategori.length; i++) {
       this.db.collection(`${this.kategori[i].namakategori}`)
-        .valueChanges({ idField: 'ID' }).pipe(take(1))
+        .valueChanges({ idField: 'ID' })
+        .pipe(take(1))
         .subscribe(data => {
           for(let j=0; j<data.length; j++)
           {
@@ -104,19 +106,19 @@ export class TransaksiPage implements OnInit {
           }
         }
         );
-        // console.log(this.AllItem);
     }
   }
 
   getStockItemDicabang(i, data)
   {
+
     this.tmpstockItem = [];
     this.db.collection(`${this.kategori[i].namakategori}/${data.ID}/stockdicabang`).doc(this.loggeduser).valueChanges()
     .pipe(take(1))
     .subscribe(dataku => {
       this.tmpstockItem.push({kategori: data.kategori, nama: data.nama, harga: data.harga, ID: data.ID, dataku });
     });
-    // console.log(this.tmpstockItem);
+    console.log(this.tmpstockItem);
   }
 
   getBrand()
@@ -303,6 +305,8 @@ export class TransaksiPage implements OnInit {
 
   async CariItem(event: any) {
     const val = event.target.value;
+    this.results = [];
+    this.resultsHP = [];
     this.results = this.tmpstockItem.filter((item) => {
       return (
         item.nama.toString().toLowerCase().indexOf(val.toLowerCase()) > -1 ||
@@ -591,6 +595,8 @@ export class TransaksiPage implements OnInit {
                   if(this.Dtrans[i].kategori == "Brand")
                   {
                     this.db.doc(`Brand/${this.Dtrans[i].BrandID}/Type/${this.Dtrans[i].IDBarang}/stockdicabang/${this.loggeduser}`).update({jumlah: this.Dtrans[i].stockdicabang - this.Dtrans[i].jumlah}).then(async ()=>{
+                      this.getBrand();
+                      
                       const toast = await this.toastController.create({
                         message: 'Stock berhasil diupdate!',
                         duration: 1000,
@@ -602,6 +608,8 @@ export class TransaksiPage implements OnInit {
                   else
                   {
                     this.db.doc(`${this.Dtrans[i].kategori}/${this.Dtrans[i].IDBarang}/stockdicabang/${this.loggeduser}`).update({jumlah: this.Dtrans[i].stockdicabang - this.Dtrans[i].jumlah}).then(async ()=>{
+                      this.getKategori();
+                      
                       const toast = await this.toastController.create({
                         message: 'Stock berhasil diupdate!',
                         duration: 1000,

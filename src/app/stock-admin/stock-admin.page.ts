@@ -279,21 +279,30 @@ export class StockAdminPage implements OnInit, OnDestroy {
           // .pipe(take(1))
           .subscribe(data => {
             console.log(data)
-            // if(data.length > 1)
-            // {
+            if(data.length > 1)
+            {
               completedCount ++;
+
+              if(completedCount == this.tmptype.length+1)
+              {
+                this.tahanupdate = true;
+              }
+              else
+              {
+                this.tahanupdate = false;
+              }
 
               if(this.tahanupdate == false)
               {
                 this.tmpstock.push({ type: tmptmptype.type, data });
                 this.showLoader = false;
-                if(completedCount == this.tmptype.length)
-                {
-                  this.tahanupdate = true;
-                }
+                // if(completedCount == this.tmptype.length)
+                // {
+                //   this.tahanupdate = true;
+                // }
               }
               
-            // }
+            }
             
           });
         console.log(this.tmpstock);
@@ -1003,6 +1012,9 @@ export class StockAdminPage implements OnInit, OnDestroy {
                 
                 const res1 = await update.update({jumlah: this.tmpjumlahstocksetelahdijumlah}).then(async ()=>{
                   loading.dismiss();
+                  this.tmpjumlahupdate_tambah = 1
+                  this.selectedtype_UpdateStock = undefined;
+                  this.selectedCabang_UpdateStock = undefined;
                   const toast = await this.toastController.create({
                     message: 'Stock berhasil ditambah!',
                     duration: 1500,
@@ -1054,6 +1066,9 @@ export class StockAdminPage implements OnInit, OnDestroy {
                 
                 const res1 = await update.update({jumlah: this.tmpjumlahupdate_tambah}).then(async ()=>{
                   loading.dismiss();
+                  this.tmpjumlahupdate_tambah = 1
+                  this.selectedtype_UpdateStock = undefined;
+                  this.selectedCabang_UpdateStock = undefined;
                   const toast = await this.toastController.create({
                     message: 'Stock berhasil diupdate!',
                     duration: 1500,
